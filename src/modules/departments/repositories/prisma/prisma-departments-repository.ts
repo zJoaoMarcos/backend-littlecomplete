@@ -20,6 +20,10 @@ export default class PrismaDepartmentsRepository
     });
   }
 
+  findAll() {
+    return this.prisma.departments.findMany();
+  }
+
   findByName(name: string) {
     return this.prisma.departments.findUnique({
       where: { name },

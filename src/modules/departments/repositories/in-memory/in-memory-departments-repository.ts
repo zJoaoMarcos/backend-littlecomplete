@@ -21,7 +21,11 @@ export class InMemoryDepartmentsRepository implements DepartmentsRepository {
     };
   }
 
-  findByName(name: string) {
+  async findAll() {
+    return this.items;
+  }
+
+  async findByName(name: string) {
     const department = this.items.find((deparment) => deparment.name === name);
 
     if (!department) {

@@ -3,18 +3,20 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Patch,
   Post,
 } from '@nestjs/common';
-import { ConflictException } from '@nestjs/common/exceptions';
+import {
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common/exceptions';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { DepartmentsRepository } from './repositories/departments-repository';
 import { CreateDepartmentUseCase } from './use-cases/create';
-import { DepartmentAlreadyExistsError } from './use-cases/errors/department-already-exits-error';
+import { FindAllDepartmentsUseCase } from './use-cases/find-all';
+import { FindByNameDepartmentUseCase } from './use-cases/find-by-name';
 
 @Controller('departments')
 export class DepartmentsController {
@@ -29,22 +31,34 @@ export class DepartmentsController {
 
       return createDepartmentUseCase.execute(body);
     } catch (err) {
-      if (err instanceof DepartmentAlreadyExistsError) {
-        throw new ConflictException(err.message);
-      }
-
-      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new ConflictException(err.message);
     }
   }
 
   @Get()
   findAll() {
-    return;
+    try {
+      const findAllDepartments = new FindAllDepartmentsUseCase(
+        this.departmentsRepository,
+      );
+
+      return findAllDepartments.execute();
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return;
+    try {
+      const findByNameDepartment = new FindByNameDepartmentUseCase(
+        this.departmentsRepository,
+      );
+
+      return findByNameDepartment.execute(id);
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
   }
 
   @Patch(':id')
