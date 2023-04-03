@@ -7,7 +7,7 @@ Lil Complete app.
 - [x] Deve ser possivel criar um Departamento;
 - [x] Deve ser possivel listar os Departamentos;
 - [x] Deve ser possivel listar um único Departamento;
-- [ ] Deve ser possivel alterar propiedades do Departamentos;
+- [ ] Deve ser possivel alterar propiedades do Departamento;
 - [ ] Deve ser possivel listar os Usuários e os seus Equipamentos e Sistemas;
 - [ ] Deve ser possivel listar Equipamentos e os seus relacionamentos se existirem;
 - [ ] Deve ser possivel listar os Sistemas;
@@ -26,4 +26,3 @@ Lil Complete app.
 ## RNFs (Requisitos não funcionais)
 
 - [ ] Criar Logs de Auditoria no Sistema;
-- [ ]
