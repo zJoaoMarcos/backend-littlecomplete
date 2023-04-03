@@ -8,25 +8,20 @@ import {
   Param,
   Patch,
   Post,
-  Res,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { ConflictException } from '@nestjs/common/exceptions';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { DepartmentsRepository } from './repositories/departments-repository';
 import { CreateDepartmentUseCase } from './use-cases/create';
 import { DepartmentAlreadyExistsError } from './use-cases/errors/department-already-exits-error';
-import { FindAllDepartmentUseCase } from './use-cases/findAll';
 
 @Controller('departments')
 export class DepartmentsController {
   constructor(private readonly departmentsRepository: DepartmentsRepository) {}
 
   @Post()
-  create(
-    @Body() body: CreateDepartmentDto,
-    @Res({ passthrough: true }) res: Response,
-  ) {
+  create(@Body() body: CreateDepartmentDto) {
     try {
       const createDepartmentUseCase = new CreateDepartmentUseCase(
         this.departmentsRepository,
@@ -35,23 +30,16 @@ export class DepartmentsController {
       return createDepartmentUseCase.execute(body);
     } catch (err) {
       if (err instanceof DepartmentAlreadyExistsError) {
-        throw new HttpException(err.message, HttpStatus.CONFLICT);
+        throw new ConflictException(err.message);
       }
 
-      throw new HttpException(
-        'Internal Server Error',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   @Get()
   findAll() {
-    const findAllDepartmentUseCase = new FindAllDepartmentUseCase(
-      this.departmentsRepository,
-    );
-
-    return findAllDepartmentUseCase.execute();
+    return;
   }
 
   @Get(':id')

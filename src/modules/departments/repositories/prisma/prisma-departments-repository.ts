@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { departments, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/services/database/prisma.service';
+import { Department } from '../../entities/department';
 import { DepartmentsRepository } from '../departments-repository';
 
 @Injectable()
@@ -9,21 +9,20 @@ export default class PrismaDepartmentsRepository
 {
   constructor(private prisma: PrismaService) {}
 
-  async register(data: Prisma.departmentsCreateInput): Promise<departments> {
+  async create(department: Department) {
     return this.prisma.departments.create({
-      data,
+      data: {
+        name: department.name,
+        cost_center: department.cost_center,
+        is_board: department.is_board,
+        board: department.board,
+      },
     });
   }
 
-  async findById(
-    departmentsWhereUniqueInput: Prisma.departmentsWhereUniqueInput,
-  ): Promise<departments | null> {
+  findByName(name: string) {
     return this.prisma.departments.findUnique({
-      where: departmentsWhereUniqueInput,
+      where: { name },
     });
-  }
-
-  async findAll(): Promise<departments[]> {
-    return this.prisma.departments.findMany();
   }
 }

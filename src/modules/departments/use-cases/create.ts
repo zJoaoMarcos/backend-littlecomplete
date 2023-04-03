@@ -1,22 +1,39 @@
 import { Injectable } from '@nestjs/common/decorators';
 import { CreateDepartmentDto } from '../dto/create-department.dto';
+import { Department } from '../entities/department';
 import { DepartmentsRepository } from '../repositories/departments-repository';
 import { DepartmentAlreadyExistsError } from './errors/department-already-exits-error';
+
+export interface CreateDepartmentUseCaseResponse {
+  department: Department;
+}
 
 @Injectable()
 export class CreateDepartmentUseCase {
   constructor(private departmentsRepository: DepartmentsRepository) {}
 
-  async execute(data: CreateDepartmentDto) {
-    const departmentAlreadyExists = await this.departmentsRepository.findById({
-      department: data.department,
-    });
+  async execute({
+    name,
+    cost_center,
+    is_board,
+    board,
+  }: CreateDepartmentDto): Promise<CreateDepartmentUseCaseResponse> {
+    const departmentAlreadyExits = await this.departmentsRepository.findByName(
+      name,
+    );
 
-    if (departmentAlreadyExists) {
+    if (departmentAlreadyExits) {
       throw new DepartmentAlreadyExistsError();
     }
 
-    const department = await this.departmentsRepository.register(data);
+    const department = new Department({
+      name,
+      cost_center,
+      is_board,
+      board,
+    });
+
+    await this.departmentsRepository.create(department);
 
     return {
       department,

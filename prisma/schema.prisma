@@ -8,10 +8,10 @@ datasource db {
 }
 
 model departments {
-  department  String  @id @db.Char(50)
-  cost_center Int
-  is_board    Boolean
-  board       String  @db.Char(50)
+  name        String   @id @db.Char(50)
+  cost_center Int?
+  is_board    Boolean?
+  board       String?  @db.Char(50)
 }
 
 model equipments {

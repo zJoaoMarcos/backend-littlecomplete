@@ -1,5 +1,5 @@
 export class CreateDepartmentDto {
-  department: string;
+  name: string;
   cost_center: number;
   is_board: boolean;
   board: string;
