@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DepartmentsRepository } from 'src/repositories/equipments-repository';
+import { DepartmentsRepository } from '../repositories/departments-repository';
 
 @Injectable()
 export class FindAllDepartmentUseCase {
