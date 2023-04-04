@@ -30,17 +30,12 @@ export default class PrismaDepartmentsRepository
     });
   }
 
-  async update({ name, cost_center, is_board, board }: Department) {
+  async update(name: string, data: Department) {
     return this.prisma.departments.update({
       where: {
         name,
       },
-      data: {
-        name,
-        cost_center,
-        is_board,
-        board,
-      },
+      data,
     });
   }
 }

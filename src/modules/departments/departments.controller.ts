@@ -6,9 +6,9 @@ import {
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { DepartmentsRepository } from './repositories/departments-repository';
-import { CreateDepartmentUseCase } from './use-cases/create';
-import { FindAllDepartmentsUseCase } from './use-cases/find-all';
-import { FindByNameDepartmentUseCase } from './use-cases/find-by-name';
+import { CreateDepartmentUseCase } from './use-cases/create-departments';
+import { FindAllDepartmentsUseCase } from './use-cases/find-all-departments';
+import { FindByNameDepartmentUseCase } from './use-cases/find-department-by-name';
 import { UpdateDepartmentUseCase } from './use-cases/update-department';
 
 @Controller('departments')
@@ -31,11 +31,11 @@ export class DepartmentsController {
   @Get()
   findAll() {
     try {
-      const findAllDepartments = new FindAllDepartmentsUseCase(
+      const findAllDepartmentsUseCase = new FindAllDepartmentsUseCase(
         this.departmentsRepository,
       );
 
-      return findAllDepartments.execute();
+      return findAllDepartmentsUseCase.execute();
     } catch (err) {
       throw new NotFoundException(err.message);
     }
@@ -44,11 +44,11 @@ export class DepartmentsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     try {
-      const findByNameDepartment = new FindByNameDepartmentUseCase(
+      const findByNameDepartmentUseCase = new FindByNameDepartmentUseCase(
         this.departmentsRepository,
       );
 
-      return findByNameDepartment.execute(id);
+      return findByNameDepartmentUseCase.execute(id);
     } catch (err) {
       throw new NotFoundException(err.message);
     }
@@ -57,10 +57,10 @@ export class DepartmentsController {
   @Patch(':id')
   update(@Param('id') name: string, @Body() data: UpdateDepartmentDto) {
     try {
-      const updateDepartment = new UpdateDepartmentUseCase(
+      const updateDepartmentUseCase = new UpdateDepartmentUseCase(
         this.departmentsRepository,
       );
-      return updateDepartment.execute(name, data);
+      return updateDepartmentUseCase.execute(name, data);
     } catch (err) {
       throw new ConflictException(err.message);
     }
