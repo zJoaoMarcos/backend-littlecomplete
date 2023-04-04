@@ -49,6 +49,7 @@ export class User {
   get demission_date() {
     return this.props.demission_date;
   }
+
   get status() {
     return this.props.status;
   }
