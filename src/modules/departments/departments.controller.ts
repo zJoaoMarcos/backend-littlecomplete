@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import {
   ConflictException,
   NotFoundException,
@@ -17,6 +9,7 @@ import { DepartmentsRepository } from './repositories/departments-repository';
 import { CreateDepartmentUseCase } from './use-cases/create';
 import { FindAllDepartmentsUseCase } from './use-cases/find-all';
 import { FindByNameDepartmentUseCase } from './use-cases/find-by-name';
+import { UpdateDepartmentUseCase } from './use-cases/update-department';
 
 @Controller('departments')
 export class DepartmentsController {
@@ -62,15 +55,14 @@ export class DepartmentsController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateDepartmentDto: UpdateDepartmentDto,
-  ) {
-    return;
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return;
+  update(@Param('id') name: string, @Body() data: UpdateDepartmentDto) {
+    try {
+      const updateDepartment = new UpdateDepartmentUseCase(
+        this.departmentsRepository,
+      );
+      return updateDepartment.execute(name, data);
+    } catch (err) {
+      throw new ConflictException(err.message);
+    }
   }
 }

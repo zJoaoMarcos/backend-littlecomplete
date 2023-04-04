@@ -20,13 +20,27 @@ export default class PrismaDepartmentsRepository
     });
   }
 
-  findAll() {
+  async findAll() {
     return this.prisma.departments.findMany();
   }
 
-  findByName(name: string) {
+  async findByName(name: string) {
     return this.prisma.departments.findUnique({
       where: { name },
+    });
+  }
+
+  async update({ name, cost_center, is_board, board }: Department) {
+    return this.prisma.departments.update({
+      where: {
+        name,
+      },
+      data: {
+        name,
+        cost_center,
+        is_board,
+        board,
+      },
     });
   }
 }

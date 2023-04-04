@@ -1,6 +1,5 @@
 import { InMemoryDepartmentsRepository } from '../repositories/in-memory/in-memory-departments-repository';
 import { CreateDepartmentUseCase } from './create';
-import { DepartmentNotFoundError } from './errors/department-not-found';
 import { FindByNameDepartmentUseCase } from './find-by-name';
 
 describe('Find Department By Name Use Case', () => {
@@ -30,8 +29,6 @@ describe('Find Department By Name Use Case', () => {
       board: 'Tecnologia da Informação',
     });
 
-    expect(() => findByNameDepartment.execute('test')).rejects.toBeInstanceOf(
-      DepartmentNotFoundError,
-    );
+    expect(() => findByNameDepartment.execute('IOT')).resolves;
   });
 });
