@@ -1,5 +1,5 @@
 import { InMemoryDepartmentsRepository } from '../repositories/in-memory/in-memory-departments-repository';
-import { CreateDepartmentUseCase } from './create';
+import { CreateDepartmentUseCase } from './create-departments';
 import { DepartmentAlreadyExistsError } from './errors/department-already-exits-error';
 
 describe('Create Department Use Case', () => {

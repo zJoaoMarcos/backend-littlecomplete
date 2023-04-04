@@ -4,7 +4,7 @@ Lil Complete app.
 
 ## RFs (Requisitos funcionais)
 
-- [x] Deve ser possivel criar um Departamento;
+- [x] Should be able create an Department ;
 - [x] Deve ser possivel listar os Departamentos;
 - [x] Deve ser possivel listar um único Departamento;
 - [x] Deve ser possivel alterar propiedades do Departamento;
@@ -18,7 +18,8 @@ Lil Complete app.
 
 ## RNs (Regras de Negócios)
 
-- [ ] o departamento não deve ser criado com o nome duplicado;
+- [x] should not possible create a User with a demission date before admission date
+- [ ] Department should not be created with duplicate user_name;
 - [ ] o departamento não deve ser excluido
 - [ ] O usuário não deve ser cadastrado como o email duplicado;
 - [ ] O usuário não deve ser excluido;

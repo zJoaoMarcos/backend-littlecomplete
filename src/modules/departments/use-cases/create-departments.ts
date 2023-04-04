@@ -18,11 +18,11 @@ export class CreateDepartmentUseCase {
     is_board,
     board,
   }: CreateDepartmentDto): Promise<CreateDepartmentUseCaseResponse> {
-    const departmentAlreadyExits = await this.departmentsRepository.findByName(
+    const departmentAlreadyExists = await this.departmentsRepository.findByName(
       name,
     );
 
-    if (departmentAlreadyExits) {
+    if (departmentAlreadyExists) {
       throw new DepartmentAlreadyExistsError();
     }
 
