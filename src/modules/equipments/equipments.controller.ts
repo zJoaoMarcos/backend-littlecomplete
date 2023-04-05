@@ -1,34 +1,46 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { EquipmentsService } from './equipments.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 
+@ApiTags('equipments')
 @Controller('equipments')
 export class EquipmentsController {
-  constructor(private readonly equipmentsService: EquipmentsService) {}
+  /*  */
 
   @Post()
   create(@Body() createEquipmentDto: CreateEquipmentDto) {
-    return this.equipmentsService.create(createEquipmentDto);
+    return;
   }
 
   @Get()
   findAll() {
-    return this.equipmentsService.findAll();
+    return;
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.equipmentsService.findOne(+id);
+    return;
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEquipmentDto: UpdateEquipmentDto) {
-    return this.equipmentsService.update(+id, updateEquipmentDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateEquipmentDto: UpdateEquipmentDto,
+  ) {
+    return;
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.equipmentsService.remove(+id);
+    return;
   }
 }

@@ -3,6 +3,7 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { DepartmentsRepository } from './repositories/departments-repository';
@@ -11,6 +12,7 @@ import { FindAllDepartmentsUseCase } from './use-cases/find-all-departments';
 import { FindByNameDepartmentUseCase } from './use-cases/find-department-by-name';
 import { UpdateDepartmentUseCase } from './use-cases/update-department';
 
+@ApiTags('departments')
 @Controller('departments')
 export class DepartmentsController {
   constructor(private readonly departmentsRepository: DepartmentsRepository) {}

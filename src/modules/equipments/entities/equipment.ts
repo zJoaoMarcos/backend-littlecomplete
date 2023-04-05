@@ -87,10 +87,6 @@ export class Equipment {
   }
 
   constructor(props: EquipmentProps) {
-    const { id } = props;
-
-    if (id.startsWith('01-003')) {
-    }
     this.props = props;
   }
 }
