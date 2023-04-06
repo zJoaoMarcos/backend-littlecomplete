@@ -16,15 +16,15 @@ lerna-debug.log*
 
 # ENVIORIOMENT VARIABLE
 .env
+.env.prod
+.env.dev
 
 # Tests
 /coverage
 /.nyc_output
 
 # IDEs and editors
-/.idea
-.project
-.classpath
+/.idea 
 .c9/
 *.launch
 .settings/
