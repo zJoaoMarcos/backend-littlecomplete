@@ -3,7 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 
-@ApiTags('equipments')
+@ApiTags('Equipments')
 @Controller('equipments')
 export class EquipmentsController {
   /*  */

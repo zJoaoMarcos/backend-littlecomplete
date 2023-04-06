@@ -12,7 +12,7 @@ import { FindAllDepartmentsUseCase } from './use-cases/find-all-departments';
 import { FindByNameDepartmentUseCase } from './use-cases/find-department-by-name';
 import { UpdateDepartmentUseCase } from './use-cases/update-department';
 
-@ApiTags('departments')
+@ApiTags('Departments')
 @Controller('departments')
 export class DepartmentsController {
   constructor(private readonly departmentsRepository: DepartmentsRepository) {}
