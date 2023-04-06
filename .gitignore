@@ -17,6 +17,7 @@ lerna-debug.log*
 # ENVIORIOMENT VARIABLE
 .env
 .env.prod
+.env.homolog
 .env.dev
 
 # Tests
