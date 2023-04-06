@@ -1,6 +1,6 @@
 import { InMemoryDepartmentsRepository } from '../repositories/in-memory/in-memory-departments-repository';
-import { CreateDepartmentUseCase } from './create';
-import { FindByNameDepartmentUseCase } from './find-by-name';
+import { CreateDepartmentUseCase } from './create-departments';
+import { FindByNameDepartmentUseCase } from './find-department-by-name';
 
 describe('Find Department By Name Use Case', () => {
   it('should be able to find department by name', async () => {
