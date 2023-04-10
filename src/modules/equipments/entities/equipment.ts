@@ -23,6 +23,8 @@ const desktopPrefix = '01-001';
 const monitorPrefix = '01-002';
 const extensionPrefix = '01-003';
 const notebookPrefix = '01-004';
+const vrPrefix = '01-005';
+const scannerPrefix = '01-010';
 
 export class Equipment {
   private props: EquipmentProps;
@@ -105,7 +107,7 @@ export class Equipment {
     } = props;
 
     if (
-      id.startsWith(extensionPrefix) &&
+      id.startsWith(extensionPrefix || vrPrefix || scannerPrefix) &&
       (cpu ||
         ram ||
         slots ||
@@ -115,7 +117,7 @@ export class Equipment {
         storage1_type ||
         video)
     ) {
-      throw new Error('Invalid extension attributes');
+      throw new Error('Invalid equipments attributes');
     } else if (
       id.startsWith(monitorPrefix) &&
       (cpu ||

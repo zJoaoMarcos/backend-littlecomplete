@@ -35,7 +35,7 @@ describe('Equipment', () => {
   });
 
   it('should be able create an Extension', () => {
-    const extension = new Equipment({
+    const equipment = new Equipment({
       id: '01-003-00434',
       brand: 'Yealink',
       department: 'TI',
@@ -43,7 +43,7 @@ describe('Equipment', () => {
       status: 'activate',
     });
 
-    expect(extension).toBeInstanceOf(Equipment);
+    expect(equipment).toBeInstanceOf(Equipment);
   });
 
   it('should not be able create an Extension with invalid attributes', () => {
@@ -56,7 +56,7 @@ describe('Equipment', () => {
         status: 'activate',
         video: 'GTX 1060',
       });
-    }).toThrowError('Invalid extension attributes');
+    }).toThrowError('Invalid equipments attributes');
   });
 
   it('should be able create an Monitor', () => {
