@@ -1,7 +1,7 @@
 import { User } from './user';
 
 describe('User', () => {
-  it('should create a new User', () => {
+  it('should  create a new User', () => {
     const admission_date = new Date();
     const demission_date = new Date();
 

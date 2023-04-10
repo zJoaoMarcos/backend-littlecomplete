@@ -5,16 +5,16 @@ Lil Complete app.
 ## RFs (Requisitos funcionais)
 
 - [x] Should be able create an Department ;
-- [x] Deve ser possivel listar os Departamentos;
-- [x] Deve ser possivel listar um único Departamento;
-- [x] Deve ser possivel alterar propiedades do Departamento;
-- [ ] Deve ser possivel listar os Usuários e os seus Equipamentos e Sistemas;
-- [ ] Deve ser possivel listar Equipamentos e os seus relacionamentos se existirem;
-- [ ] Deve ser possivel listar os Sistemas;
-- [ ] Deve ser possivel alterar Equipamento do Usúario;
-- [ ] Deve ser possivel alterar cargo do Usuário;
-- [ ] Deve ser possivel alterar Usuários de setor;
-- [ ] Deve ser possivel alterar Equipamento de setor;
+- [x] Should be able listar os Departamentos;
+- [x] Should be able listar um único Departamento;
+- [x] Should be able alterar propiedades do Departamento;
+- [ ] Should be able listar os Usuários e os seus Equipamentos e Sistemas;
+- [ ] Should be able listar Equipamentos e os seus relacionamentos se existirem;
+- [ ] Should be able listar os Sistemas;
+- [ ] Should be able alterar Equipamento do Usúario;
+- [ ] Should be able alterar cargo do Usuário;
+- [ ] Should be able alterar Usuários de setor;
+- [ ] Should be able alterar Equipamento de setor;
 
 ## RNs (Regras de Negócios)
 
