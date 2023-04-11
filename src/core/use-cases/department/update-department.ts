@@ -1,20 +1,14 @@
-import { UpdateDepartmentDto } from '../dto/update-department.dto';
-import { Department } from '../entities/department';
-import { DepartmentsRepository } from '../repositories/departments-repository';
+import { DepartmentRepositoryInterface } from 'src/core/repository/department/department-repository';
 import { DepartmentAlreadyExistsError } from './errors/department-already-exits-error';
 import { DepartmentNotFoundError } from './errors/department-not-found';
 
-export interface UpdateDepartmentUseCaseResponse {
-  department: Department;
-}
-
 export class UpdateDepartmentUseCase {
-  constructor(private departmentsRepository: DepartmentsRepository) {}
+  constructor(private departmentsRepository: DepartmentRepositoryInterface) {}
 
   async execute(
     name: string,
-    data: UpdateDepartmentDto,
-  ): Promise<UpdateDepartmentUseCaseResponse> {
+    data: UpdateDepartmentInput,
+  ): Promise<UpdateDepartmentOutput> {
     const department = await this.departmentsRepository.findByName(name);
 
     if (!department) {
@@ -36,3 +30,19 @@ export class UpdateDepartmentUseCase {
     };
   }
 }
+
+type UpdateDepartmentInput = {
+  name?: string;
+  cost_center?: number;
+  is_board?: boolean;
+  board?: string;
+};
+
+type UpdateDepartmentOutput = {
+  department: {
+    name: string;
+    cost_center: number;
+    is_board: boolean;
+    board: string;
+  };
+};

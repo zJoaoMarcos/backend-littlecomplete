@@ -1,4 +1,4 @@
-import { HttpException } from '@nestjs/common/exceptions';
+import { HttpException } from '@nestjs/common';
 
 export class DepartmentNotFoundError extends HttpException {
   constructor() {

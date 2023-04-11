@@ -1,10 +1,10 @@
-import { InMemoryDepartmentsRepository } from '../repositories/in-memory/in-memory-departments-repository';
-import { CreateDepartmentUseCase } from './create-departments';
+import { InMemoryDepartmentRepository } from '../../../infra/repository/department/in-memory/in-memory-department-repository';
+import { CreateDepartmentUseCase } from './create-department';
 import { DepartmentAlreadyExistsError } from './errors/department-already-exits-error';
 
 describe('Create Department Use Case', () => {
   it('should be able to create department', async () => {
-    const departmentsRepository = new InMemoryDepartmentsRepository();
+    const departmentsRepository = new InMemoryDepartmentRepository();
     const createDepartmentUseCase = new CreateDepartmentUseCase(
       departmentsRepository,
     );
@@ -20,7 +20,7 @@ describe('Create Department Use Case', () => {
   });
 
   it('should not be able to create department with same name twice', async () => {
-    const departmentsRepository = new InMemoryDepartmentsRepository();
+    const departmentsRepository = new InMemoryDepartmentRepository();
     const createDepartmentUseCase = new CreateDepartmentUseCase(
       departmentsRepository,
     );

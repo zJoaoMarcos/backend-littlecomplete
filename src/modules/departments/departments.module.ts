@@ -1,16 +1,39 @@
 import { Module } from '@nestjs/common';
-import { PrismaService } from 'src/services/database/prisma.service';
+import { DepartmentRepositoryInterface } from 'src/core/repository/department/department-repository';
+import { CreateDepartmentUseCase } from 'src/core/use-cases/department/create-department';
+import { FindAllDepartmentsUseCase } from 'src/core/use-cases/department/find-all-departments';
+import { InMemoryDepartmentRepository } from 'src/infra/repository/department/in-memory/in-memory-department-repository';
+import { PrismaDepartmentRepository } from 'src/infra/repository/department/prisma/prisma-department-repository';
+import { PrismaService } from 'src/infra/services/database/prisma.service';
 import { DepartmentsController } from './departments.controller';
-import { DepartmentsRepository } from './repositories/departments-repository';
-import PrismaDepartmentsRepository from './repositories/prisma/prisma-departments-repository';
+import { DepartmentsService } from './departments.service';
 
 @Module({
   controllers: [DepartmentsController],
   providers: [
+    DepartmentsService,
     PrismaService,
     {
-      provide: DepartmentsRepository,
-      useClass: PrismaDepartmentsRepository,
+      provide: PrismaDepartmentRepository,
+      useClass: PrismaDepartmentRepository,
+    },
+    {
+      provide: InMemoryDepartmentRepository,
+      useClass: InMemoryDepartmentRepository,
+    },
+    {
+      provide: CreateDepartmentUseCase,
+      useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
+        return new CreateDepartmentUseCase(departmentRepo);
+      },
+      inject: [InMemoryDepartmentRepository],
+    },
+    {
+      provide: FindAllDepartmentsUseCase,
+      useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
+        return new FindAllDepartmentsUseCase(departmentRepo);
+      },
+      inject: [InMemoryDepartmentRepository],
     },
   ],
 })

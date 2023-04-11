@@ -1,49 +1,24 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import {
-  ConflictException,
-  NotFoundException,
-} from '@nestjs/common/exceptions';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { DepartmentsService } from './departments.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
-import { DepartmentsRepository } from './repositories/departments-repository';
-import { CreateDepartmentUseCase } from './use-cases/create-departments';
-import { FindAllDepartmentsUseCase } from './use-cases/find-all-departments';
-import { FindByNameDepartmentUseCase } from './use-cases/find-department-by-name';
-import { UpdateDepartmentUseCase } from './use-cases/update-department';
 
 @ApiTags('Departments')
 @Controller('departments')
 export class DepartmentsController {
-  constructor(private readonly departmentsRepository: DepartmentsRepository) {}
+  constructor(private readonly departmentsService: DepartmentsService) {}
 
   @Post()
-  create(@Body() body: CreateDepartmentDto) {
-    try {
-      const createDepartmentUseCase = new CreateDepartmentUseCase(
-        this.departmentsRepository,
-      );
-
-      return createDepartmentUseCase.execute(body);
-    } catch (err) {
-      throw new ConflictException(err.message);
-    }
+  create(@Body() createDepartmentDto: CreateDepartmentDto) {
+    return this.departmentsService.create(createDepartmentDto);
   }
 
   @Get()
   findAll() {
-    try {
-      const findAllDepartmentsUseCase = new FindAllDepartmentsUseCase(
-        this.departmentsRepository,
-      );
-
-      return findAllDepartmentsUseCase.execute();
-    } catch (err) {
-      throw new NotFoundException(err.message);
-    }
+    return this.departmentsService.findAll();
   }
 
-  @Get(':id')
+  /* @Get(':id')
   findOne(@Param('id') id: string) {
     try {
       const findByNameDepartmentUseCase = new FindByNameDepartmentUseCase(
@@ -66,5 +41,5 @@ export class DepartmentsController {
     } catch (err) {
       throw new ConflictException(err.message);
     }
-  }
+  } */
 }

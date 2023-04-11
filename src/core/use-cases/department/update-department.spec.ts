@@ -1,13 +1,13 @@
-import { InMemoryDepartmentsRepository } from '../repositories/in-memory/in-memory-departments-repository';
-import { CreateDepartmentUseCase } from './create-departments';
+import { InMemoryDepartmentRepository } from '../../../infra/repository/department/in-memory/in-memory-department-repository';
+import { CreateDepartmentUseCase } from './create-department';
 import { DepartmentAlreadyExistsError } from './errors/department-already-exits-error';
 import { UpdateDepartmentUseCase } from './update-department';
 
 describe('Update Department Use Case', () => {
   it('should be able to update department props', async () => {
-    const departmentsRepository = new InMemoryDepartmentsRepository();
-    const createDepartment = new CreateDepartmentUseCase(departmentsRepository);
-    const updateDepartment = new UpdateDepartmentUseCase(departmentsRepository);
+    const departmentRepository = new InMemoryDepartmentRepository();
+    const createDepartment = new CreateDepartmentUseCase(departmentRepository);
+    const updateDepartment = new UpdateDepartmentUseCase(departmentRepository);
 
     await createDepartment.execute({
       name: 'IOT',
@@ -32,9 +32,9 @@ describe('Update Department Use Case', () => {
   });
 
   it('should not be able to update department with an existing name', async () => {
-    const departmentsRepository = new InMemoryDepartmentsRepository();
-    const createDepartment = new CreateDepartmentUseCase(departmentsRepository);
-    const updateDepartment = new UpdateDepartmentUseCase(departmentsRepository);
+    const departmentRepository = new InMemoryDepartmentRepository();
+    const createDepartment = new CreateDepartmentUseCase(departmentRepository);
+    const updateDepartment = new UpdateDepartmentUseCase(departmentRepository);
 
     await createDepartment.execute({
       name: 'IOT',

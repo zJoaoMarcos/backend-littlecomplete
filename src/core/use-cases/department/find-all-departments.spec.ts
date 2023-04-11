@@ -1,9 +1,9 @@
-import { InMemoryDepartmentsRepository } from '../repositories/in-memory/in-memory-departments-repository';
-import { CreateDepartmentUseCase } from './create-departments';
+import { InMemoryDepartmentRepository } from '../../../infra/repository/department/in-memory/in-memory-department-repository';
+import { CreateDepartmentUseCase } from './create-department';
 import { FindAllDepartmentsUseCase } from './find-all-departments';
 describe('Find All Departments Use Case', () => {
   it('should be able to find all departments', async () => {
-    const departmentsRepository = new InMemoryDepartmentsRepository();
+    const departmentsRepository = new InMemoryDepartmentRepository();
     const createDepartment = new CreateDepartmentUseCase(departmentsRepository);
     const findAllDepartments = new FindAllDepartmentsUseCase(
       departmentsRepository,
