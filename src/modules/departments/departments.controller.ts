@@ -25,7 +25,7 @@ export class DepartmentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') name: string, @Body() data: UpdateDepartmentDto) {
-    return this.departmentsService.update(name, data);
+  update(@Param('id') id: string, @Body() data: UpdateDepartmentDto) {
+    return this.departmentsService.update(id, { ...data });
   }
 }

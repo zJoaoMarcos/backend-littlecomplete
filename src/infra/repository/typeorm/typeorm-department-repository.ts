@@ -36,10 +36,7 @@ export class TypeOrmDepartmentRepository
     await this.ormRepo.update(
       { name },
       {
-        name: data.name,
-        cost_center: data.cost_center,
-        is_board: data.is_board,
-        board: data.board,
+        ...data,
       },
     );
   }
