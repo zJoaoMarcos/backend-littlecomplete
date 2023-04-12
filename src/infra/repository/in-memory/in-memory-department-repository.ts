@@ -1,5 +1,5 @@
-import { Department } from 'src/core/entity/deparment/department';
-import { DepartmentRepositoryInterface } from 'src/core/repository/department/department-repository';
+import { Department } from 'src/core/entity/department';
+import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
 
 export class InMemoryDepartmentRepository
   implements DepartmentRepositoryInterface
@@ -48,7 +48,7 @@ export class InMemoryDepartmentRepository
       is_board?: boolean;
       board?: string;
     },
-  ): Promise<Department> {
+  ): Promise<void> {
     const department = this.departments.find(
       (department) => department.name === name,
     );
@@ -61,7 +61,5 @@ export class InMemoryDepartmentRepository
     department.is_board =
       data.is_board !== undefined ? data.is_board : department.is_board;
     department.board = data.board !== undefined ? data.board : department.board;
-
-    return Promise.resolve(department);
   }
 }

@@ -1,4 +1,4 @@
-import { InMemoryDepartmentRepository } from '../../../infra/repository/department/in-memory/in-memory-department-repository';
+import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
 import { CreateDepartmentUseCase } from './create-department';
 import { DepartmentAlreadyExistsError } from './errors/department-already-exits-error';
 import { UpdateDepartmentUseCase } from './update-department';

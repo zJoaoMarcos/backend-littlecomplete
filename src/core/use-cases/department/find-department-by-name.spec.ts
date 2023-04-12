@@ -1,4 +1,4 @@
-import { InMemoryDepartmentRepository } from '../../../infra/repository/department/in-memory/in-memory-department-repository';
+import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
 import { CreateDepartmentUseCase } from './create-department';
 import { DepartmentNotFoundError } from './errors/department-not-found';
 import { FindByNameDepartmentUseCase } from './find-department-by-name';

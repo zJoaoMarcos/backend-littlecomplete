@@ -1,4 +1,4 @@
-import { Department } from 'src/core/entity/deparment/department';
+import { Department } from '../entity/department';
 
 export interface DepartmentRepositoryInterface {
   create(
@@ -20,5 +20,5 @@ export interface DepartmentRepositoryInterface {
       is_board?: boolean;
       board?: string;
     },
-  ): Promise<Department>;
+  ): Promise<void>;
 }

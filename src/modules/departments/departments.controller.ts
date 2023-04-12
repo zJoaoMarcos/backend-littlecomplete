@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { DepartmentsService } from './departments.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
+import { UpdateDepartmentDto } from './dto/update-department.dto';
 
 @ApiTags('Departments')
 @Controller('departments')
@@ -18,28 +19,13 @@ export class DepartmentsController {
     return this.departmentsService.findAll();
   }
 
-  /* @Get(':id')
+  @Get(':id')
   findOne(@Param('id') id: string) {
-    try {
-      const findByNameDepartmentUseCase = new FindByNameDepartmentUseCase(
-        this.departmentsRepository,
-      );
-
-      return findByNameDepartmentUseCase.execute(id);
-    } catch (err) {
-      throw new NotFoundException(err.message);
-    }
+    return this.departmentsService.findByName(id);
   }
 
   @Patch(':id')
   update(@Param('id') name: string, @Body() data: UpdateDepartmentDto) {
-    try {
-      const updateDepartmentUseCase = new UpdateDepartmentUseCase(
-        this.departmentsRepository,
-      );
-      return updateDepartmentUseCase.execute(name, data);
-    } catch (err) {
-      throw new ConflictException(err.message);
-    }
-  } */
+    return this.departmentsService.update(name, data);
+  }
 }
