@@ -4,6 +4,7 @@ import { EntitySchema } from 'typeorm';
 export const DepartmentSchema = new EntitySchema<Department>({
   name: 'departments',
   target: Department,
+  tableName: 'departments',
   columns: {
     name: {
       primary: true,
