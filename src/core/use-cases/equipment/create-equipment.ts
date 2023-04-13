@@ -1,8 +1,12 @@
+import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
 import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
 import { Equipment } from '../../../core/entity/equipment';
 
 export class CreateEquipmentUseCase {
-  constructor(private equipmentRepository: EquipmentRepositoryInterface) {}
+  constructor(
+    private equipmentRepository: EquipmentRepositoryInterface,
+    private departmentsRepository: DepartmentRepositoryInterface,
+  ) {}
 
   async execute({
     id,
@@ -27,7 +31,15 @@ export class CreateEquipmentUseCase {
     const equipmentAlreadyExits = await this.equipmentRepository.findById(id);
 
     if (equipmentAlreadyExits) {
-      throw new Error('Department already exits');
+      throw new Error('Equipment already exits');
+    }
+
+    const departmentExists = await this.departmentsRepository.findByName(
+      department,
+    );
+
+    if (departmentExists) {
+      throw new Error('Department not found');
     }
 
     const equipment = new Equipment(
