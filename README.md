@@ -5,22 +5,22 @@ Lil Complete app.
 ## RFs (Requisitos funcionais)
 
 - [x] Should be able create an Department ;
-- [x] Should be able listar os Departamentos;
-- [x] Should be able listar um único Departamento;
-- [x] Should be able alterar propiedades do Departamento;
+- [x] Should be able list the Departaments;
+- [x] Should be able list an unique Departament;
+- [x] Should be able update Departaments props;
+- [ ] Should be able list the Equipaments and your Relationship;
 - [ ] Should be able listar os Usuários e os seus Equipamentos e Sistemas;
-- [ ] Should be able listar Equipamentos e os seus relacionamentos se existirem;
-- [ ] Should be able listar os Sistemas;
-- [ ] Should be able alterar Equipamento do Usúario;
-- [ ] Should be able alterar cargo do Usuário;
-- [ ] Should be able alterar Usuários de setor;
-- [ ] Should be able alterar Equipamento de setor;
+- [ ] Should be able list Systems;
+- [ ] Should be able update User Equipment;
+- [ ] Should be able update User title;
+- [ ] Should be able update User department;
+- [ ] Should be able update Equipament department;
 
 ## RNs (Regras de Negócios)
 
 - [x] should not possible create a User with a demission date before admission date
-- [ ] Department should not be created with duplicate user_name;
-- [ ] o departamento não deve ser excluido
+- [x] Department should not be created with duplicate user_name;
+- [x] o departamento não deve ser excluido
 - [ ] O usuário não deve ser cadastrado como o email duplicado;
 - [ ] O usuário não deve ser excluido;
 - [ ] O equipamento não deve ser excluido;
@@ -29,3 +29,7 @@ Lil Complete app.
 ## RNFs (Requisitos não funcionais)
 
 - [ ] Criar Logs de Auditoria no Sistema;
+
+## TypeOrm
+
+`typeorm-model-generator -h localhost -d db_patriani -u docker -x docker -e postgres -o ./src/infra/repository/typeorm -s public`
