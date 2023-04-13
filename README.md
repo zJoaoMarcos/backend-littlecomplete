@@ -8,13 +8,13 @@ Lil Complete app.
 - [x] Should be able list the Departaments;
 - [x] Should be able list an unique Departament;
 - [x] Should be able update Departaments props;
+- [ ] Should be able update Equipament department;
 - [ ] Should be able list the Equipaments and your Relationship;
 - [ ] Should be able listar os Usuários e os seus Equipamentos e Sistemas;
 - [ ] Should be able list Systems;
 - [ ] Should be able update User Equipment;
 - [ ] Should be able update User title;
 - [ ] Should be able update User department;
-- [ ] Should be able update Equipament department;
 
 ## RNs (Regras de Negócios)
 

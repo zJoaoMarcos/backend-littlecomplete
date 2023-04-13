@@ -1,86 +1,25 @@
 import { Equipment } from './equipment';
 
 describe('Equipment', () => {
-  it('should be able create an Desktop or Notebook', () => {
-    const computer = new Equipment({
-      id: '01-001-00434',
-      cpu: 'Core i9',
-      ram: '16GB',
-      slots: 2,
-      storage0_syze: 240,
-      storage0_type: 'SSD',
-      brand: 'Dell',
-      department: 'TI',
-      model: 'T31P',
-      status: 'activate',
-    });
-
-    expect(computer).toBeInstanceOf(Equipment);
-  });
-
-  it('should not be able create an Desktop or Notebook missing attributes ', () => {
+  it('should not be able create equipment with invalid prefix id', () => {
     expect(() => {
-      new Equipment({
-        id: '01-001-00434',
-        ram: '16GB',
-        slots: 2,
-        storage0_syze: 240,
-        storage0_type: 'SSD',
-        brand: 'Dell',
-        department: 'TI',
-        model: 'T31P',
-        status: 'activate',
-      });
-    }).toThrowError('missing required attributes');
+      new Equipment('01-006-', 'Dell', 'XPTO', 'TI', 'Deprecated');
+    }).toThrowError('Invalid equipment id');
   });
 
-  it('should be able create an Extension', () => {
-    const equipment = new Equipment({
-      id: '01-003-00434',
-      brand: 'Yealink',
-      department: 'TI',
-      model: 'T31P',
-      status: 'activate',
-    });
+  it('should be able create an Equipment', () => {
+    const equipment = new Equipment(
+      '01-005-00434',
+      'Dell',
+      'T31P',
+      'TI',
+      'activate',
+      '16GB',
+      2,
+      240,
+      'SSD',
+    );
 
     expect(equipment).toBeInstanceOf(Equipment);
-  });
-
-  it('should not be able create an Extension with invalid attributes', () => {
-    expect(() => {
-      new Equipment({
-        id: '01-003-00434',
-        brand: 'Yealink',
-        department: 'TI',
-        model: 'T31P',
-        status: 'activate',
-        video: 'GTX 1060',
-      });
-    }).toThrowError('Invalid equipments attributes');
-  });
-
-  it('should be able create an Monitor', () => {
-    const monitor = new Equipment({
-      id: '01-002-00434',
-      brand: 'LG',
-      department: 'TI',
-      model: '24MK430H',
-      status: 'activate',
-    });
-
-    expect(monitor).toBeInstanceOf(Equipment);
-  });
-
-  it('should not be able create an Monitor with invalid attributes', () => {
-    expect(() => {
-      new Equipment({
-        id: '01-002-00490',
-        brand: 'LG',
-        department: 'TI',
-        model: '24MK430H',
-        status: 'activate',
-        ram: '8GB',
-      });
-    }).toThrowError('Invalid monitor attributes');
   });
 });

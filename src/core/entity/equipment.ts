@@ -1,4 +1,13 @@
-interface EquipmentProps {
+const validPrefixs = [
+  '01-001-',
+  '01-002-',
+  '01-003-',
+  '01-004-',
+  '01-005-',
+  '01-010-',
+];
+
+export class Equipment {
   id: string;
   brand: string;
   model: string;
@@ -17,141 +26,52 @@ interface EquipmentProps {
   storage1_syze?: number;
   video?: string;
   service_tag?: string;
-}
 
-const desktopPrefix = '01-001';
-const monitorPrefix = '01-002';
-const extensionPrefix = '01-003';
-const notebookPrefix = '01-004';
-const vrPrefix = '01-005';
-const scannerPrefix = '01-010';
-
-export class Equipment {
-  private props: EquipmentProps;
-
-  get id() {
-    return this.props.id;
-  }
-
-  get brand() {
-    return this.props.brand;
-  }
-
-  get supplier() {
-    return this.props.supplier;
-  }
-
-  get invoice() {
-    return this.props.invoice;
-  }
-
-  get warranty() {
-    return this.props.warranty;
-  }
-
-  get purchase_date() {
-    return this.props.purchase_date;
-  }
-
-  get department() {
-    return this.props.department;
-  }
-
-  get status() {
-    return this.props.status;
-  }
-
-  get cpu() {
-    return this.props.cpu;
-  }
-
-  get ram() {
-    return this.props.ram;
-  }
-
-  get storage0_type() {
-    return this.props.storage0_type;
-  }
-
-  get storage0_syze() {
-    return this.props.storage0_syze;
-  }
-
-  get storage1_type() {
-    return this.props.storage1_type;
-  }
-
-  get storage1_syze() {
-    return this.props.storage1_syze;
-  }
-
-  get video() {
-    return this.props.video;
-  }
-
-  get service_tag() {
-    return this.props.service_tag;
-  }
-
-  constructor(props: EquipmentProps) {
-    const {
-      id,
-      cpu,
-      ram,
-      slots,
-      storage0_syze,
-      storage0_type,
-      storage1_syze,
-      storage1_type,
-      video,
-    } = props;
-
-    if (
-      id.startsWith(extensionPrefix || vrPrefix || scannerPrefix) &&
-      (cpu ||
-        ram ||
-        slots ||
-        storage0_syze ||
-        storage0_type ||
-        storage1_syze ||
-        storage1_type ||
-        video)
-    ) {
-      throw new Error('Invalid equipments attributes');
-    } else if (
-      id.startsWith(monitorPrefix) &&
-      (cpu ||
-        ram ||
-        slots ||
-        storage0_syze ||
-        storage0_type ||
-        storage1_syze ||
-        storage1_type ||
-        video)
-    ) {
-      throw new Error('Invalid monitor attributes');
-    } else if (
-      id.startsWith(desktopPrefix || notebookPrefix) &&
-      (!cpu || !ram || !slots || !storage0_syze || !storage0_type)
-    ) {
-      throw new Error('missing required attributes');
+  constructor(
+    id: string,
+    brand: string,
+    model: string,
+    department: string,
+    status: string,
+    supplier = null,
+    invoice = null,
+    warranty = null,
+    purchase_date = null,
+    cpu = null,
+    ram = null,
+    slots = null,
+    storage0_type = null,
+    storage0_syze = null,
+    storage1_type = null,
+    storage1_syze = null,
+    video = null,
+    service_tag = null,
+  ) {
+    if (!validPrefixs.some((prefix) => id.startsWith(prefix))) {
+      throw new Error('Invalid equipment id');
     }
 
-    this.props = {
-      ...props,
-      supplier: props.supplier || null,
-      invoice: props.invoice || null,
-      warranty: props.warranty || null,
-      purchase_date: props.purchase_date || null,
-      cpu: props.cpu || null,
-      ram: props.ram || null,
-      slots: props.slots || null,
-      storage0_type: props.storage0_type || null,
-      storage0_syze: props.storage0_syze || null,
-      storage1_syze: props.storage1_syze || null,
-      storage1_type: props.storage1_type || null,
-      video: props.video || null,
-      service_tag: props.service_tag || null,
-    };
+    if (!id) {
+      throw new Error('Id is required');
+    }
+
+    this.id = id;
+    this.brand = brand;
+    this.model = model;
+    this.supplier = supplier;
+    this.invoice = invoice;
+    this.warranty = warranty;
+    this.purchase_date = purchase_date;
+    this.department = department;
+    this.status = status;
+    this.cpu = cpu;
+    this.ram = ram;
+    this.slots = slots;
+    this.storage0_type = storage0_type;
+    this.storage0_syze = storage0_syze;
+    this.storage1_type = storage1_type;
+    this.storage1_syze = storage1_syze;
+    this.video = video;
+    this.service_tag = service_tag;
   }
 }
