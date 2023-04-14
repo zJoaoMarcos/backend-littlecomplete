@@ -26,5 +26,5 @@ export interface EquipmentRepositoryInterface {
 
   findById(id: string): Promise<Equipment>;
 
-  update(equipment_id, department): Promise<void>;
+  update(equipment_id: string, department: string): Promise<void>;
 }

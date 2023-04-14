@@ -28,9 +28,9 @@ export class CreateEquipmentUseCase {
     video,
     service_tag,
   }: CreateEquipmentInput): Promise<CreateEquipmentOutput> {
-    const equipmentAlreadyExits = await this.equipmentRepository.findById(id);
+    const equipmentAlreadyExists = await this.equipmentRepository.findById(id);
 
-    if (equipmentAlreadyExits) {
+    if (equipmentAlreadyExists) {
       throw new Error('Equipment already exits');
     }
 
@@ -38,7 +38,7 @@ export class CreateEquipmentUseCase {
       department,
     );
 
-    if (departmentExists) {
+    if (!departmentExists) {
       throw new Error('Department not found');
     }
 

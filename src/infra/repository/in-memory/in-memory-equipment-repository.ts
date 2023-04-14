@@ -65,7 +65,13 @@ export class InMemoryEquipmentRepository
     return Promise.resolve(equipment);
   }
 
-  update(): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(equipment_id: string, department: string): Promise<void> {
+    const equipment = this.equipments.find(
+      (equipment) => equipment.id === equipment_id,
+    );
+
+    equipment.id = department;
+
+    return;
   }
 }
