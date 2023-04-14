@@ -5,6 +5,8 @@ import {
 } from '@nestjs/common/exceptions';
 import { CreateEquipmentUseCase } from 'src/core/use-cases/equipment/create-equipment';
 import { FindAllEquipmentsUseCase } from 'src/core/use-cases/equipment/find-all-equipments';
+import { FindEquipmentByIdUseCase } from 'src/core/use-cases/equipment/find-equipment-by-id';
+import { updateEquipmentDepartmentUseCase } from 'src/core/use-cases/equipment/update-equipment';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 
 @Injectable()
@@ -12,6 +14,8 @@ export class EquipmentsService {
   constructor(
     private createUseCase: CreateEquipmentUseCase,
     private findAllUseCase: FindAllEquipmentsUseCase,
+    private findByIdUseCase: FindEquipmentByIdUseCase,
+    private updateDepartmentUseCase: updateEquipmentDepartmentUseCase,
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto) {
@@ -30,19 +34,19 @@ export class EquipmentsService {
     }
   }
 
-  /* async findByName(id: string) {
+  async findByName(id: string) {
     try {
-      return this.findByNameUseCase.execute(id);
+      return this.findByIdUseCase.execute(id);
     } catch (err) {
       throw new NotFoundException(err.message);
     }
-  } */
+  }
 
-  /* async update(id: string, department: string) {
+  async update(id: string, department: string) {
     try {
-      return this.updateUseCase.execute({ id, department });
+      return this.updateDepartmentUseCase.execute({ id, department });
     } catch (err) {
       throw new ConflictException(err.message);
     }
-  } */
+  }
 }

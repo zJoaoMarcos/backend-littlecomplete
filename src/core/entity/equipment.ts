@@ -1,12 +1,3 @@
-const validPrefixs = [
-  '01-001-',
-  '01-002-',
-  '01-003-',
-  '01-004-',
-  '01-005-',
-  '01-010-',
-];
-
 export class Equipment {
   id: string;
   brand: string;
@@ -47,13 +38,22 @@ export class Equipment {
     video = null,
     service_tag = null,
   ) {
-    if (!validPrefixs.some((prefix) => id.startsWith(prefix))) {
+    const validPrefixs = [
+      '01-001-',
+      '01-002-',
+      '01-003-',
+      '01-004-',
+      '01-005-',
+      '01-010-',
+    ];
+
+    /*  if (!validPrefixs.some((prefix) => id.startsWith(prefix))) {
       throw new Error('Invalid equipment id');
     }
 
     if (!id) {
       throw new Error('Id is required');
-    }
+    } */
 
     this.id = id;
     this.brand = brand;

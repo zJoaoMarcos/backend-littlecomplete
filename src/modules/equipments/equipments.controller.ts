@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
-import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { EquipmentsService } from './equipments.service';
 
 @ApiTags('Equipments')
@@ -21,14 +20,11 @@ export class EquipmentsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return;
+    return this.equipmentsService.findByName(id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateEquipmentDto: UpdateEquipmentDto,
-  ) {
-    return;
+  update(@Param('id') id: string, @Body() department: string) {
+    return this.equipmentsService.update(id, department);
   }
 }

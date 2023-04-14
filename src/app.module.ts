@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DepartmentSchema } from './infra/repository/typeorm/department.schema';
+import { EquipmentSchema } from './infra/repository/typeorm/equipment.schema';
 import { DepartmentsModule } from './modules/departments/departments.module';
 import { EquipmentsModule } from './modules/equipments/equipments.module';
 
@@ -13,8 +14,7 @@ import { EquipmentsModule } from './modules/equipments/equipments.module';
       port: 5432,
       username: 'docker',
       password: 'docker',
-      entities: [DepartmentSchema],
-      synchronize: true,
+      entities: [DepartmentSchema, EquipmentSchema],
     }),
     DepartmentsModule,
     EquipmentsModule,

@@ -4,14 +4,7 @@ import { DepartmentRepositoryInterface } from 'src/core/repository/department-re
 export class InMemoryDepartmentRepository
   implements DepartmentRepositoryInterface
 {
-  departments: Department[] = [
-    {
-      name: 'IOT',
-      cost_center: 495945945,
-      is_board: true,
-      board: 'TECNOLOGIA DA INFORMAÇÃO',
-    },
-  ];
+  departments: Department[] = [];
 
   async create(
     name: string,
