@@ -1,16 +1,16 @@
 import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
 import { InMemoryEquipmentRepository } from '../../../infra/repository/in-memory/in-memory-equipment-repository';
-import { FindAllEquipmentsUseCase } from './find-all-equipments';
+import { FindEquipmentByIdUseCase } from './find-equipment-by-id';
 
 let equipmentsRepository: InMemoryEquipmentRepository;
 let departmentsRepository: InMemoryDepartmentRepository;
-let sut: FindAllEquipmentsUseCase;
+let sut: FindEquipmentByIdUseCase;
 
 describe('Find All Equipments Use Case', () => {
   beforeEach(() => {
     equipmentsRepository = new InMemoryEquipmentRepository();
     departmentsRepository = new InMemoryDepartmentRepository();
-    sut = new FindAllEquipmentsUseCase(equipmentsRepository);
+    sut = new FindEquipmentByIdUseCase(equipmentsRepository);
   });
 
   it('should be able list all Equipments', async () => {
@@ -42,29 +42,8 @@ describe('Find All Equipments Use Case', () => {
       service_tag: '',
     });
 
-    await equipmentsRepository.equipments.push({
-      id: '01-005-00134',
-      brand: 'Dell',
-      model: 'XPTO',
-      department: 'TI',
-      status: 'activate',
-      ram: '16GB',
-      supplier: '',
-      invoice: '',
-      warranty: '',
-      purchase_date: '',
-      cpu: '',
-      slots: 0,
-      storage0_type: '',
-      storage0_syze: 0,
-      storage1_type: '',
-      storage1_syze: 0,
-      video: '',
-      service_tag: '',
-    });
-
     await expect(() => {
-      sut.execute();
+      sut.execute('01-005-001234');
     }).resolves;
   });
 });

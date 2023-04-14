@@ -35,28 +35,28 @@ import { DepartmentsService } from './departments.service';
       useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
         return new CreateDepartmentUseCase(departmentRepo);
       },
-      inject: [TypeOrmDepartmentRepository],
+      inject: [InMemoryDepartmentRepository],
     },
     {
       provide: FindAllDepartmentsUseCase,
       useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
         return new FindAllDepartmentsUseCase(departmentRepo);
       },
-      inject: [TypeOrmDepartmentRepository],
+      inject: [InMemoryDepartmentRepository],
     },
     {
       provide: FindByNameDepartmentUseCase,
       useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
         return new FindByNameDepartmentUseCase(departmentRepo);
       },
-      inject: [TypeOrmDepartmentRepository],
+      inject: [InMemoryDepartmentRepository],
     },
     {
       provide: UpdateDepartmentUseCase,
       useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
         return new UpdateDepartmentUseCase(departmentRepo);
       },
-      inject: [TypeOrmDepartmentRepository],
+      inject: [InMemoryDepartmentRepository],
     },
   ],
 })

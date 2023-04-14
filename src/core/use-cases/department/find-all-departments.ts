@@ -1,5 +1,5 @@
 import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
-import { DepartmentNotFoundError } from './errors/department-not-found';
+import { DepartmentNotFoundError } from '../errors/department-not-found';
 
 export class FindAllDepartmentsUseCase {
   constructor(private departmentsRepository: DepartmentRepositoryInterface) {}

@@ -1,11 +1,13 @@
-import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
-import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
 import { Equipment } from '../../../core/entity/equipment';
+import { DepartmentRepositoryInterface } from '../../../core/repository/department-repository';
+import { EquipmentRepositoryInterface } from '../../../core/repository/equipment-repository';
+import { DepartmentNotFoundError } from '../errors/department-not-found';
+import { EquipmentAlreadyExistsError } from '../errors/equipment-already-exits-error';
 
 export class CreateEquipmentUseCase {
   constructor(
     private equipmentRepository: EquipmentRepositoryInterface,
-    private departmentsRepository: DepartmentRepositoryInterface,
+    private departmentRepository: DepartmentRepositoryInterface,
   ) {}
 
   async execute({
@@ -31,15 +33,15 @@ export class CreateEquipmentUseCase {
     const equipmentAlreadyExists = await this.equipmentRepository.findById(id);
 
     if (equipmentAlreadyExists) {
-      throw new Error('Equipment already exits');
+      throw new EquipmentAlreadyExistsError();
     }
 
-    const departmentExists = await this.departmentsRepository.findByName(
+    const departmentExists = await this.departmentRepository.findByName(
       department,
     );
 
     if (!departmentExists) {
-      throw new Error('Department not found');
+      throw new DepartmentNotFoundError();
     }
 
     const equipment = new Equipment(
@@ -116,20 +118,20 @@ type CreateEquipmentOutput = {
     id: string;
     brand: string;
     model: string;
-    supplier?: string;
-    invoice?: string;
-    warranty?: string;
-    purchase_date?: string;
+    supplier: string;
+    invoice: string | null;
+    warranty: string | null;
+    purchase_date: string | null;
     department: string;
     status: string;
-    cpu?: string;
-    ram?: string;
-    slots?: number;
-    storage0_type?: string;
-    storage0_syze?: number;
-    storage1_type?: string;
-    storage1_syze?: number;
-    video?: string;
-    service_tag?: string;
+    cpu: string | null;
+    ram: string | null;
+    slots: number | null;
+    storage0_type: string | null;
+    storage0_syze: number | null;
+    storage1_type: string | null;
+    storage1_syze: number | null;
+    video: string | null;
+    service_tag: string | null;
   };
 };

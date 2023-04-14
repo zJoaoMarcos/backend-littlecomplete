@@ -4,7 +4,14 @@ import { DepartmentRepositoryInterface } from 'src/core/repository/department-re
 export class InMemoryDepartmentRepository
   implements DepartmentRepositoryInterface
 {
-  departments: Department[] = [];
+  departments: Department[] = [
+    {
+      name: 'IOT',
+      cost_center: 495945945,
+      is_board: true,
+      board: 'TECNOLOGIA DA INFORMAÇÃO',
+    },
+  ];
 
   async create(
     name: string,
@@ -28,7 +35,7 @@ export class InMemoryDepartmentRepository
     return Promise.resolve(this.departments);
   }
 
-  findByName(name: string): Promise<Department> {
+  async findByName(name: string): Promise<Department> {
     const department = this.departments.find(
       (deparment) => deparment.name === name,
     );

@@ -1,6 +1,6 @@
 import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
+import { DepartmentAlreadyExistsError } from '../errors/department-already-exits-error';
 import { CreateDepartmentUseCase } from './create-department';
-import { DepartmentAlreadyExistsError } from './errors/department-already-exits-error';
 
 describe('Create Department Use Case', () => {
   it('should be able to create department', async () => {
@@ -34,7 +34,7 @@ describe('Create Department Use Case', () => {
       board: 'Tecnologia da Informação',
     });
 
-    expect(() =>
+    await expect(() =>
       createDepartmentUseCase.execute({
         name,
         cost_center: 22345,

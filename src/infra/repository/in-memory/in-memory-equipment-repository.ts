@@ -6,25 +6,25 @@ export class InMemoryEquipmentRepository
 {
   equipments: Equipment[] = [];
 
-  create(
+  async create(
     id: string,
     brand: string,
     model: string,
     department: string,
     status: string,
-    supplier?: string,
-    invoice?: string,
-    warranty?: string,
-    purchase_date?: string,
-    cpu?: string,
-    ram?: string,
-    slots?: number,
-    storage0_type?: string,
-    storage0_syze?: number,
-    storage1_type?: string,
-    storage1_syze?: number,
-    video?: string,
-    service_tag?: string,
+    supplier = null,
+    invoice = null,
+    warranty = null,
+    purchase_date = null,
+    cpu = null,
+    ram = null,
+    slots = null,
+    storage0_type = null,
+    storage0_syze = null,
+    storage1_type = null,
+    storage1_syze = null,
+    video = null,
+    service_tag = null,
   ): Promise<Equipment> {
     const equipment = {
       id,
@@ -52,10 +52,11 @@ export class InMemoryEquipmentRepository
     return Promise.resolve(equipment);
   }
 
-  findAll(): Promise<Equipment[]> {
+  async findAll(): Promise<Equipment[]> {
     return Promise.resolve(this.equipments);
   }
-  findById(id: string): Promise<Equipment> {
+
+  async findById(id: string): Promise<Equipment> {
     const equipment = this.equipments.find((equipment) => equipment.id === id);
 
     if (!equipment) {

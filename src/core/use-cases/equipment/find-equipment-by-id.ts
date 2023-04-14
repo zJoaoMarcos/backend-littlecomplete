@@ -1,23 +1,24 @@
 import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
+import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
-export class FindAllEquipmentsUseCase {
-  constructor(private equipmentRepository: EquipmentRepositoryInterface) {}
+export class FindEquipmentByIdUseCase {
+  constructor(private equipmentsRepository: EquipmentRepositoryInterface) {}
 
-  async execute(): Promise<FindAllEquipmentsOutput> {
-    const equipments = await this.equipmentRepository.findAll();
+  async execute(id: string): Promise<FindEquipmentByIdOutput> {
+    const equipment = await this.equipmentsRepository.findById(id);
 
-    if (!equipments) {
-      throw new Error('Equipments not found');
+    if (!equipment) {
+      throw new EquipmentNotFoundError();
     }
 
     return {
-      equipments,
+      equipment,
     };
   }
 }
 
-type FindAllEquipmentsOutput = {
-  equipments: {
+type FindEquipmentByIdOutput = {
+  equipment: {
     id: string;
     brand: string;
     model: string;
@@ -36,5 +37,5 @@ type FindAllEquipmentsOutput = {
     storage1_syze: number | null;
     video: string | null;
     service_tag: string | null;
-  }[];
+  };
 };

@@ -1,54 +1,66 @@
 import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
 import { InMemoryEquipmentRepository } from '../../../infra/repository/in-memory/in-memory-equipment-repository';
-import { CreateDepartmentUseCase } from '../department/create-department';
+import { DepartmentNotFoundError } from '../errors/department-not-found';
+import { EquipmentAlreadyExistsError } from '../errors/equipment-already-exits-error';
 import { CreateEquipmentUseCase } from './create-equipment';
 
+let equipmentsRepository: InMemoryEquipmentRepository;
+let departmentsRepository: InMemoryDepartmentRepository;
+let sut: CreateEquipmentUseCase;
+
 describe('Create Equipment Use Case', () => {
-  it('Should be able create Equipment', async () => {
-    const departmentsRepository = new InMemoryDepartmentRepository();
-    const equipmentRepository = new InMemoryEquipmentRepository();
-    const createDepartmentUseCase = new CreateDepartmentUseCase(
+  beforeEach(() => {
+    equipmentsRepository = new InMemoryEquipmentRepository();
+    departmentsRepository = new InMemoryDepartmentRepository();
+    sut = new CreateEquipmentUseCase(
+      equipmentsRepository,
       departmentsRepository,
     );
+  });
 
-    await createDepartmentUseCase.execute({
-      name: 'TI',
+  it('Should be able create Equipment', async () => {
+    await departmentsRepository.departments.push({
+      name: 'IOT',
       cost_center: 2420424,
       is_board: false,
       board: 'Tecnologia da Informação',
     });
 
-    const createEquipmentUseCase = new CreateEquipmentUseCase(
-      equipmentRepository,
-      departmentsRepository,
-    );
+    const { equipment } = await sut.execute({
+      id: '01-005-00434',
+      brand: 'Dell',
+      model: 'T31P',
+      department: 'IOT',
+      status: 'activate',
+      ram: '16GB',
+    });
+    expect(equipment).toBeTruthy();
+    expect(equipment.department).toEqual(expect.any(String));
+  });
 
-    expect(() =>
-      createEquipmentUseCase.execute({
+  it('Should not be able create Equipment with department nonexistent', async () => {
+    await departmentsRepository.departments.push({
+      name: 'IOT',
+      cost_center: 2420424,
+      is_board: false,
+      board: 'Tecnologia da Informação',
+    });
+
+    await expect(() =>
+      sut.execute({
         id: '01-005-00434',
         brand: 'Dell',
         model: 'T31P',
-        department: 'TI',
+        department: 'department-nonexistent',
         status: 'activate',
         ram: '16GB',
       }),
-    ).resolves;
+    ).rejects.toBeInstanceOf(DepartmentNotFoundError);
   });
 
   it('Should not be able create Equipment with id twice', async () => {
-    const equipmentRepository = new InMemoryEquipmentRepository();
-    const departmentsRepository = new InMemoryDepartmentRepository();
-    const createEquipmentUseCase = new CreateEquipmentUseCase(
-      equipmentRepository,
-      departmentsRepository,
-    );
-
-    const createDepartmentUseCase = new CreateDepartmentUseCase(
-      departmentsRepository,
-    );
-
-    await createDepartmentUseCase.execute({
-      name: 'TI',
+    await departmentsRepository.departments.push({
+      name: 'IOT',
       cost_center: 2420424,
       is_board: false,
       board: 'Tecnologia da Informação',
@@ -56,24 +68,24 @@ describe('Create Equipment Use Case', () => {
 
     const id = '01-005-00434';
 
-    await createEquipmentUseCase.execute({
+    await sut.execute({
       id,
       brand: 'Dell',
       model: 'XPTO',
-      department: 'TI',
+      department: 'IOT',
       status: 'activate',
       ram: '16GB',
     });
 
-    expect(() =>
-      createEquipmentUseCase.execute({
+    await expect(() =>
+      sut.execute({
         id,
         brand: 'Dell',
         model: 'XPTO',
-        department: 'TI',
+        department: 'IOT',
         status: 'activate',
         ram: '16GB',
       }),
-    ).rejects.toThrowError('Equipment already exits');
+    ).rejects.toBeInstanceOf(EquipmentAlreadyExistsError);
   });
 });

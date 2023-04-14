@@ -1,6 +1,6 @@
 import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
 import { Department } from '../../../core/entity/department';
-import { DepartmentAlreadyExistsError } from './errors/department-already-exits-error';
+import { DepartmentAlreadyExistsError } from '../errors/department-already-exits-error';
 
 export class CreateDepartmentUseCase {
   constructor(private departmentRepository: DepartmentRepositoryInterface) {}

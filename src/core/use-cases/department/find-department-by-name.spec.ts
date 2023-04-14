@@ -1,6 +1,6 @@
 import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
+import { DepartmentNotFoundError } from '../errors/department-not-found';
 import { CreateDepartmentUseCase } from './create-department';
-import { DepartmentNotFoundError } from './errors/department-not-found';
 import { FindByNameDepartmentUseCase } from './find-department-by-name';
 
 describe('Find Department By Name Use Case', () => {
@@ -30,7 +30,7 @@ describe('Find Department By Name Use Case', () => {
       board: 'Tecnologia da Informação',
     });
 
-    expect(() => findByNameDepartment.execute('IOT')).resolves;
+    await expect(() => findByNameDepartment.execute('IOT')).resolves;
   });
 
   it('should not be able to find department by name with name inexisting', async () => {
@@ -59,7 +59,7 @@ describe('Find Department By Name Use Case', () => {
       board: 'Tecnologia da Informação',
     });
 
-    expect(() =>
+    await expect(() =>
       findByNameDepartment.execute('name-not-exists'),
     ).rejects.toBeInstanceOf(DepartmentNotFoundError);
   });
