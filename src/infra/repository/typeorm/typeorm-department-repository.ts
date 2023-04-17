@@ -44,7 +44,7 @@ export class TypeOrmDepartmentRepository
     });
   }
 
-  async findByName(name: string): Promise<Department> {
+  async findByName(name: string): Promise<Department | null> {
     const department = await this.ormRepo.findOneBy({ name: name });
 
     if (!department) {
