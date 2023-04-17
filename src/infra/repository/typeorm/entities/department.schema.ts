@@ -1,10 +1,10 @@
 import { Column, Entity, Index } from 'typeorm';
 
-@Index('departments_pkey', ['department'], { unique: true })
+@Index('departments_pkey', ['name'], { unique: true })
 @Entity('departments', { schema: 'public' })
-export class Departments {
+export class DepartmentSchema {
   @Column('character', { primary: true, name: 'department', length: 50 })
-  department: string;
+  name: string;
 
   @Column('integer', { name: 'cost_center', nullable: true })
   costCenter: number | null;
