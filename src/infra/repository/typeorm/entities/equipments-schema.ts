@@ -1,9 +1,9 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { EquipmentsUser } from './EquipmentsUser';
+import { EquipmentUserSchema } from './equipments-user.schema';
 
 @Index('equipments_pkey', ['id'], { unique: true })
 @Entity('equipments', { schema: 'public' })
-export class Equipments {
+export class EquipmentSchema {
   @Column('character', { primary: true, name: 'id', length: 13 })
   id: string;
 
@@ -58,6 +58,9 @@ export class Equipments {
   @Column('character', { name: 'service_tag', nullable: true, length: 50 })
   serviceTag: string | null;
 
-  @OneToMany(() => EquipmentsUser, (equipmentsUser) => equipmentsUser.equipment)
-  equipmentsUsers: EquipmentsUser[];
+  @OneToMany(
+    () => EquipmentUserSchema,
+    (equipmentsUser) => equipmentsUser.equipment,
+  )
+  equipmentsUsers: EquipmentUserSchema[];
 }

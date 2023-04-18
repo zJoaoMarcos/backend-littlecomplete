@@ -1,10 +1,10 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { EquipmentsUser } from './EquipmentsUser';
+import { EquipmentUserSchema } from './equipments-user.schema';
 
 @Index('users_smtp_key', ['smtp'], { unique: true })
 @Index('users_pkey', ['username'], { unique: true })
 @Entity('users', { schema: 'public' })
-export class Users {
+export class UserSchema {
   @Column('character', { primary: true, name: 'username', length: 50 })
   username: string;
 
@@ -40,6 +40,6 @@ export class Users {
   @Column('character', { name: 'status', nullable: true, length: 50 })
   status: string | null;
 
-  @OneToMany(() => EquipmentsUser, (equipmentsUser) => equipmentsUser.user)
-  equipmentsUsers: EquipmentsUser[];
+  @OneToMany(() => EquipmentUserSchema, (equipmentsUser) => equipmentsUser.user)
+  equipmentsUsers: EquipmentUserSchema[];
 }

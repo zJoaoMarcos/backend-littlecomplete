@@ -5,20 +5,20 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Equipments } from './Equipments';
-import { Users } from './Users';
+import { EquipmentSchema } from './equipments-schema';
+import { UserSchema } from './user.schema';
 
 @Index('equipments_user_pkey', ['id'], { unique: true })
 @Entity('equipments_user', { schema: 'public' })
-export class EquipmentsUser {
+export class EquipmentUserSchema {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
-  @ManyToOne(() => Equipments, (equipments) => equipments.equipmentsUsers)
+  @ManyToOne(() => EquipmentSchema, (equipments) => equipments.equipmentsUsers)
   @JoinColumn([{ name: 'equipment_id', referencedColumnName: 'id' }])
-  equipment: Equipments;
+  equipment: EquipmentSchema;
 
-  @ManyToOne(() => Users, (users) => users.equipmentsUsers)
+  @ManyToOne(() => UserSchema, (users) => users.equipmentsUsers)
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'username' }])
-  user: Users;
+  user: UserSchema;
 }

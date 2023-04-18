@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
-import { Equipment } from 'src/core/entity/equipment';
 import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
 import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
 import { CreateEquipmentUseCase } from 'src/core/use-cases/equipment/create-equipment';
@@ -8,6 +7,7 @@ import { FindAllEquipmentsUseCase } from 'src/core/use-cases/equipment/find-all-
 import { FindEquipmentByIdUseCase } from 'src/core/use-cases/equipment/find-equipment-by-id';
 import { updateEquipmentDepartmentUseCase } from 'src/core/use-cases/equipment/update-equipment';
 import { DepartmentSchema } from 'src/infra/repository/typeorm/entities/department.schema';
+import { EquipmentSchema } from 'src/infra/repository/typeorm/entities/equipments-schema';
 import { TypeOrmDepartmentRepository } from 'src/infra/repository/typeorm/typeorm-department-repository';
 import { TypeOrmEquipmentRepository } from 'src/infra/repository/typeorm/typeorm-equipment-repository';
 import { DataSource } from 'typeorm';
@@ -15,7 +15,7 @@ import { EquipmentsController } from './equipments.controller';
 import { EquipmentsService } from './equipments.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DepartmentSchema, Equipment])],
+  imports: [TypeOrmModule.forFeature([DepartmentSchema, EquipmentSchema])],
   controllers: [EquipmentsController],
   providers: [
     EquipmentsService,
@@ -23,7 +23,7 @@ import { EquipmentsService } from './equipments.service';
       provide: TypeOrmEquipmentRepository,
       useFactory: (dataSource: DataSource) => {
         return new TypeOrmEquipmentRepository(
-          dataSource.getRepository(Equipment),
+          dataSource.getRepository(EquipmentSchema),
         );
       },
       inject: [getDataSourceToken()],

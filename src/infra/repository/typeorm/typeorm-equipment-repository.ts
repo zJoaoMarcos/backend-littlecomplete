@@ -1,11 +1,12 @@
 import { Equipment } from 'src/core/entity/Equipment';
 import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
 import { Repository } from 'typeorm';
+import { EquipmentSchema } from './entities/equipments-schema';
 
 export class TypeOrmEquipmentRepository
   implements EquipmentRepositoryInterface
 {
-  constructor(private ormRepo: Repository<Equipment>) {}
+  constructor(private ormRepo: Repository<EquipmentSchema>) {}
 
   async create(
     id: string,
@@ -50,11 +51,63 @@ export class TypeOrmEquipmentRepository
   }
 
   async findAll(): Promise<Equipment[]> {
-    return this.ormRepo.find();
+    const equipments = await this.ormRepo.find();
+
+    if (!equipments) {
+      return null;
+    }
+
+    return equipments.map((equipment) => {
+      return new Equipment(
+        equipment.id,
+        equipment.brand,
+        equipment.model,
+        equipment.department,
+        equipment.status,
+        equipment.supplier,
+        equipment.invoice,
+        equipment.warranty,
+        equipment.purchaseDate,
+        equipment.cpu,
+        equipment.ram,
+        equipment.slots,
+        equipment.storage0Type,
+        equipment.storage0Syze,
+        equipment.storage1Type,
+        equipment.storage1Syze,
+        equipment.video,
+        equipment.serviceTag,
+      );
+    });
   }
 
   async findById(id: string): Promise<Equipment> {
-    return this.ormRepo.findOneBy({ id });
+    const equipment = await this.ormRepo.findOneBy({ id });
+
+    if (!equipment) {
+      return null;
+    }
+
+    return new Equipment(
+      equipment.id,
+      equipment.brand,
+      equipment.model,
+      equipment.department,
+      equipment.status,
+      equipment.supplier,
+      equipment.invoice,
+      equipment.warranty,
+      equipment.purchaseDate,
+      equipment.cpu,
+      equipment.ram,
+      equipment.slots,
+      equipment.storage0Type,
+      equipment.storage0Syze,
+      equipment.storage1Type,
+      equipment.storage1Syze,
+      equipment.video,
+      equipment.serviceTag,
+    );
   }
 
   async update(id: string, department: string): Promise<void> {
