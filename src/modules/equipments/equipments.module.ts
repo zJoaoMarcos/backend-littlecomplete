@@ -57,7 +57,7 @@ import { EquipmentsService } from './equipments.service';
     {
       provide: FindEquipmentByIdUseCase,
       useFactory: (equipmentRepo: EquipmentRepositoryInterface) => {
-        return new FindAllEquipmentsUseCase(equipmentRepo);
+        return new FindEquipmentByIdUseCase(equipmentRepo);
       },
       inject: [TypeOrmEquipmentRepository],
     },

@@ -20,7 +20,7 @@ export class EquipmentsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.equipmentsService.findByName(id);
+    return this.equipmentsService.findById(id);
   }
 
   @Patch(':id')

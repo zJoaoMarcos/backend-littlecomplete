@@ -34,7 +34,7 @@ export class EquipmentsService {
     }
   }
 
-  async findByName(id: string) {
+  async findById(id: string) {
     try {
       return this.findByIdUseCase.execute(id);
     } catch (err) {

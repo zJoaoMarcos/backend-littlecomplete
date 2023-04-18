@@ -82,7 +82,7 @@ export class TypeOrmEquipmentRepository
   }
 
   async findById(id: string): Promise<Equipment> {
-    const equipment = await this.ormRepo.findOneBy({ id });
+    const equipment = await this.ormRepo.findOneBy({ id: id });
 
     if (!equipment) {
       return null;
