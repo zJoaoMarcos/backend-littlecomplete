@@ -18,15 +18,15 @@ Lil Complete app.
 
 ## BRs (Business Rules)
 
-- [ ] Should not possible create a User with a demission date before admission date;
-- [x] Should not be able create Equipment with department not registered;
-- [x] Department should not be created with duplicate user_name;
+- [x] Should not be able create an Equipment with department not registered;
+- [ ] Department should not be created with duplicate user_name;
 - [x] Should not be able delete Department;
+- [ ] Should not possible create a User with a demission date before admission date;
 - [ ] Should not be able delete User;
 - [ ] Should not be able create a User with email twice;
-- [ ] Should not be able delete Equipment;
+- [x] Should not be able delete Equipment;
 - [ ] Should not be able create Equipment with id prefix wrong;
-- [ ] Should not be able create Equipment with id twice;
+- [x] Should not be able create Equipment with name twice;
 
 ## NFRs (Non-Functional Requirements)
 
