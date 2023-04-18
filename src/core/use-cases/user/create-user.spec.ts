@@ -10,6 +10,7 @@ let sut: CreateUserUseCase;
 describe('Create User Use Case', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUserRepoitory();
+    departmentsRepository = new InMemoryDepartmentRepository();
     sut = new CreateUserUseCase(usersRepository, departmentsRepository);
   });
 
@@ -25,7 +26,7 @@ describe('Create User Use Case', () => {
       user_name: 'jhon.doe',
       complete_name: 'Jhon Doe',
       title: 'CTO',
-      department_id: 'TI',
+      department_id: 'IOT',
       telephone: null,
       direct_boss: 'Martin Fowler',
       smtp: 'jhon.doe@email.com',
