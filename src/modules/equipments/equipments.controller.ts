@@ -21,7 +21,6 @@ export class EquipmentsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    console.log(id);
     return this.equipmentsService.findById(id);
   }
 

@@ -10,8 +10,6 @@ export class updateEquipmentDepartmentUseCase {
   ) {}
 
   async execute(id: string, department: string) {
-    console.log(department);
-
     const equipmentExists = await this.equipmentRepository.findById(id);
 
     if (!equipmentExists) {
