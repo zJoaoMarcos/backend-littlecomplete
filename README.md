@@ -2,13 +2,13 @@
 
 Lil Complete app.
 
-## RFs (Requisitos funcionais)
+## FRs (Functional Requirements)
 
 - [x] Should be able create an Department ;
 - [x] Should be able list the Departaments;
 - [x] Should be able list an unique Departament;
 - [x] Should be able update Departaments props;
-- [ ] Should be able update Equipament department;
+- [x] Should be able update Equipament department;
 - [ ] Should be able list the Equipaments and your Relationship;
 - [ ] Should be able listar os Usuários e os seus Equipamentos e Sistemas;
 - [ ] Should be able list Systems;
@@ -16,19 +16,21 @@ Lil Complete app.
 - [ ] Should be able update User title;
 - [ ] Should be able update User department;
 
-## RNs (Regras de Negócios)
+## BRs (Business Rules)
 
-- [x] should not possible create a User with a demission date before admission date
+- [ ] Should not possible create a User with a demission date before admission date;
+- [x] Should not be able create Equipment with department not registered;
 - [x] Department should not be created with duplicate user_name;
-- [x] o departamento não deve ser excluido
-- [ ] O usuário não deve ser cadastrado como o email duplicado;
-- [ ] O usuário não deve ser excluido;
-- [ ] O equipamento não deve ser excluido;
-- [ ] O equipamento não deve ser cadastrado com o id duplicado;
+- [x] Should not be able delete Department;
+- [ ] Should not be able delete User;
+- [ ] Should not be able create a User with email twice;
+- [ ] Should not be able delete Equipment;
+- [ ] Should not be able create Equipment with id prefix wrong;
+- [ ] Should not be able create Equipment with id twice;
 
-## RNFs (Requisitos não funcionais)
+## NFRs (Non-Functional Requirements)
 
-- [ ] Criar Logs de Auditoria no Sistema;
+- [ ] Create Auditory Logs in System;
 
 ## TypeOrm
 
