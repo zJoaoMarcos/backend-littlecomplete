@@ -14,8 +14,6 @@ export class TypeOrmDepartmentRepository
     is_board: boolean,
     board: string,
   ): Promise<Department> {
-    console.log(name);
-
     const department = await this.ormRepo.save({
       name: name,
       costCenter: cost_center,
@@ -32,9 +30,13 @@ export class TypeOrmDepartmentRepository
   }
 
   async findAll(): Promise<Department[]> {
-    const department = await this.ormRepo.find();
+    const departments = await this.ormRepo.find();
 
-    return department.map((department) => {
+    if (!departments) {
+      return null;
+    }
+
+    return departments.map((department) => {
       return new Department(
         department.name,
         department.costCenter,
