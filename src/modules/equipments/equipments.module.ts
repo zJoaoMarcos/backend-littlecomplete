@@ -72,7 +72,7 @@ import { EquipmentsService } from './equipments.service';
           departmentRepo,
         );
       },
-      inject: [TypeOrmEquipmentRepository],
+      inject: [TypeOrmEquipmentRepository, TypeOrmDepartmentRepository],
     },
   ],
 })

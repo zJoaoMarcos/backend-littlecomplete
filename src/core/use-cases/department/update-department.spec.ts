@@ -3,32 +3,40 @@ import { DepartmentAlreadyExistsError } from '../errors/department-already-exits
 import { CreateDepartmentUseCase } from './create-department';
 import { UpdateDepartmentUseCase } from './update-department';
 
-describe('Update Department Use Case', () => {
-  it('should be able to update department props', async () => {
-    const departmentRepository = new InMemoryDepartmentRepository();
-    const createDepartment = new CreateDepartmentUseCase(departmentRepository);
-    const updateDepartment = new UpdateDepartmentUseCase(departmentRepository);
+let departmentRepository: InMemoryDepartmentRepository;
+let sut: UpdateDepartmentUseCase;
 
-    await createDepartment.execute({
+describe('Update Department Use Case', () => {
+  beforeEach(() => {
+    departmentRepository = new InMemoryDepartmentRepository();
+    sut = new UpdateDepartmentUseCase(departmentRepository);
+  });
+
+  it('should be able to update department props', async () => {
+    await departmentRepository.departments.push({
       name: 'IOT',
       cost_center: 2420424,
       is_board: false,
       board: 'Tecnologia da Informação',
     });
-    await createDepartment.execute({
+
+    await departmentRepository.departments.push({
       name: 'SI',
       cost_center: 24242,
       is_board: false,
       board: 'Tecnologia da Informação',
     });
-    await createDepartment.execute({
+
+    await departmentRepository.departments.push({
       name: 'Tecnologia da Informação',
       cost_center: 24204242,
       is_board: true,
       board: 'Tecnologia da Informação',
     });
 
-    expect(() => updateDepartment.execute('IOT', { name: 'AI' })).resolves;
+    const { department } = await sut.execute('IOT', { name: 'AI' });
+
+    expect(department.name).toEqual('AI');
   });
 
   it('should not be able to update department with an existing name', async () => {

@@ -111,6 +111,6 @@ export class TypeOrmEquipmentRepository
   }
 
   async update(id: string, department: string): Promise<void> {
-    await this.ormRepo.update({ id }, { department: department });
+    await this.ormRepo.update({ id }, { department });
   }
 }

@@ -44,7 +44,7 @@ export class EquipmentsService {
 
   async update(id: string, department: string) {
     try {
-      return this.updateDepartmentUseCase.execute({ id, department });
+      return this.updateDepartmentUseCase.execute(id, department);
     } catch (err) {
       throw new ConflictException(err.message);
     }
