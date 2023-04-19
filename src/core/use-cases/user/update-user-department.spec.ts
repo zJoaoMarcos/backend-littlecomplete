@@ -47,8 +47,8 @@ describe('Update User Department Use Case', () => {
       status: 'vacation',
     });
 
-    const { user } = await sut.execute('jhon.doe', 'IOT');
-    expect(user.department_id).toEqual('IOT');
+    const { updatedUser } = await sut.execute('jhon.doe', 'IOT');
+    expect(updatedUser.department_id).toEqual('IOT');
   });
 
   it('should  not be able update User Department with Department noexistent', async () => {

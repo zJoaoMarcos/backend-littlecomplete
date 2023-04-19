@@ -27,16 +27,19 @@ export class UpdateUserDepartementUseCase {
       throw new DepartmentNotFoundError();
     }
 
-    await this.userRepository.updateUserDepartment(user.user_name, departement);
+    const updatedUser = await this.userRepository.updateUserDepartment(
+      user.user_name,
+      departement,
+    );
 
     return {
-      user,
+      updatedUser,
     };
   }
 }
 
 type UpdateUserDepartementOutput = {
-  user: {
+  updatedUser: {
     user_name: string;
     complete_name: string;
     title: string;

@@ -58,4 +58,20 @@ export class InMemoryUserRepository implements UserRepositoryInterface {
 
     return Promise.resolve(user);
   }
+
+  updateUserTitle(userName: string, title: string): Promise<User> {
+    const user = this.users.find((user) => user.user_name === userName);
+
+    user.changeTitle(title);
+
+    return Promise.resolve(user);
+  }
+
+  assignTelephone(userName: string, telephone: number): Promise<User> {
+    const user = this.users.find((user) => user.user_name === userName);
+
+    user.assignTelephone(telephone);
+
+    return Promise.resolve(user);
+  }
 }

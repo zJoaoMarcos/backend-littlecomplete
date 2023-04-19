@@ -19,4 +19,8 @@ export interface UserRepositoryInterface {
   findByUserName(userName: string): Promise<User>;
 
   updateUserDepartment(userName: string, department: string): Promise<User>;
+
+  updateUserTitle(userName: string, title: string): Promise<User>;
+
+  assignTelephone(userName: string, telephone: number): Promise<User>;
 }
