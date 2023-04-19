@@ -18,13 +18,12 @@ Lil Complete app.
 
 ## BRs (Business Rules)
 
-- [x] Should not be able create an Equipment with department not registered;
-- [x] Should not be able create an User with department not registered;
-- [ ] Department should not be created with duplicate user_name;
+- [x] Should not be able create an Equipment with Department not registered;
+- [x] Should not be able create an new User with Department not registered;
+- [x] Should not be able create an new User with duplicate user_name;
 - [x] Should not be able delete Department;
 - [ ] Should not possible create a User with a demission date before admission date;
 - [x] Should not be able delete User;
-- [ ] Should not be able create a User with email twice;
 - [x] Should not be able delete Equipment;
 - [ ] Should not be able create Equipment with id prefix wrong;
 - [x] Should not be able create Equipment with name twice;

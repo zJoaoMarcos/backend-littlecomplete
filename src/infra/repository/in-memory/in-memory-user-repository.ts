@@ -37,4 +37,14 @@ export class InMemoryUserRepoitory implements UserRepositoryInterface {
   findAll(): Promise<User[]> {
     return Promise.resolve(this.users);
   }
+
+  findByUserName(userName: string): Promise<User> {
+    const user = this.users.find((user) => user.user_name === userName);
+
+    if (!user) {
+      return null;
+    }
+
+    return Promise.resolve(user);
+  }
 }

@@ -2,6 +2,7 @@ import { User } from '../../../core/entity/user';
 import { DepartmentRepositoryInterface } from '../../../core/repository/department-repository';
 import { UserRepositoryInterface } from '../../../core/repository/user-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
+import { UserNameAlreadyExistsError } from '../errors/user-name-already-exits-error';
 
 export class CreateUserUseCase {
   constructor(
@@ -27,6 +28,12 @@ export class CreateUserUseCase {
 
     if (!departmentExists) {
       throw new DepartmentNotFoundError();
+    }
+
+    const userNameTwice = await this.userRepository.findByUserName(user_name);
+
+    if (userNameTwice) {
+      throw new UserNameAlreadyExistsError();
     }
 
     const user = new User(
