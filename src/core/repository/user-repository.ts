@@ -17,4 +17,6 @@ export interface UserRepositoryInterface {
   findAll(): Promise<User[]>;
 
   findByUserName(userName: string): Promise<User>;
+
+  updateUserDepartment(userName: string, department: string): Promise<User>;
 }

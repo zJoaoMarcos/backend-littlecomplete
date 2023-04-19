@@ -1,7 +1,7 @@
 import { UserRepositoryInterface } from 'src/core/repository/user-repository';
 import { User } from '../../../core/entity/user';
 
-export class InMemoryUserRepoitory implements UserRepositoryInterface {
+export class InMemoryUserRepository implements UserRepositoryInterface {
   users: User[] = [];
 
   async create(
@@ -44,6 +44,17 @@ export class InMemoryUserRepoitory implements UserRepositoryInterface {
     if (!user) {
       return null;
     }
+
+    return Promise.resolve(user);
+  }
+
+  async updateUserDepartment(
+    userName: string,
+    department: string,
+  ): Promise<User> {
+    const user = this.users.find((user) => user.user_name === userName);
+
+    user.changeDepartment(department);
 
     return Promise.resolve(user);
   }

@@ -3,7 +3,7 @@ import { UserRepositoryInterface } from 'src/core/repository/user-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 import { UserNotFoundError } from '../errors/user-not-found';
 
-export class UpdateDepartementUser {
+export class UpdateUserDepartementUseCase {
   constructor(
     private userRepository: UserRepositoryInterface,
     private departmentRepository: DepartmentRepositoryInterface,
@@ -12,7 +12,7 @@ export class UpdateDepartementUser {
   async execute(
     user_name: string,
     departement: string,
-  ): Promise<UpdateDepartementUserOutput> {
+  ): Promise<UpdateUserDepartementOutput> {
     const user = await this.userRepository.findByUserName(user_name);
 
     if (!user) {
@@ -27,7 +27,7 @@ export class UpdateDepartementUser {
       throw new DepartmentNotFoundError();
     }
 
-    user.changeDepartment(departement);
+    await this.userRepository.updateUserDepartment(user.user_name, departement);
 
     return {
       user,
@@ -35,7 +35,7 @@ export class UpdateDepartementUser {
   }
 }
 
-type UpdateDepartementUserOutput = {
+type UpdateUserDepartementOutput = {
   user: {
     user_name: string;
     complete_name: string;
