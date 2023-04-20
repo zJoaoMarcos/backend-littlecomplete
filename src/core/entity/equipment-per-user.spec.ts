@@ -32,6 +32,7 @@ describe('Equipment Per User', () => {
     const equipmentPerUser = new EquipmentPerUser(user, equipment);
     expect(equipmentPerUser.equipment).toEqual(equipment);
     expect(equipmentPerUser.user).toEqual(user);
+    expect(equipmentPerUser.id).toBeTruthy();
   });
 
   it('can change the associated user', () => {

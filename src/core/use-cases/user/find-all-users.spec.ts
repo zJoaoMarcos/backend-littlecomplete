@@ -49,6 +49,6 @@ describe('Find All Users Use Case', () => {
       status: 'active',
     });
 
-    expect(() => sut.execute()).resolves;
+    await expect(() => sut.execute()).resolves;
   });
 });

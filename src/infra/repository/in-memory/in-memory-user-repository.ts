@@ -21,11 +21,11 @@ export class InMemoryUserRepository implements UserRepositoryInterface {
       complete_name,
       title,
       department_id,
+      telephone,
       direct_boss,
       smtp,
       admission_date,
       status,
-      telephone,
       demission_date,
     );
 
