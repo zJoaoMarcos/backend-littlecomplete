@@ -1,14 +1,23 @@
+import { randomUUID } from 'node:crypto';
 import { Equipment } from './equipment';
 import { User } from './user';
 
 export class EquipmentPerUser {
-  id: number;
-  equipment: Equipment;
+  id: string;
   user: User;
+  equipment: Equipment;
 
-  constructor(id: number, equipment: Equipment, user: User) {
-    this.id = id;
-    this.equipment = equipment;
+  constructor(user: User, equipment: Equipment) {
+    this.id = randomUUID();
     this.user = user;
+    this.equipment = equipment;
+  }
+
+  changeUser(user: User) {
+    this.user = user;
+  }
+
+  getUser(): User {
+    return this.user;
   }
 }
