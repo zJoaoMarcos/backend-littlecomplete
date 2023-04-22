@@ -1,12 +1,12 @@
-import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
-import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
+import { IDepartmentRepository } from 'src/domain/repository/department-repository';
+import { IEquipmentRepository } from 'src/domain/repository/equipment-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
 export class updateEquipmentDepartmentUseCase {
   constructor(
-    private equipmentRepository: EquipmentRepositoryInterface,
-    private departmentsRepository: DepartmentRepositoryInterface,
+    private equipmentRepository: IEquipmentRepository,
+    private departmentsRepository: IDepartmentRepository,
   ) {}
 
   async execute(id: string, department: string) {

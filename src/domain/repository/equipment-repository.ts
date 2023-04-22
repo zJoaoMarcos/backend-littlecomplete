@@ -1,6 +1,6 @@
 import { Equipment } from '../entity/equipment';
 
-export interface EquipmentRepositoryInterface {
+export interface IEquipmentRepository {
   create(
     id: string,
     brand: string,

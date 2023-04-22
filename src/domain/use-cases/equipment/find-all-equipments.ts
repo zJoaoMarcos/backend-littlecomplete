@@ -1,7 +1,7 @@
-import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
+import { IEquipmentRepository } from 'src/domain/repository/equipment-repository';
 
 export class FindAllEquipmentsUseCase {
-  constructor(private equipmentRepository: EquipmentRepositoryInterface) {}
+  constructor(private equipmentRepository: IEquipmentRepository) {}
 
   async execute(): Promise<FindAllEquipmentsOutput> {
     const equipments = await this.equipmentRepository.findAll();

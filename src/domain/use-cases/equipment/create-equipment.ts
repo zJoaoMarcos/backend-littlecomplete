@@ -1,13 +1,13 @@
-import { Equipment } from '../../../core/entity/equipment';
-import { DepartmentRepositoryInterface } from '../../../core/repository/department-repository';
-import { EquipmentRepositoryInterface } from '../../../core/repository/equipment-repository';
+import { Equipment } from '../../../domain/entity/equipment';
+import { IDepartmentRepository } from '../../../domain/repository/department-repository';
+import { IEquipmentRepository } from '../../../domain/repository/equipment-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 import { EquipmentAlreadyExistsError } from '../errors/equipment-already-exits-error';
 
 export class CreateEquipmentUseCase {
   constructor(
-    private equipmentRepository: EquipmentRepositoryInterface,
-    private departmentRepository: DepartmentRepositoryInterface,
+    private equipmentRepository: IEquipmentRepository,
+    private departmentRepository: IDepartmentRepository,
   ) {}
 
   async execute({
@@ -44,7 +44,7 @@ export class CreateEquipmentUseCase {
       throw new DepartmentNotFoundError();
     }
 
-    const equipment = new Equipment(
+    const equipment = Equipment.create({
       id,
       brand,
       model,
@@ -63,7 +63,7 @@ export class CreateEquipmentUseCase {
       storage1_syze,
       video,
       service_tag,
-    );
+    });
 
     await this.equipmentRepository.create(
       equipment.id,

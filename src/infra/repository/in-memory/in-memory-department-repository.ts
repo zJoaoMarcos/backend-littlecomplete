@@ -1,9 +1,7 @@
-import { Department } from 'src/core/entity/department';
-import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
+import { Department } from '../../../domain/entity/department';
+import { IDepartmentRepository } from '../../../domain/repository/department-repository';
 
-export class InMemoryDepartmentRepository
-  implements DepartmentRepositoryInterface
-{
+export class InMemoryDepartmentRepository implements IDepartmentRepository {
   departments: Department[] = [];
 
   async create(
@@ -12,12 +10,12 @@ export class InMemoryDepartmentRepository
     is_board: boolean,
     board: string,
   ): Promise<Department> {
-    const department = {
+    const department = Department.create({
       name,
       cost_center,
       is_board,
       board,
-    };
+    });
 
     this.departments.push(department);
 
@@ -52,14 +50,5 @@ export class InMemoryDepartmentRepository
     const department = this.departments.find(
       (department) => department.name === name,
     );
-
-    department.name = data.name !== undefined ? data.name : department.name;
-    department.cost_center =
-      data.cost_center !== undefined
-        ? data.cost_center
-        : department.cost_center;
-    department.is_board =
-      data.is_board !== undefined ? data.is_board : department.is_board;
-    department.board = data.board !== undefined ? data.board : department.board;
   }
 }

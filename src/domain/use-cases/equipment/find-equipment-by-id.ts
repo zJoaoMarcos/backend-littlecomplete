@@ -1,8 +1,8 @@
-import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
+import { IEquipmentRepository } from 'src/domain/repository/equipment-repository';
 import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
 export class FindEquipmentByIdUseCase {
-  constructor(private equipmentsRepository: EquipmentRepositoryInterface) {}
+  constructor(private equipmentsRepository: IEquipmentRepository) {}
 
   async execute(id: string): Promise<FindEquipmentByIdOutput> {
     const equipment = await this.equipmentsRepository.findById(id);

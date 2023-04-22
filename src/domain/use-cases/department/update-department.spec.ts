@@ -15,21 +15,21 @@ describe('Update Department Use Case', () => {
   });
 
   it('should be able to update department props', async () => {
-    await departmentRepository.departments.push({
+    await createDepartment.execute({
       name: 'IOT',
       cost_center: 2420424,
       is_board: false,
       board: 'Tecnologia da Informação',
     });
 
-    await departmentRepository.departments.push({
+    await createDepartment.execute({
       name: 'SI',
       cost_center: 24242,
       is_board: false,
       board: 'Tecnologia da Informação',
     });
 
-    await departmentRepository.departments.push({
+    await createDepartment.execute({
       name: 'Tecnologia da Informação',
       cost_center: 24204242,
       is_board: true,

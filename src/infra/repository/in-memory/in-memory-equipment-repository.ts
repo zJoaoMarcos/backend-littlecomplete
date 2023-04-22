@@ -1,9 +1,7 @@
-import { Equipment } from 'src/core/entity/equipment';
-import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
+import { Equipment } from '../../../domain/entity/equipment';
+import { IEquipmentRepository } from '../../../domain/repository/equipment-repository';
 
-export class InMemoryEquipmentRepository
-  implements EquipmentRepositoryInterface
-{
+export class InMemoryEquipmentRepository implements IEquipmentRepository {
   equipments: Equipment[] = [];
 
   async create(
@@ -26,7 +24,7 @@ export class InMemoryEquipmentRepository
     video = null,
     service_tag = null,
   ): Promise<Equipment> {
-    const equipment = {
+    const equipment = Equipment.create({
       id,
       brand,
       model,
@@ -45,7 +43,7 @@ export class InMemoryEquipmentRepository
       storage1_syze,
       video,
       service_tag,
-    };
+    });
 
     this.equipments.push(equipment);
 
@@ -71,7 +69,7 @@ export class InMemoryEquipmentRepository
       (equipment) => equipment.id === equipment_id,
     );
 
-    equipment.id = department;
+    equipment.department = department;
 
     return;
   }
