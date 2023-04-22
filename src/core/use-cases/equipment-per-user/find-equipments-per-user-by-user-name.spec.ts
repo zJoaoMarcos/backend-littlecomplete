@@ -4,7 +4,7 @@ import { InMemoryEquipmentRepository } from '../../../infra/repository/in-memory
 import { InMemoryUserRepository } from '../../../infra/repository/in-memory/in-memory-user-repository';
 import { CreateEquipmentUseCase } from '../equipment/create-equipment';
 import { CreateUserUseCase } from '../user/create-user';
-import { FindEquipmentPerUseByIdUseCase } from './find-equipment-by-id';
+import { FindEquipmentsPerUserByUserNameUseCase } from './find-equipments-per-user-by-user-name';
 import { SaveEquipmentPerUserUseCase } from './save-equipment-per-user';
 
 let equipmentsPerUserRepository: InMemoryEquipmentPerUserRepository;
@@ -14,7 +14,7 @@ let userRepository: InMemoryUserRepository;
 let createUser: CreateUserUseCase;
 let createEquipment: CreateEquipmentUseCase;
 let saveEquipmentPerUser: SaveEquipmentPerUserUseCase;
-let sut: FindEquipmentPerUseByIdUseCase;
+let sut: FindEquipmentsPerUserByUserNameUseCase;
 
 describe('Find Equipments By Id Per Use Use Case', () => {
   beforeEach(() => {
@@ -32,7 +32,9 @@ describe('Find Equipments By Id Per Use Use Case', () => {
       userRepository,
       equipmentsRepository,
     );
-    sut = new FindEquipmentPerUseByIdUseCase(equipmentsPerUserRepository);
+    sut = new FindEquipmentsPerUserByUserNameUseCase(
+      equipmentsPerUserRepository,
+    );
   });
 
   it('Should be able find equipment per user by id', async () => {
@@ -101,16 +103,11 @@ describe('Find Equipments By Id Per Use Use Case', () => {
       storage0_type: 'SSD',
     });
 
-    const { equipmentPerUser } = await saveEquipmentPerUser.execute(
-      user.user_name,
-      equipment.id,
-    );
+    await saveEquipmentPerUser.execute(user.user_name, equipment.id);
 
-    const { equipmentsPerUser } = await sut.execute(
-      equipmentPerUser.equipment.id,
-    );
+    const { equipmentsPerUser } = await sut.execute('jhon_doe');
 
-    await expect(equipmentsPerUser.user.user_name).toEqual('jhon_doe');
-    await expect(equipmentsPerUser.equipment.id).toEqual('01-005-00434');
+    await expect(equipmentsPerUser[1].user.user_name).toEqual('jhon_doe');
+    await expect(equipmentsPerUser[1].equipment.id).toEqual('01-005-00434');
   });
 });

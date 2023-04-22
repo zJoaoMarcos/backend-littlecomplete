@@ -1,14 +1,14 @@
 import { EquipmentPerUserRepositoryInterface } from 'src/core/repository/equipment-per-user-repository';
 import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
-export class FindEquipmentsByUserNameUseCase {
+export class FindByEquipmentIdUseCase {
   constructor(
     private equipmentsPerUserRepository: EquipmentPerUserRepositoryInterface,
   ) {}
 
-  async execute(userName: string): Promise<FindEquipmentsByUserNameOutput> {
+  async execute(id: string): Promise<FindByEquipmentIdOutput> {
     const equipmentsPerUser =
-      await this.equipmentsPerUserRepository.findByUserName(userName);
+      await this.equipmentsPerUserRepository.findByEquipmentId(id);
 
     if (!equipmentsPerUser) {
       throw new EquipmentNotFoundError();
@@ -20,8 +20,9 @@ export class FindEquipmentsByUserNameUseCase {
   }
 }
 
-type FindEquipmentsByUserNameOutput = {
+type FindByEquipmentIdOutput = {
   equipmentsPerUser: {
+    id: string;
     user: {
       user_name: string;
       complete_name: string;
@@ -54,5 +55,5 @@ type FindEquipmentsByUserNameOutput = {
       video: string | null;
       service_tag: string | null;
     };
-  }[];
+  };
 };

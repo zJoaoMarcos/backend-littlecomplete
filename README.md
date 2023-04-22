@@ -7,14 +7,15 @@ Lil Complete app.
 - [x] Should be able create an Department ;
 - [x] Should be able list the Departaments;
 - [x] Should be able list an unique Departament;
-- [x] Should be able update Departaments props;
-- [x] Should be able update Equipament department;
-- [ ] Should be able list the Equipaments and your Relationship;
-- [ ] Should be able list Users and your Equipaments e Systems;
+- [x] Should be able update Departament props;
+- [x] Should be able update Department of Equipment;
+- [x] Should be able list the Equipaments and your Owner;
+- [x] Should be able list Users and your Equipaments e Systems;
 - [ ] Should be able list Systems;
-- [ ] Should be able update User Equipment;
-- [ ] Should be able update User title;
-- [x] Should be able update User department;
+- [x] Should be able update title of User;
+- [x] Should be able update Department of User;
+- [ ] Should be able change Equipment of User;
+- [ ] Should be able remove Equipment of User;
 
 ## BRs (Business Rules)
 
