@@ -1,8 +1,8 @@
-import { DepartmentRepositoryInterface } from 'src/domain/repository/department-repository';
+import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 
 export class FindByNameDepartmentUseCase {
-  constructor(private departmentsRepository: DepartmentRepositoryInterface) {}
+  constructor(private departmentsRepository: IDepartmentRepository) {}
 
   async execute(name: string): Promise<FindByNameDepartmentOutput> {
     const department = await this.departmentsRepository.findByName(name);
