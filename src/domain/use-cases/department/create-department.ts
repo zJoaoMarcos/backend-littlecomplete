@@ -1,9 +1,9 @@
-import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
-import { Department } from '../../../core/entity/department';
+import { IDepartmentRepository } from 'src/domain/repository/department-repository';
+import { Department } from '../../../domain/entity/department';
 import { DepartmentAlreadyExistsError } from '../errors/department-already-exits-error';
 
 export class CreateDepartmentUseCase {
-  constructor(private departmentRepository: DepartmentRepositoryInterface) {}
+  constructor(private departmentRepository: IDepartmentRepository) {}
 
   async execute({
     name,
@@ -19,7 +19,12 @@ export class CreateDepartmentUseCase {
       throw new DepartmentAlreadyExistsError();
     }
 
-    const department = new Department(name, cost_center, is_board, board);
+    const department = Department.create({
+      name,
+      cost_center,
+      is_board,
+      board,
+    });
 
     await this.departmentRepository.create(
       department.name,

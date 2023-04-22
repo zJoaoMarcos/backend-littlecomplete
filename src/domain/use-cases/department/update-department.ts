@@ -1,9 +1,9 @@
-import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
+import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { DepartmentAlreadyExistsError } from '../errors/department-already-exits-error';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 
 export class UpdateDepartmentUseCase {
-  constructor(private departmentsRepository: DepartmentRepositoryInterface) {}
+  constructor(private departmentsRepository: IDepartmentRepository) {}
 
   async execute(
     name: string,

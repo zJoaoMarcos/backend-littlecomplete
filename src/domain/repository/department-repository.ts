@@ -1,6 +1,6 @@
 import { Department } from '../entity/department';
 
-export interface DepartmentRepositoryInterface {
+export interface IDepartmentRepository {
   create(
     name: string,
     cost_center: number,

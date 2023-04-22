@@ -1,8 +1,8 @@
-import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
+import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 
 export class FindAllDepartmentsUseCase {
-  constructor(private departmentsRepository: DepartmentRepositoryInterface) {}
+  constructor(private departmentsRepository: IDepartmentRepository) {}
 
   async execute(): Promise<FindAllDepartmentOutput> {
     const department = await this.departmentsRepository.findAll();

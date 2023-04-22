@@ -2,14 +2,17 @@ import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memor
 import { CreateDepartmentUseCase } from './create-department';
 import { FindAllDepartmentsUseCase } from './find-all-departments';
 
-describe('Find All Departments Use Case', () => {
-  it('should be able to find all departments', async () => {
-    const departmentsRepository = new InMemoryDepartmentRepository();
-    const createDepartment = new CreateDepartmentUseCase(departmentsRepository);
-    const findAllDepartments = new FindAllDepartmentsUseCase(
-      departmentsRepository,
-    );
+let departmentsRepository: InMemoryDepartmentRepository;
+let createDepartment: CreateDepartmentUseCase;
+let sut: FindAllDepartmentsUseCase;
 
+describe('Find All Departments Use Case', () => {
+  beforeEach(() => {
+    departmentsRepository = new InMemoryDepartmentRepository();
+    createDepartment = new CreateDepartmentUseCase(departmentsRepository);
+    sut = new FindAllDepartmentsUseCase(departmentsRepository);
+  });
+  it('should be able to find all departments', async () => {
     await createDepartment.execute({
       name: 'IOT',
       cost_center: 2420424,
@@ -29,6 +32,6 @@ describe('Find All Departments Use Case', () => {
       board: 'Tecnologia da Informação',
     });
 
-    expect(() => findAllDepartments.execute()).resolves;
+    expect(() => sut.execute()).resolves;
   });
 });

@@ -4,11 +4,13 @@ import { CreateDepartmentUseCase } from './create-department';
 import { UpdateDepartmentUseCase } from './update-department';
 
 let departmentRepository: InMemoryDepartmentRepository;
+let createDepartment: CreateDepartmentUseCase;
 let sut: UpdateDepartmentUseCase;
 
 describe('Update Department Use Case', () => {
   beforeEach(() => {
     departmentRepository = new InMemoryDepartmentRepository();
+    createDepartment = new CreateDepartmentUseCase(departmentRepository);
     sut = new UpdateDepartmentUseCase(departmentRepository);
   });
 
@@ -40,10 +42,6 @@ describe('Update Department Use Case', () => {
   });
 
   it('should not be able to update department with an existing name', async () => {
-    const departmentRepository = new InMemoryDepartmentRepository();
-    const createDepartment = new CreateDepartmentUseCase(departmentRepository);
-    const updateDepartment = new UpdateDepartmentUseCase(departmentRepository);
-
     await createDepartment.execute({
       name: 'IOT',
       cost_center: 2420424,
@@ -64,7 +62,7 @@ describe('Update Department Use Case', () => {
     });
 
     expect(() =>
-      updateDepartment.execute('IOT', {
+      sut.execute('IOT', {
         name: 'SI',
         cost_center: 424343434,
         is_board: false,

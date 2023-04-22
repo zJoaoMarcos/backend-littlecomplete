@@ -3,14 +3,17 @@ import { DepartmentNotFoundError } from '../errors/department-not-found';
 import { CreateDepartmentUseCase } from './create-department';
 import { FindByNameDepartmentUseCase } from './find-department-by-name';
 
-describe('Find Department By Name Use Case', () => {
-  it('should be able to find department by name', async () => {
-    const departmentRepository = new InMemoryDepartmentRepository();
-    const createDepartment = new CreateDepartmentUseCase(departmentRepository);
-    const findByNameDepartment = new FindByNameDepartmentUseCase(
-      departmentRepository,
-    );
+let departmentsRepository: InMemoryDepartmentRepository;
+let createDepartment: CreateDepartmentUseCase;
+let sut: FindByNameDepartmentUseCase;
 
+describe('Find Department By Name Use Case', () => {
+  beforeEach(() => {
+    departmentsRepository = new InMemoryDepartmentRepository();
+    createDepartment = new CreateDepartmentUseCase(departmentsRepository);
+    sut = new FindByNameDepartmentUseCase(departmentsRepository);
+  });
+  it('should be able to find department by name', async () => {
     await createDepartment.execute({
       name: 'IOT',
       cost_center: 2420424,
@@ -30,16 +33,10 @@ describe('Find Department By Name Use Case', () => {
       board: 'Tecnologia da Informação',
     });
 
-    await expect(() => findByNameDepartment.execute('IOT')).resolves;
+    await expect(() => sut.execute('IOT')).resolves;
   });
 
   it('should not be able to find department by name with name inexisting', async () => {
-    const departmentRepository = new InMemoryDepartmentRepository();
-    const createDepartment = new CreateDepartmentUseCase(departmentRepository);
-    const findByNameDepartment = new FindByNameDepartmentUseCase(
-      departmentRepository,
-    );
-
     await createDepartment.execute({
       name: 'IOT',
       cost_center: 2420424,
@@ -59,8 +56,8 @@ describe('Find Department By Name Use Case', () => {
       board: 'Tecnologia da Informação',
     });
 
-    await expect(() =>
-      findByNameDepartment.execute('name-not-exists'),
-    ).rejects.toBeInstanceOf(DepartmentNotFoundError);
+    await expect(() => sut.execute('name-not-exists')).rejects.toBeInstanceOf(
+      DepartmentNotFoundError,
+    );
   });
 });
