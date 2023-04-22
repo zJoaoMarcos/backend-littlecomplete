@@ -1,8 +1,8 @@
-import { UserRepositoryInterface } from 'src/core/repository/user-repository';
+import { IUserRepository } from 'src/domain/repository/user-repository';
 import { UserNotFoundError } from '../errors/user-not-found';
 
 export class AssignTelephoneForUserUseCase {
-  constructor(private userRepository: UserRepositoryInterface) {}
+  constructor(private userRepository: IUserRepository) {}
 
   async execute(
     userId: string,

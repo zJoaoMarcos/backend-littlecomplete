@@ -1,6 +1,6 @@
 import { User } from '../entity/user';
 
-export interface UserRepositoryInterface {
+export interface IUserRepository {
   create(
     user_name: string,
     complete_name: string,

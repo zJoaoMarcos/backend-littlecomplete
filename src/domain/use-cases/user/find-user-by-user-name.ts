@@ -1,8 +1,8 @@
-import { UserRepositoryInterface } from 'src/core/repository/user-repository';
+import { IUserRepository } from 'src/domain/repository/user-repository';
 import { UserNotFoundError } from '../errors/user-not-found';
 
 export class FindUserByUserNameUseCase {
-  constructor(private userRepository: UserRepositoryInterface) {}
+  constructor(private userRepository: IUserRepository) {}
 
   async execute(userName: string): Promise<FindUserByUserNameOutput> {
     const user = await this.userRepository.findByUserName(userName);

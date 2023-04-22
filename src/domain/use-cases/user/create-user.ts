@@ -1,12 +1,12 @@
-import { User } from '../../../core/entity/user';
-import { DepartmentRepositoryInterface } from '../../../core/repository/department-repository';
-import { UserRepositoryInterface } from '../../../core/repository/user-repository';
+import { User } from '../../../domain/entity/user';
+import { DepartmentRepositoryInterface } from '../../../domain/repository/department-repository';
+import { IUserRepository } from '../../../domain/repository/user-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 import { UserNameAlreadyExistsError } from '../errors/user-name-already-exits-error';
 
 export class CreateUserUseCase {
   constructor(
-    private userRepository: UserRepositoryInterface,
+    private userRepository: IUserRepository,
     private departmentRepository: DepartmentRepositoryInterface,
   ) {}
 
@@ -36,7 +36,7 @@ export class CreateUserUseCase {
       throw new UserNameAlreadyExistsError();
     }
 
-    const user = new User(
+    const user = User.create({
       user_name,
       complete_name,
       title,
@@ -47,7 +47,7 @@ export class CreateUserUseCase {
       admission_date,
       demission_date,
       status,
-    );
+    });
 
     await this.userRepository.create(
       user.user_name,

@@ -1,11 +1,11 @@
-import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
-import { UserRepositoryInterface } from 'src/core/repository/user-repository';
+import { DepartmentRepositoryInterface } from 'src/domain/repository/department-repository';
+import { IUserRepository } from 'src/domain/repository/user-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 import { UserNotFoundError } from '../errors/user-not-found';
 
 export class UpdateUserDepartementUseCase {
   constructor(
-    private userRepository: UserRepositoryInterface,
+    private userRepository: IUserRepository,
     private departmentRepository: DepartmentRepositoryInterface,
   ) {}
 

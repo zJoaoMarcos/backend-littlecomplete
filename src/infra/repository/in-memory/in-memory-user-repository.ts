@@ -1,7 +1,7 @@
-import { UserRepositoryInterface } from 'src/core/repository/user-repository';
-import { User } from '../../../core/entity/user';
+import { IUserRepository } from 'src/domain/repository/user-repository';
+import { User } from '../../../domain/entity/user';
 
-export class InMemoryUserRepository implements UserRepositoryInterface {
+export class InMemoryUserRepository implements IUserRepository {
   users: User[] = [];
 
   async create(
@@ -16,7 +16,7 @@ export class InMemoryUserRepository implements UserRepositoryInterface {
     telephone?: number,
     demission_date?: string,
   ): Promise<User> {
-    const user = new User(
+    const user = User.create({
       user_name,
       complete_name,
       title,
@@ -27,7 +27,7 @@ export class InMemoryUserRepository implements UserRepositoryInterface {
       admission_date,
       status,
       demission_date,
-    );
+    });
 
     this.users.push(user);
 
@@ -54,7 +54,7 @@ export class InMemoryUserRepository implements UserRepositoryInterface {
   ): Promise<User> {
     const user = this.users.find((user) => user.user_name === userName);
 
-    user.changeDepartment(department);
+    user.department_id = department;
 
     return Promise.resolve(user);
   }
@@ -62,7 +62,7 @@ export class InMemoryUserRepository implements UserRepositoryInterface {
   updateUserTitle(userName: string, title: string): Promise<User> {
     const user = this.users.find((user) => user.user_name === userName);
 
-    user.changeTitle(title);
+    user.title = title;
 
     return Promise.resolve(user);
   }
@@ -70,7 +70,7 @@ export class InMemoryUserRepository implements UserRepositoryInterface {
   assignTelephone(userName: string, telephone: number): Promise<User> {
     const user = this.users.find((user) => user.user_name === userName);
 
-    user.assignTelephone(telephone);
+    user.telephone = telephone;
 
     return Promise.resolve(user);
   }
