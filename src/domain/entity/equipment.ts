@@ -103,7 +103,75 @@ export class Equipment extends Entity<EquipmentProps> {
     return this.props.service_tag;
   }
 
+  set id(id: string) {
+    this.props.id = id;
+  }
+
+  set brand(brand: string) {
+    this.props.brand = brand;
+  }
+
+  set model(model: string) {
+    this.props.model = model;
+  }
+
+  set supplier(supplier: string) {
+    this.props.supplier = supplier;
+  }
+
+  set invoice(invoice: string) {
+    this.props.invoice = invoice;
+  }
+
+  set warranty(warranty: string) {
+    this.props.warranty = warranty;
+  }
+
+  set purchase_date(purchase_date: string) {
+    this.props.purchase_date = purchase_date;
+  }
+
   set department(department: string) {
     this.props.department = department;
+  }
+
+  set status(status: string) {
+    this.props.status = status;
+  }
+
+  set cpu(cpu: string) {
+    this.props.cpu = cpu;
+  }
+
+  set ram(ram: string) {
+    this.props.ram = ram;
+  }
+
+  set slots(slots: number) {
+    this.props.slots = slots;
+  }
+
+  set storage0_type(storage0_type: string) {
+    this.props.storage0_type = storage0_type;
+  }
+
+  set storage0_syze(storage0_syze: number) {
+    this.props.storage0_syze = storage0_syze;
+  }
+
+  set storage1_type(storage1_type: string) {
+    this.props.storage1_type = storage1_type;
+  }
+
+  set storage1_syze(storage1_syze: number) {
+    this.props.storage1_syze = storage1_syze;
+  }
+
+  set video(video: string) {
+    this.props.video = video;
+  }
+
+  set service_tag(service_tag: string) {
+    this.props.service_tag = service_tag;
   }
 }
