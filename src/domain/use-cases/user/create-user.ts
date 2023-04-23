@@ -1,5 +1,5 @@
 import { User } from '../../../domain/entity/user';
-import { DepartmentRepositoryInterface } from '../../../domain/repository/department-repository';
+import { IDepartmentRepository } from '../../../domain/repository/department-repository';
 import { IUserRepository } from '../../../domain/repository/user-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 import { UserNameAlreadyExistsError } from '../errors/user-name-already-exits-error';
@@ -7,7 +7,7 @@ import { UserNameAlreadyExistsError } from '../errors/user-name-already-exits-er
 export class CreateUserUseCase {
   constructor(
     private userRepository: IUserRepository,
-    private departmentRepository: DepartmentRepositoryInterface,
+    private departmentRepository: IDepartmentRepository,
   ) {}
 
   async execute({

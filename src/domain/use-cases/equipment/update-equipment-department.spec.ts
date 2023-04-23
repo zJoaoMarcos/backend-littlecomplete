@@ -2,7 +2,7 @@ import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memor
 import { InMemoryEquipmentRepository } from '../../../infra/repository/in-memory/in-memory-equipment-repository';
 import { CreateDepartmentUseCase } from '../department/create-department';
 import { CreateEquipmentUseCase } from './create-equipment';
-import { updateEquipmentDepartmentUseCase } from './update-equipment';
+import { updateEquipmentDepartmentUseCase } from './update-equipment-department';
 
 describe('Update Equipment Use Case', () => {
   it('should not be able update Equipment department with a department that does exist ', async () => {

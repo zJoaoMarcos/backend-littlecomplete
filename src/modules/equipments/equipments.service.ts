@@ -3,10 +3,10 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { CreateEquipmentUseCase } from 'src/core/use-cases/equipment/create-equipment';
-import { FindAllEquipmentsUseCase } from 'src/core/use-cases/equipment/find-all-equipments';
-import { FindEquipmentByIdUseCase } from 'src/core/use-cases/equipment/find-equipment-by-id';
-import { updateEquipmentDepartmentUseCase } from 'src/core/use-cases/equipment/update-equipment';
+import { CreateEquipmentUseCase } from 'src/domain/use-cases/equipment/create-equipment';
+import { FindAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/find-all-equipments';
+import { FindEquipmentByIdUseCase } from 'src/domain/use-cases/equipment/find-equipment-by-id';
+import { updateEquipmentDepartmentUseCase } from 'src/domain/use-cases/equipment/update-equipment-department';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 
 @Injectable()

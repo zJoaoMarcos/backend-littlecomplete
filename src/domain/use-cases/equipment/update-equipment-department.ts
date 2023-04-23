@@ -24,7 +24,7 @@ export class updateEquipmentDepartmentUseCase {
       throw new DepartmentNotFoundError();
     }
 
-    const updatedEquipment = await this.equipmentRepository.update(
+    const updatedEquipment = await this.equipmentRepository.updateDepartment(
       id,
       department,
     );

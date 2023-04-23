@@ -3,12 +3,11 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { FindAllDepartmentsUseCase } from 'src/core/use-cases/department/find-all-departments';
-import { FindByNameDepartmentUseCase } from 'src/core/use-cases/department/find-department-by-name';
-import { UpdateDepartmentUseCase } from 'src/core/use-cases/department/update-department';
-import { CreateDepartmentUseCase } from '../../core/use-cases/department/create-department';
+import { FindAllDepartmentsUseCase } from 'src/domain/use-cases/department/find-all-departments';
+import { FindByNameDepartmentUseCase } from 'src/domain/use-cases/department/find-department-by-name';
+import { UpdateCostCenterDepartmentUseCase } from 'src/domain/use-cases/department/update-cost-center-department';
+import { CreateDepartmentUseCase } from '../../domain/use-cases/department/create-department';
 import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
 
 @Injectable()
 export class DepartmentsService {
@@ -16,7 +15,7 @@ export class DepartmentsService {
     private createUseCase: CreateDepartmentUseCase,
     private findAllUseCase: FindAllDepartmentsUseCase,
     private findByNameUseCase: FindByNameDepartmentUseCase,
-    private updateUseCase: UpdateDepartmentUseCase,
+    private updateCostCenterUseCase: UpdateCostCenterDepartmentUseCase,
   ) {}
 
   async create(createDepartmentDto: CreateDepartmentDto) {
@@ -43,9 +42,9 @@ export class DepartmentsService {
     }
   }
 
-  async update(name: string, data: UpdateDepartmentDto) {
+  async update(name: string, cost_center: number) {
     try {
-      return this.updateUseCase.execute(name, data);
+      return this.updateCostCenterUseCase.execute(name, cost_center);
     } catch (err) {
       throw new ConflictException(err.message);
     }

@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
-import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
-import { CreateDepartmentUseCase } from 'src/core/use-cases/department/create-department';
-import { FindAllDepartmentsUseCase } from 'src/core/use-cases/department/find-all-departments';
-import { FindByNameDepartmentUseCase } from 'src/core/use-cases/department/find-department-by-name';
-import { UpdateDepartmentUseCase } from 'src/core/use-cases/department/update-department';
+import { IDepartmentRepository } from 'src/domain/repository/department-repository';
+import { CreateDepartmentUseCase } from 'src/domain/use-cases/department/create-department';
+import { FindAllDepartmentsUseCase } from 'src/domain/use-cases/department/find-all-departments';
+import { FindByNameDepartmentUseCase } from 'src/domain/use-cases/department/find-department-by-name';
+import { UpdateCostCenterDepartmentUseCase } from 'src/domain/use-cases/department/update-cost-center-department';
 import { InMemoryDepartmentRepository } from 'src/infra/repository/in-memory/in-memory-department-repository';
 import { DepartmentSchema } from 'src/infra/repository/typeorm/entities/department.schema';
 import { TypeOrmDepartmentRepository } from 'src/infra/repository/typeorm/typeorm-department-repository';
@@ -32,29 +32,29 @@ import { DepartmentsService } from './departments.service';
     },
     {
       provide: CreateDepartmentUseCase,
-      useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
+      useFactory: (departmentRepo: IDepartmentRepository) => {
         return new CreateDepartmentUseCase(departmentRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },
     {
       provide: FindAllDepartmentsUseCase,
-      useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
+      useFactory: (departmentRepo: IDepartmentRepository) => {
         return new FindAllDepartmentsUseCase(departmentRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },
     {
       provide: FindByNameDepartmentUseCase,
-      useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
+      useFactory: (departmentRepo: IDepartmentRepository) => {
         return new FindByNameDepartmentUseCase(departmentRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },
     {
-      provide: UpdateDepartmentUseCase,
-      useFactory: (departmentRepo: DepartmentRepositoryInterface) => {
-        return new UpdateDepartmentUseCase(departmentRepo);
+      provide: UpdateCostCenterDepartmentUseCase,
+      useFactory: (departmentRepo: IDepartmentRepository) => {
+        return new UpdateCostCenterDepartmentUseCase(departmentRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
-import { DepartmentRepositoryInterface } from 'src/core/repository/department-repository';
-import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
-import { CreateEquipmentUseCase } from 'src/core/use-cases/equipment/create-equipment';
-import { FindAllEquipmentsUseCase } from 'src/core/use-cases/equipment/find-all-equipments';
-import { FindEquipmentByIdUseCase } from 'src/core/use-cases/equipment/find-equipment-by-id';
-import { updateEquipmentDepartmentUseCase } from 'src/core/use-cases/equipment/update-equipment';
+import { IDepartmentRepository } from 'src/domain/repository/department-repository';
+import { IEquipmentRepository } from 'src/domain/repository/equipment-repository';
+import { CreateEquipmentUseCase } from 'src/domain/use-cases/equipment/create-equipment';
+import { FindAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/find-all-equipments';
+import { FindEquipmentByIdUseCase } from 'src/domain/use-cases/equipment/find-equipment-by-id';
+import { updateEquipmentDepartmentUseCase } from 'src/domain/use-cases/equipment/update-equipment-department';
 import { DepartmentSchema } from 'src/infra/repository/typeorm/entities/department.schema';
 import { EquipmentSchema } from 'src/infra/repository/typeorm/entities/equipments-schema';
 import { TypeOrmDepartmentRepository } from 'src/infra/repository/typeorm/typeorm-department-repository';
@@ -40,8 +40,8 @@ import { EquipmentsService } from './equipments.service';
     {
       provide: CreateEquipmentUseCase,
       useFactory: (
-        equipmentRepo: EquipmentRepositoryInterface,
-        departmentRepo: DepartmentRepositoryInterface,
+        equipmentRepo: IEquipmentRepository,
+        departmentRepo: IDepartmentRepository,
       ) => {
         return new CreateEquipmentUseCase(equipmentRepo, departmentRepo);
       },
@@ -49,14 +49,14 @@ import { EquipmentsService } from './equipments.service';
     },
     {
       provide: FindAllEquipmentsUseCase,
-      useFactory: (equipmentRepo: EquipmentRepositoryInterface) => {
+      useFactory: (equipmentRepo: IEquipmentRepository) => {
         return new FindAllEquipmentsUseCase(equipmentRepo);
       },
       inject: [TypeOrmEquipmentRepository],
     },
     {
       provide: FindEquipmentByIdUseCase,
-      useFactory: (equipmentRepo: EquipmentRepositoryInterface) => {
+      useFactory: (equipmentRepo: IEquipmentRepository) => {
         return new FindEquipmentByIdUseCase(equipmentRepo);
       },
       inject: [TypeOrmEquipmentRepository],
@@ -64,8 +64,8 @@ import { EquipmentsService } from './equipments.service';
     {
       provide: updateEquipmentDepartmentUseCase,
       useFactory: (
-        equipmentRepo: EquipmentRepositoryInterface,
-        departmentRepo: DepartmentRepositoryInterface,
+        equipmentRepo: IEquipmentRepository,
+        departmentRepo: IDepartmentRepository,
       ) => {
         return new updateEquipmentDepartmentUseCase(
           equipmentRepo,

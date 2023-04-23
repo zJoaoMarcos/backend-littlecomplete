@@ -1,11 +1,9 @@
-import { Equipment } from 'src/core/entity/Equipment';
-import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
 import { Repository } from 'typeorm';
+import { Equipment } from '../../../domain/entity/Equipment';
+import { IEquipmentRepository } from '../../../domain/repository/equipment-repository';
 import { EquipmentSchema } from './entities/equipments-schema';
 
-export class TypeOrmEquipmentRepository
-  implements EquipmentRepositoryInterface
-{
+export class TypeOrmEquipmentRepository implements IEquipmentRepository {
   constructor(private ormRepo: Repository<EquipmentSchema>) {}
 
   async create(
@@ -28,7 +26,7 @@ export class TypeOrmEquipmentRepository
     video?: string,
     service_tag?: string,
   ): Promise<Equipment> {
-    return this.ormRepo.save({
+    const equipment = Equipment.create({
       id,
       brand,
       model,
@@ -48,6 +46,7 @@ export class TypeOrmEquipmentRepository
       video,
       service_tag,
     });
+    return this.ormRepo.save(equipment);
   }
 
   async findAll(): Promise<Equipment[]> {
@@ -58,26 +57,26 @@ export class TypeOrmEquipmentRepository
     }
 
     return equipments.map((equipment) => {
-      return new Equipment(
-        equipment.id,
-        equipment.brand,
-        equipment.model,
-        equipment.department,
-        equipment.status,
-        equipment.supplier,
-        equipment.invoice,
-        equipment.warranty,
-        equipment.purchaseDate,
-        equipment.cpu,
-        equipment.ram,
-        equipment.slots,
-        equipment.storage0Type,
-        equipment.storage0Syze,
-        equipment.storage1Type,
-        equipment.storage1Syze,
-        equipment.video,
-        equipment.serviceTag,
-      );
+      return Equipment.create({
+        id: equipment.id,
+        brand: equipment.brand,
+        model: equipment.model,
+        supplier: equipment.supplier,
+        invoice: equipment.invoice,
+        warranty: equipment.warranty,
+        purchase_date: equipment.purchaseDate,
+        department: equipment.department,
+        status: equipment.status,
+        cpu: equipment.cpu,
+        ram: equipment.ram,
+        slots: equipment.slots,
+        storage0_type: equipment.storage0Type,
+        storage0_syze: equipment.storage0Syze,
+        storage1_type: equipment.storage1Type,
+        storage1_syze: equipment.storage1Syze,
+        video: equipment.video,
+        service_tag: equipment.serviceTag,
+      });
     });
   }
 
@@ -88,29 +87,34 @@ export class TypeOrmEquipmentRepository
       return null;
     }
 
-    return new Equipment(
-      equipment.id,
-      equipment.brand,
-      equipment.model,
-      equipment.department,
-      equipment.status,
-      equipment.supplier,
-      equipment.invoice,
-      equipment.warranty,
-      equipment.purchaseDate,
-      equipment.cpu,
-      equipment.ram,
-      equipment.slots,
-      equipment.storage0Type,
-      equipment.storage0Syze,
-      equipment.storage1Type,
-      equipment.storage1Syze,
-      equipment.video,
-      equipment.serviceTag,
-    );
+    return Equipment.create({
+      id: equipment.id,
+      brand: equipment.brand,
+      model: equipment.model,
+      supplier: equipment.supplier,
+      invoice: equipment.invoice,
+      warranty: equipment.warranty,
+      purchase_date: equipment.purchaseDate,
+      department: equipment.department,
+      status: equipment.status,
+      cpu: equipment.cpu,
+      ram: equipment.ram,
+      slots: equipment.slots,
+      storage0_type: equipment.storage0Type,
+      storage0_syze: equipment.storage0Syze,
+      storage1_type: equipment.storage1Type,
+      storage1_syze: equipment.storage1Syze,
+      video: equipment.video,
+      service_tag: equipment.serviceTag,
+    });
   }
 
-  async update(id: string, department: string): Promise<void> {
-    await this.ormRepo.update(id, { department });
+  async updateDepartment(id: string, department: string): Promise<void> {
+    await this.ormRepo.update(
+      { id },
+      {
+        department,
+      },
+    );
   }
 }
