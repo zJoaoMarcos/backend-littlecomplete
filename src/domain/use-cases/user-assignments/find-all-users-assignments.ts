@@ -1,28 +1,24 @@
-import { EquipmentPerUserRepositoryInterface } from 'src/core/repository/equipment-per-user-repository';
+import { IUserAssignmentsRepository } from '../../../domain/repository/user-assignments-repository';
 import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
-export class FindByEquipmentIdUseCase {
-  constructor(
-    private equipmentsPerUserRepository: EquipmentPerUserRepositoryInterface,
-  ) {}
+export class FindAllUsersAssignmentsUseCase {
+  constructor(private userAssignmentsRepository: IUserAssignmentsRepository) {}
 
-  async execute(id: string): Promise<FindByEquipmentIdOutput> {
-    const equipmentsPerUser =
-      await this.equipmentsPerUserRepository.findByEquipmentId(id);
+  async execute(): Promise<FindAllEquipmentsPerUserOutput> {
+    const userAssignments = await this.userAssignmentsRepository.findAll();
 
-    if (!equipmentsPerUser) {
+    if (!userAssignments) {
       throw new EquipmentNotFoundError();
     }
 
     return {
-      equipmentsPerUser,
+      userAssignments,
     };
   }
 }
 
-type FindByEquipmentIdOutput = {
-  equipmentsPerUser: {
-    id: string;
+type FindAllEquipmentsPerUserOutput = {
+  userAssignments: {
     user: {
       user_name: string;
       complete_name: string;
@@ -55,5 +51,5 @@ type FindByEquipmentIdOutput = {
       video: string | null;
       service_tag: string | null;
     };
-  };
+  }[];
 };

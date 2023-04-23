@@ -1,31 +1,34 @@
 import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
-import { InMemoryEquipmentPerUserRepository } from '../../../infra/repository/in-memory/in-memory-equipment-per-user-repository';
 import { InMemoryEquipmentRepository } from '../../../infra/repository/in-memory/in-memory-equipment-repository';
+import { InMemoryUserAssignmentsRepository } from '../../../infra/repository/in-memory/in-memory-user-assigments-repository';
 import { InMemoryUserRepository } from '../../../infra/repository/in-memory/in-memory-user-repository';
+import { CreateDepartmentUseCase } from '../department/create-department';
 import { CreateEquipmentUseCase } from '../equipment/create-equipment';
 import { CreateUserUseCase } from '../user/create-user';
-import { SaveEquipmentPerUserUseCase } from './save-equipment-per-user';
+import { SaveUserAssignmentsUseCase } from './save-user-assignments';
 
-let equipmentsPerUserRepository: InMemoryEquipmentPerUserRepository;
+let equipmentsPerUserRepository: InMemoryUserAssignmentsRepository;
 let departmentsRepository: InMemoryDepartmentRepository;
 let equipmentsRepository: InMemoryEquipmentRepository;
 let userRepository: InMemoryUserRepository;
 let createUser: CreateUserUseCase;
+let createDepartment: CreateDepartmentUseCase;
 let createEquipment: CreateEquipmentUseCase;
-let sut: SaveEquipmentPerUserUseCase;
+let sut: SaveUserAssignmentsUseCase;
 
-describe('Save Equipments Per Use Use Case', () => {
+describe('Save User Assignment Use Case', () => {
   beforeEach(() => {
-    equipmentsPerUserRepository = new InMemoryEquipmentPerUserRepository();
+    equipmentsPerUserRepository = new InMemoryUserAssignmentsRepository();
     equipmentsRepository = new InMemoryEquipmentRepository();
     departmentsRepository = new InMemoryDepartmentRepository();
     userRepository = new InMemoryUserRepository();
+    createDepartment = new CreateDepartmentUseCase(departmentsRepository);
     createUser = new CreateUserUseCase(userRepository, departmentsRepository);
     createEquipment = new CreateEquipmentUseCase(
       equipmentsRepository,
       departmentsRepository,
     );
-    sut = new SaveEquipmentPerUserUseCase(
+    sut = new SaveUserAssignmentsUseCase(
       equipmentsPerUserRepository,
       userRepository,
       equipmentsRepository,
@@ -33,7 +36,7 @@ describe('Save Equipments Per Use Use Case', () => {
   });
 
   it('Should be able to Save Equipment Per Use', async () => {
-    await departmentsRepository.departments.push({
+    await createDepartment.execute({
       name: 'IOT',
       cost_center: 2420424,
       is_board: false,
@@ -65,11 +68,8 @@ describe('Save Equipments Per Use Use Case', () => {
       storage0_type: 'SSD',
     });
 
-    const { equipmentPerUser } = await sut.execute(
-      user.user_name,
-      equipment.id,
-    );
+    const { userAssignments } = await sut.execute(user.user_name, equipment.id);
 
-    await expect(equipmentPerUser.user.user_name).toEqual('jhon_doe');
+    await expect(userAssignments.user.user_name).toEqual('jhon_doe');
   });
 });

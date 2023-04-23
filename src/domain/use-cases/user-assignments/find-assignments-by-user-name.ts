@@ -1,26 +1,26 @@
-import { EquipmentPerUserRepositoryInterface } from 'src/core/repository/equipment-per-user-repository';
+import { IUserAssignmentsRepository } from 'src/domain/repository/user-assignments-repository';
 import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
-export class FindAllEquipmentsPerUserUseCase {
-  constructor(
-    private equipmentsPerUserRepository: EquipmentPerUserRepositoryInterface,
-  ) {}
+export class FindAssignmentsByUserNameUseCase {
+  constructor(private userAssignmentsRepository: IUserAssignmentsRepository) {}
 
-  async execute(): Promise<FindAllEquipmentsPerUserOutput> {
-    const equipmentsPerUser = await this.equipmentsPerUserRepository.findAll();
+  async execute(userName: string): Promise<FindAssignmentsByUserNameOutput> {
+    const userAssignments = await this.userAssignmentsRepository.findByUserName(
+      userName,
+    );
 
-    if (!equipmentsPerUser) {
+    if (!userAssignments) {
       throw new EquipmentNotFoundError();
     }
 
     return {
-      equipmentsPerUser,
+      userAssignments,
     };
   }
 }
 
-type FindAllEquipmentsPerUserOutput = {
-  equipmentsPerUser: {
+type FindAssignmentsByUserNameOutput = {
+  userAssignments: {
     user: {
       user_name: string;
       complete_name: string;

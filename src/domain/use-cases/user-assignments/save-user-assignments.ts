@@ -1,52 +1,51 @@
-import { EquipmentPerUserRepositoryInterface } from 'src/core/repository/equipment-per-user-repository';
-import { EquipmentRepositoryInterface } from 'src/core/repository/equipment-repository';
-import { UserRepositoryInterface } from 'src/core/repository/user-repository';
-import { EquipmentPerUser } from '../../../core/entity/equipment-per-user';
+import { UserAssignments } from '../../../domain/entity/user-assignments';
+import { IEquipmentRepository } from '../../../domain/repository/equipment-repository';
+import { IUserAssignmentsRepository } from '../../../domain/repository/user-assignments-repository';
+import { IUserRepository } from '../../../domain/repository/user-repository';
 import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 import { UserNotFoundError } from '../errors/user-not-found';
 
-export class SaveEquipmentPerUserUseCase {
+export class SaveUserAssignmentsUseCase {
   constructor(
-    private equipmentPerUserRepository: EquipmentPerUserRepositoryInterface,
-    private userRepository: UserRepositoryInterface,
-    private equipmentRepository: EquipmentRepositoryInterface,
+    private userAssignmentsRepository: IUserAssignmentsRepository,
+    private userRepository: IUserRepository,
+    private equipmentRepository: IEquipmentRepository,
   ) {}
 
   async execute(
     user_id: string,
     equipment_id: string,
-  ): Promise<SaveEquipmentPerUserOutput> {
-    const userExists = await this.userRepository.findByUserName(user_id);
+  ): Promise<SaveUserAssignmentsOutput> {
+    const user = await this.userRepository.findByUserName(user_id);
 
-    if (!userExists) {
+    if (!user) {
       throw new UserNotFoundError();
     }
 
-    const equipmentExists = await this.equipmentRepository.findById(
-      equipment_id,
-    );
+    const equipment = await this.equipmentRepository.findById(equipment_id);
 
-    if (!equipmentExists) {
+    if (!equipment) {
       throw new EquipmentNotFoundError();
     }
 
-    const equipmentPerUser = new EquipmentPerUser(userExists, equipmentExists);
+    const userAssignments = UserAssignments.create({
+      user,
+      equipment,
+    });
 
-    await this.equipmentPerUserRepository.save(
-      equipmentPerUser.id,
-      equipmentPerUser.user,
-      equipmentPerUser.equipment,
+    await this.userAssignmentsRepository.save(
+      userAssignments.user,
+      userAssignments.equipment,
     );
 
     return {
-      equipmentPerUser,
+      userAssignments,
     };
   }
 }
 
-type SaveEquipmentPerUserOutput = {
-  equipmentPerUser: {
-    id: string;
+type SaveUserAssignmentsOutput = {
+  userAssignments: {
     user: {
       user_name: string;
       complete_name: string;
