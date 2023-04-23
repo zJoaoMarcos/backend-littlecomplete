@@ -38,17 +38,11 @@ export class InMemoryDepartmentRepository implements IDepartmentRepository {
     return Promise.resolve(department);
   }
 
-  async update(
-    name: string,
-    data: {
-      name?: string;
-      cost_center?: number;
-      is_board?: boolean;
-      board?: string;
-    },
-  ): Promise<void> {
+  async updateCostCenter(name: string, cost_center: number): Promise<void> {
     const department = this.departments.find(
       (department) => department.name === name,
     );
+
+    department.cost_center = cost_center;
   }
 }

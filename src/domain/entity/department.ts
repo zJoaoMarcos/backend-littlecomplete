@@ -32,4 +32,8 @@ export class Department extends Entity<DepartmentProps> {
   get board() {
     return this.props.board;
   }
+
+  set cost_center(cost_center: number) {
+    this.props.cost_center = cost_center;
+  }
 }

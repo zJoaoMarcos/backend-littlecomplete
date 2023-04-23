@@ -1,13 +1,12 @@
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
-import { DepartmentAlreadyExistsError } from '../errors/department-already-exits-error';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 
-export class UpdateDepartmentUseCase {
+export class UpdateCostCenterDepartmentUseCase {
   constructor(private departmentsRepository: IDepartmentRepository) {}
 
   async execute(
     name: string,
-    data: UpdateDepartmentInput,
+    cost_center: number,
   ): Promise<UpdateDepartmentOutput> {
     const department = await this.departmentsRepository.findByName(name);
 
@@ -15,28 +14,13 @@ export class UpdateDepartmentUseCase {
       throw new DepartmentNotFoundError();
     }
 
-    const departmentWithSameName = await this.departmentsRepository.findByName(
-      data.name,
-    );
-
-    if (departmentWithSameName) {
-      throw new DepartmentAlreadyExistsError();
-    }
-
-    await this.departmentsRepository.update(name, data);
+    await this.departmentsRepository.updateCostCenter(name, cost_center);
 
     return {
       department,
     };
   }
 }
-
-type UpdateDepartmentInput = {
-  name?: string;
-  cost_center?: number;
-  is_board?: boolean;
-  board?: string;
-};
 
 type UpdateDepartmentOutput = {
   department: {
