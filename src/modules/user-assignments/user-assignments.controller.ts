@@ -1,7 +1,9 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateUserAssignmentDto } from './dto/create-user-assignment.dto';
 import { UserAssignmentsService } from './user-assignments.service';
 
+@ApiTags('User Assignments')
 @Controller('user-assignments')
 export class UserAssignmentsController {
   constructor(
