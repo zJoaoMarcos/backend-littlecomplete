@@ -5,7 +5,7 @@ import { UserSchema } from './entities/user.schema';
 
 export class TypeOrmUserRepository implements IUserRepository {
   constructor(private ormRepo: Repository<UserSchema>) {}
-  create(
+  async create(
     user_name: string,
     complete_name: string,
     title: string,
@@ -17,8 +17,8 @@ export class TypeOrmUserRepository implements IUserRepository {
     telephone?: number,
     demission_date?: string,
   ): Promise<User> {
-    const user = User.create({
-      user_name,
+    const user = await this.ormRepo.save({
+      username: user_name,
       complete_name,
       title,
       telephone,
@@ -30,8 +30,20 @@ export class TypeOrmUserRepository implements IUserRepository {
       demission_date,
     });
 
-    return this.ormRepo.save(user);
+    return User.create({
+      user_name: user.username,
+      complete_name: user.completeName,
+      title: user.title,
+      telephone: user.telephone,
+      department_id: user.departmentId,
+      direct_boss: user.directBoss,
+      smtp: user.smtp,
+      admission_date: user.admissionDate,
+      status: user.status,
+      demission_date: user.demissionDate,
+    });
   }
+
   async findAll(): Promise<User[]> {
     const user = await this.ormRepo.find();
 

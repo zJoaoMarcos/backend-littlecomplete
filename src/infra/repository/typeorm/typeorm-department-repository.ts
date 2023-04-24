@@ -59,7 +59,7 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
     });
   }
 
-  async updateCostCenter(name: string, cost_center?: number): Promise<void> {
+  async updateCostCenter(name: string, cost_center: number): Promise<void> {
     await this.ormRepo.update(
       { name },
       {
