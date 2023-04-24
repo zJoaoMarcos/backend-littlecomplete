@@ -1,5 +1,5 @@
+import { Equipment } from 'src/domain/entity/equipment';
 import { Repository } from 'typeorm';
-import { Equipment } from '../../../domain/entity/Equipment';
 import { IEquipmentRepository } from '../../../domain/repository/equipment-repository';
 import { EquipmentSchema } from './entities/equipments-schema';
 
