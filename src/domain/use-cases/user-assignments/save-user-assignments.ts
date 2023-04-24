@@ -17,7 +17,6 @@ export class SaveUserAssignmentsUseCase {
     equipment_id: string,
   ): Promise<SaveUserAssignmentsOutput> {
     const user = await this.userRepository.findByUserName(user_id);
-
     if (!user) {
       throw new UserNotFoundError();
     }
@@ -28,15 +27,12 @@ export class SaveUserAssignmentsUseCase {
       throw new EquipmentNotFoundError();
     }
 
+    await this.userAssignmentsRepository.save(user, equipment);
+
     const userAssignments = UserAssignments.create({
       user,
       equipment,
     });
-
-    await this.userAssignmentsRepository.save(
-      userAssignments.user,
-      userAssignments.equipment,
-    );
 
     return {
       userAssignments,

@@ -1,21 +1,68 @@
-import { Equipment } from 'src/domain/entity/equipment';
-import { User } from 'src/domain/entity/user';
-import { UserAssignments } from 'src/domain/entity/user-assignments';
-import { IUserAssignmentsRepository } from 'src/domain/repository/user-assignments-repository';
 import { Repository } from 'typeorm';
+import { Equipment } from '../../../domain/entity/equipment';
+import { User } from '../../../domain/entity/user';
+import { UserAssignments } from '../../../domain/entity/user-assignments';
+import { IUserAssignmentsRepository } from '../../../domain/repository/user-assignments-repository';
 import { EquipmentUserSchema } from './entities/equipments-user.schema';
 
-export class TypeOrmUserAssignments implements IUserAssignmentsRepository {
+export class TypeOrmUserAssignmentsRepository
+  implements IUserAssignmentsRepository
+{
   constructor(private ormRepo: Repository<EquipmentUserSchema>) {}
 
   async save(user: User, equipment: Equipment): Promise<UserAssignments> {
-    const userAssignments = UserAssignments.create({ user, equipment });
+    const assignment = await this.ormRepo.save({
+      user: {
+        username: user.user_name,
+      },
+      equipment: {
+        id: equipment.id,
+      },
+    });
 
-    return this.ormRepo.save(userAssignments);
+    return UserAssignments.create({
+      user: User.create({
+        user_name: assignment.user.username,
+        complete_name: assignment.user.completeName,
+        title: assignment.user.title,
+        telephone: assignment.user.telephone,
+        department_id: assignment.user.departmentId,
+        direct_boss: assignment.user.directBoss,
+        smtp: assignment.user.smtp,
+        admission_date: assignment.user.admissionDate,
+        status: assignment.user.status,
+        demission_date: assignment.user.demissionDate,
+      }),
+      equipment: Equipment.create({
+        id: assignment.equipment.id,
+        brand: assignment.equipment.brand,
+        model: assignment.equipment.model,
+        supplier: assignment.equipment.supplier,
+        invoice: assignment.equipment.invoice,
+        warranty: assignment.equipment.warranty,
+        purchase_date: assignment.equipment.purchaseDate,
+        department: assignment.equipment.department,
+        status: assignment.equipment.status,
+        cpu: assignment.equipment.cpu,
+        ram: assignment.equipment.ram,
+        slots: assignment.equipment.slots,
+        storage0_type: assignment.equipment.storage0Type,
+        storage0_syze: assignment.equipment.storage0Syze,
+        storage1_type: assignment.equipment.storage1Type,
+        storage1_syze: assignment.equipment.storage1Syze,
+        video: assignment.equipment.video,
+        service_tag: assignment.equipment.serviceTag,
+      }),
+    });
   }
 
   async findAll(): Promise<UserAssignments[]> {
-    const assignments = await this.ormRepo.find();
+    const assignments = await this.ormRepo.find({
+      relations: {
+        user: true,
+        equipment: true,
+      },
+    });
 
     if (!assignments) {
       return null;
@@ -60,8 +107,12 @@ export class TypeOrmUserAssignments implements IUserAssignmentsRepository {
   }
 
   async findByEquipmentId(id: string): Promise<UserAssignments> {
-    const assignment = await this.ormRepo.findOneBy({
-      equipment: { id: id },
+    const assignment = await this.ormRepo.findOne({
+      where: { equipment: { id: id } },
+      relations: {
+        user: true,
+        equipment: true,
+      },
     });
 
     if (!assignment) {
@@ -105,8 +156,12 @@ export class TypeOrmUserAssignments implements IUserAssignmentsRepository {
   }
 
   async findByUserName(id: string): Promise<UserAssignments[]> {
-    const assignments = await this.ormRepo.findBy({
-      user: { username: id },
+    const assignments = await this.ormRepo.find({
+      where: { user: { username: id } },
+      relations: {
+        user: true,
+        equipment: true,
+      },
     });
 
     if (!assignments) {

@@ -8,6 +8,7 @@ import { UserSchema } from './infra/repository/typeorm/entities/user.schema';
 import { DepartmentsModule } from './modules/departments/departments.module';
 import { EquipmentsModule } from './modules/equipments/equipments.module';
 import { UsersModule } from './modules/users/users.module';
+import { UserAssignmentsModule } from './modules/user-assignments/user-assignments.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { UsersModule } from './modules/users/users.module';
     DepartmentsModule,
     EquipmentsModule,
     UsersModule,
+    UserAssignmentsModule,
   ],
   controllers: [],
   providers: [],

@@ -40,10 +40,10 @@ import { UsersService } from './users.service';
     {
       provide: CreateUserUseCase,
       useFactory: (
-        equipmentRepo: IUserRepository,
+        userRepo: IUserRepository,
         departmentRepo: IDepartmentRepository,
       ) => {
-        return new CreateUserUseCase(equipmentRepo, departmentRepo);
+        return new CreateUserUseCase(userRepo, departmentRepo);
       },
       inject: [TypeOrmUserRepository, TypeOrmDepartmentRepository],
     },
