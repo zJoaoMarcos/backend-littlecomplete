@@ -1,7 +1,7 @@
 export class Entity<Props> {
-  protected props: Props;
+  public props: Props;
 
-  protected constructor(props: Props) {
+  public constructor(props: Props) {
     this.props = props;
   }
 }

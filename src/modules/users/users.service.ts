@@ -22,7 +22,7 @@ export class UsersService {
     private assignTelephoneUseCase: AssignTelephoneForUserUseCase,
   ) {}
 
-  create({
+  async create({
     user_name,
     complete_name,
     title,
@@ -35,7 +35,7 @@ export class UsersService {
     status,
   }: CreateUserDto) {
     try {
-      return this.createUseCase.execute({
+      const { user } = await this.createUseCase.execute({
         user_name,
         complete_name,
         title,
@@ -47,46 +47,79 @@ export class UsersService {
         demission_date,
         status,
       });
+
+      return {
+        user: user.props,
+      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
   }
-
-  findAll() {
+  async findAll() {
     try {
-      return this.findAllUseCase.execute();
+      const { users } = await this.findAllUseCase.execute();
+
+      return {
+        users: users.map((users) => {
+          return { user: users.props };
+        }),
+      };
     } catch (err) {
       throw new NotFoundException(err.message);
     }
   }
 
-  findByUserName(userName: string) {
+  async findByUserName(userName: string) {
     try {
-      return this.findByIdUseCase.execute(userName);
+      const { user } = await this.findByIdUseCase.execute(userName);
+
+      return {
+        user: user.props,
+      };
     } catch (err) {
       throw new NotFoundException(err.message);
     }
   }
 
-  updateTitle(userName: string, title: string) {
+  async updateTitle(userName: string, title: string) {
     try {
-      return this.updateTitleUseCase.execute(userName, title);
+      const { updatedUser } = await this.updateTitleUseCase.execute(
+        userName,
+        title,
+      );
+
+      return {
+        user: updatedUser.props,
+      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
   }
 
-  updateDepartment(userName: string, department: string) {
+  async updateDepartment(userName: string, department: string) {
     try {
-      return this.updateDepartmentUseCase.execute(userName, department);
+      const { updatedUser } = await this.updateDepartmentUseCase.execute(
+        userName,
+        department,
+      );
+      return {
+        user: updatedUser.props,
+      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
   }
 
-  assignTelephone(userName: string, telephone: number) {
+  async assignTelephone(userName: string, telephone: number) {
     try {
-      return this.assignTelephoneUseCase.execute(userName, telephone);
+      const { updatedUser } = await this.assignTelephoneUseCase.execute(
+        userName,
+        telephone,
+      );
+
+      return {
+        user: updatedUser.props,
+      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
