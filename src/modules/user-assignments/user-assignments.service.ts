@@ -20,7 +20,17 @@ export class UserAssignmentsService {
 
   async save({ user_name, equipment_id }: CreateUserAssignmentDto) {
     try {
-      return this.SaveUserAssignmentUseCase.execute(user_name, equipment_id);
+      const { userAssignments } = await this.SaveUserAssignmentUseCase.execute(
+        user_name,
+        equipment_id,
+      );
+
+      return {
+        userAssignments: {
+          user: userAssignments.props.user.props,
+          equipment: userAssignments.props.equipment.props,
+        },
+      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -28,7 +38,17 @@ export class UserAssignmentsService {
 
   async findAll() {
     try {
-      return this.findAllUseCase.execute();
+      const { userAssignments } = await this.findAllUseCase.execute();
+      return {
+        userAssignments: userAssignments.map((assignments) => {
+          return {
+            assignments: {
+              user: assignments.props.user.props,
+              equipment: assignments.props.equipment.props,
+            },
+          };
+        }),
+      };
     } catch (err) {
       throw new NotFoundException(err.message);
     }
@@ -36,14 +56,34 @@ export class UserAssignmentsService {
 
   async findByEquipmentId(id: string) {
     try {
-      return this.FindByEquipmentIdUseCase.execute(id);
+      const { userAssignments } = await this.FindByEquipmentIdUseCase.execute(
+        id,
+      );
+
+      return {
+        userAssignments: {
+          user: userAssignments.props.user.props,
+          equipment: userAssignments.props.equipment.props,
+        },
+      };
     } catch (err) {
       throw new NotFoundException(err.message);
     }
   }
   async findByUserName(id: string) {
     try {
-      return this.FindByUserNameUseCase.execute(id);
+      const { userAssignments } = await this.FindByUserNameUseCase.execute(id);
+
+      return {
+        userAssignments: userAssignments.map((assignments) => {
+          return {
+            assignments: {
+              user: assignments.props.user.props,
+              equipment: assignments.props.equipment.props,
+            },
+          };
+        }),
+      };
     } catch (err) {
       throw new NotFoundException(err.message);
     }
