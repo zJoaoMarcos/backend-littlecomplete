@@ -20,7 +20,13 @@ export class EquipmentsService {
 
   async create(createEquipmentDto: CreateEquipmentDto) {
     try {
-      return this.createUseCase.execute(createEquipmentDto);
+      const { equipment } = await this.createUseCase.execute(
+        createEquipmentDto,
+      );
+
+      return {
+        equipment: equipment.props,
+      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -28,7 +34,14 @@ export class EquipmentsService {
 
   async findAll() {
     try {
-      return this.findAllUseCase.execute();
+      const { equipments } = await this.findAllUseCase.execute();
+      return {
+        equipments: equipments.map((equipment) => {
+          return {
+            equipment: equipment.props,
+          };
+        }),
+      };
     } catch (err) {
       throw new NotFoundException(err.message);
     }
@@ -36,7 +49,10 @@ export class EquipmentsService {
 
   async findById(id: string) {
     try {
-      return this.findByIdUseCase.execute(id);
+      const { equipment } = await this.findByIdUseCase.execute(id);
+      return {
+        equipment: equipment.props,
+      };
     } catch (err) {
       throw new NotFoundException(err.message);
     }
