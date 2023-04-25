@@ -48,9 +48,11 @@ type CreateDepartmentInput = {
 
 type CreateDepartmentOutput = {
   department: {
-    name: string;
-    cost_center: number;
-    is_board: boolean;
-    board: string;
+    props: {
+      name: string;
+      cost_center: number;
+      is_board: boolean;
+      board: string;
+    };
   };
 };

@@ -20,7 +20,12 @@ export class DepartmentsService {
 
   async create(createDepartmentDto: CreateDepartmentDto) {
     try {
-      return this.createUseCase.execute(createDepartmentDto);
+      const { department } = await this.createUseCase.execute(
+        createDepartmentDto,
+      );
+      return {
+        department: department.props,
+      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -28,7 +33,14 @@ export class DepartmentsService {
 
   async findAll() {
     try {
-      return this.findAllUseCase.execute();
+      const { department } = await this.findAllUseCase.execute();
+      return {
+        departments: department.map((department) => {
+          return {
+            department: department.props,
+          };
+        }),
+      };
     } catch (err) {
       throw new NotFoundException(err.message);
     }
@@ -36,7 +48,10 @@ export class DepartmentsService {
 
   async findByName(id: string) {
     try {
-      return this.findByNameUseCase.execute(id);
+      const { department } = await this.findByNameUseCase.execute(id);
+      return {
+        department: department.props,
+      };
     } catch (err) {
       throw new NotFoundException(err.message);
     }
@@ -44,7 +59,13 @@ export class DepartmentsService {
 
   async update(name: string, cost_center: number) {
     try {
-      return this.updateCostCenterUseCase.execute(name, cost_center);
+      const { department } = await this.updateCostCenterUseCase.execute(
+        name,
+        cost_center,
+      );
+      return {
+        department: department.props,
+      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
