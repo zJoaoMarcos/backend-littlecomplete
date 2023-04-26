@@ -28,6 +28,7 @@ Lil Complete app.
 - [x] Should not be able delete Equipment;
 - [ ] Should not be able create Equipment with id prefix wrong;
 - [x] Should not be able create Equipment with name twice;
+- [ ] When change User Department change DirectBoss
 
 ## NFRs (Non-Functional Requirements)
 

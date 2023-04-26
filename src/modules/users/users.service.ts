@@ -61,8 +61,9 @@ export class UsersService {
 
       return {
         users: users.map((users) => {
-          return { user: users.props };
+          return users.props;
         }),
+        totalCount: users.length,
       };
     } catch (err) {
       throw new NotFoundException(err.message);
