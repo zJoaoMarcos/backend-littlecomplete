@@ -18,9 +18,9 @@ export class CreateUserUseCase {
     telephone,
     direct_boss,
     smtp,
-    admission_date,
-    demission_date,
-    status,
+    admission_date = new Date(),
+    demission_date = null,
+    status = 'active',
   }: CreateUserInput): Promise<CreateUserOutput> {
     const departmentExists = await this.departmentRepository.findByName(
       department_id,
@@ -76,9 +76,9 @@ type CreateUserInput = {
   telephone: number;
   direct_boss: string;
   smtp: string;
-  admission_date: string;
-  demission_date: string;
-  status: string;
+  admission_date?: Date;
+  demission_date?: Date;
+  status?: string;
 };
 
 type CreateUserOutput = {
@@ -91,8 +91,8 @@ type CreateUserOutput = {
       telephone: number;
       direct_boss: string;
       smtp: string;
-      admission_date: string;
-      demission_date: string;
+      admission_date: Date;
+      demission_date: Date;
       status: string;
     };
   };
