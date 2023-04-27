@@ -3,6 +3,9 @@ import { User } from '../../../domain/entity/user';
 
 export class InMemoryUserRepository implements IUserRepository {
   users: User[] = [];
+  updateUserStatus(userName: string, status: string): Promise<User> {
+    throw new Error('Method not implemented.');
+  }
 
   async create(
     user_name: string,

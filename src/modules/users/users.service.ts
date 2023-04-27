@@ -8,6 +8,7 @@ import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
 import { FindAllUsersUseCase } from 'src/domain/use-cases/user/find-all-users';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
 import { UpdateUserDepartementUseCase } from 'src/domain/use-cases/user/update-user-department';
+import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
 import { UpdateUserTitleUseCase } from 'src/domain/use-cases/user/update-user-title';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -19,6 +20,7 @@ export class UsersService {
     private findByIdUseCase: FindUserByUserNameUseCase,
     private updateTitleUseCase: UpdateUserTitleUseCase,
     private updateDepartmentUseCase: UpdateUserDepartementUseCase,
+    private updateStatusUseCase: UpdateUserStatusUseCase,
     private assignTelephoneUseCase: AssignTelephoneForUserUseCase,
   ) {}
 
@@ -100,6 +102,20 @@ export class UsersService {
       const { updatedUser } = await this.updateDepartmentUseCase.execute(
         userName,
         department,
+      );
+      return {
+        user: updatedUser.props,
+      };
+    } catch (err) {
+      throw new ConflictException(err.message);
+    }
+  }
+
+  async updateStatus(userName: string, status: string) {
+    try {
+      const { updatedUser } = await this.updateStatusUseCase.execute(
+        userName,
+        status,
       );
       return {
         user: updatedUser.props,

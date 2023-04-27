@@ -145,6 +145,32 @@ export class TypeOrmUserRepository implements IUserRepository {
     });
   }
 
+  async updateUserStatus(userName: string, status: string): Promise<User> {
+    await this.ormRepo.update(
+      {
+        username: userName,
+      },
+      {
+        status: status,
+      },
+    );
+
+    const user = await this.ormRepo.findOneBy({ username: userName });
+
+    return User.create({
+      user_name: user.username,
+      complete_name: user.completeName,
+      title: user.title,
+      telephone: user.telephone,
+      department_id: user.departmentId,
+      direct_boss: user.directBoss,
+      smtp: user.smtp,
+      admission_date: user.admissionDate,
+      status: user.status,
+      demission_date: user.demissionDate,
+    });
+  }
+
   async assignTelephone(userName: string, telephone: number): Promise<User> {
     await this.ormRepo.update(
       {

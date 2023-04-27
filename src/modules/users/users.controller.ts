@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignTelephoneDto } from './dto/assign-telephone.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { UpdateUserTitleDto } from './dto/update-user-title.dto';
 import { UpdateUserDepartmentDto } from './dto/updateUserDepartmentDto';
 import { UsersService } from './users.service';
@@ -33,6 +34,15 @@ export class UsersController {
   ) {
     const { department } = updateUserDepartmentDto;
     return this.usersService.updateDepartment(id, department);
+  }
+
+  @Patch('status/:id')
+  updateStatus(
+    @Param('id') id: string,
+    @Body() updateUserStatusDto: UpdateUserStatusDto,
+  ) {
+    const { status } = updateUserStatusDto;
+    return this.usersService.updateStatus(id, status);
   }
 
   @Patch('title/:id')

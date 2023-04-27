@@ -21,6 +21,7 @@ export interface IUserRepository {
   updateUserDepartment(userName: string, department: string): Promise<User>;
 
   updateUserTitle(userName: string, title: string): Promise<User>;
+  updateUserStatus(userName: string, status: string): Promise<User>;
 
   assignTelephone(userName: string, telephone: number): Promise<User>;
 }
