@@ -52,8 +52,8 @@ type SaveUserAssignmentsOutput = {
           telephone: number | null;
           direct_boss: string;
           smtp: string;
-          admission_date: string;
-          demission_date: string | null;
+          admission_date: Date;
+          demission_date: Date | null;
           status: string;
         };
       };

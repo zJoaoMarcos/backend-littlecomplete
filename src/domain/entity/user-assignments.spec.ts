@@ -15,7 +15,7 @@ describe('UserAssignments', () => {
           direct_boss: 'Uncle Bob',
           smtp: 'jhon_doe@email.com',
           status: 'active',
-          admission_date: '20/04/2001',
+          admission_date: new Date(),
           demission_date: null,
         }),
         equipment: Equipment.create({
