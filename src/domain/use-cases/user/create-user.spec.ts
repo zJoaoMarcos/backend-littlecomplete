@@ -1,3 +1,4 @@
+import { Department } from 'src/domain/entity/department';
 import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
 import { InMemoryUserRepository } from '../../../infra/repository/in-memory/in-memory-user-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
@@ -16,12 +17,13 @@ describe('Create User Use Case', () => {
   });
 
   it('should be able create a new user', async () => {
-    await departmentsRepository.departments.push({
+    const department = Department.create({
       name: 'IOT',
       cost_center: 2420424,
       is_board: false,
       board: 'Tecnologia da Informação',
     });
+    departmentsRepository.departments.push(department);
 
     const { user } = await sut.execute({
       user_name: 'jhon.doe',
@@ -31,21 +33,22 @@ describe('Create User Use Case', () => {
       telephone: null,
       direct_boss: 'Martin Fowler',
       smtp: 'jhon.doe@email.com',
-      admission_date: '18/04/2000',
+      admission_date: new Date(),
       demission_date: null,
       status: 'vacation',
     });
 
-    expect(user.status).toEqual('vacation');
+    expect(user.props.status).toEqual('vacation');
   });
 
   it('should not be able create a new User with department not registered', async () => {
-    await departmentsRepository.departments.push({
-      name: 'TI',
+    const department = Department.create({
+      name: 'IOT',
       cost_center: 2420424,
       is_board: false,
       board: 'Tecnologia da Informação',
     });
+    departmentsRepository.departments.push(department);
 
     await expect(() =>
       sut.execute({
@@ -56,7 +59,7 @@ describe('Create User Use Case', () => {
         telephone: null,
         direct_boss: 'Martin Fowler',
         smtp: 'jhon.doe@email.com',
-        admission_date: '18/04/2000',
+        admission_date: new Date(),
         demission_date: null,
         status: 'vacation',
       }),
@@ -64,12 +67,13 @@ describe('Create User Use Case', () => {
   });
 
   it('should not be able create a new User with duplicate user_name', async () => {
-    await departmentsRepository.departments.push({
-      name: 'TI',
+    const department = Department.create({
+      name: 'IOT',
       cost_center: 2420424,
       is_board: false,
       board: 'Tecnologia da Informação',
     });
+    departmentsRepository.departments.push(department);
 
     await sut.execute({
       user_name: 'jhon.doe',
@@ -79,7 +83,7 @@ describe('Create User Use Case', () => {
       telephone: null,
       direct_boss: 'Martin Fowler',
       smtp: 'jane.doe@email.com',
-      admission_date: '18/04/2000',
+      admission_date: new Date(),
       demission_date: null,
       status: 'vacation',
     });
@@ -93,7 +97,7 @@ describe('Create User Use Case', () => {
         telephone: null,
         direct_boss: 'Martin Fowler',
         smtp: 'jhon.doe@email.com',
-        admission_date: '18/04/2000',
+        admission_date: new Date(),
         demission_date: null,
         status: 'vacation',
       }),
