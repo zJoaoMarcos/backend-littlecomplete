@@ -12,6 +12,8 @@ export class UpdateUserDepartementUseCase {
   async execute(
     user_name: string,
     departement: string,
+    title: string,
+    direct_boss: string,
   ): Promise<UpdateUserDepartementOutput> {
     const user = await this.userRepository.findByUserName(user_name);
 
@@ -30,6 +32,8 @@ export class UpdateUserDepartementUseCase {
     const updatedUser = await this.userRepository.updateUserDepartment(
       user.user_name,
       departement,
+      title,
+      direct_boss,
     );
 
     return {

@@ -93,6 +93,8 @@ export class TypeOrmUserRepository implements IUserRepository {
   async updateUserDepartment(
     userName: string,
     department: string,
+    title: string,
+    direct_boss: string,
   ): Promise<User> {
     await this.ormRepo.update(
       {
@@ -100,6 +102,8 @@ export class TypeOrmUserRepository implements IUserRepository {
       },
       {
         departmentId: department,
+        title: title,
+        directBoss: direct_boss,
       },
     );
 

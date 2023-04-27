@@ -32,8 +32,13 @@ export class UsersController {
     @Param('id') id: string,
     @Body() updateUserDepartmentDto: UpdateUserDepartmentDto,
   ) {
-    const { department } = updateUserDepartmentDto;
-    return this.usersService.updateDepartment(id, department);
+    const { department_id, direct_boss, title } = updateUserDepartmentDto;
+    return this.usersService.updateDepartment(
+      id,
+      department_id,
+      title,
+      direct_boss,
+    );
   }
 
   @Patch('status/:id')

@@ -1,3 +1,5 @@
 export class UpdateUserDepartmentDto {
-  department: string;
+  department_id: string;
+  title: string;
+  direct_boss: string;
 }

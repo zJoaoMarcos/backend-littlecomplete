@@ -97,11 +97,18 @@ export class UsersService {
     }
   }
 
-  async updateDepartment(userName: string, department: string) {
+  async updateDepartment(
+    userName: string,
+    department_id: string,
+    title: string,
+    direct_boss: string,
+  ) {
     try {
       const { updatedUser } = await this.updateDepartmentUseCase.execute(
         userName,
-        department,
+        department_id,
+        title,
+        direct_boss,
       );
       return {
         user: updatedUser.props,
