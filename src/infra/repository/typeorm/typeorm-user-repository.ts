@@ -25,12 +25,23 @@ export class TypeOrmUserRepository implements IUserRepository {
       department_id,
       direct_boss,
       smtp,
-      admission_date: admission_date ? admission_date : new Date(),
-      status,
-      demission_date: null,
+      admission_date,
+      status: status,
+      demission_date,
     });
 
-    await this.ormRepo.save(user);
+    await this.ormRepo.save({
+      username: user.user_name,
+      completeName: user.complete_name,
+      title: user.title,
+      departmentId: user.department_id,
+      directBoss: user.direct_boss,
+      telephone: user.telephone,
+      smtp: user.smtp,
+      admissionDate: user.admission_date,
+      demissionDate: user.demission_date,
+      status: user.status,
+    });
 
     return;
   }
