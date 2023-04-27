@@ -31,7 +31,6 @@ export class UsersService {
     direct_boss,
     telephone,
     admission_date,
-    demission_date,
     status,
   }: CreateUserDto) {
     try {
@@ -44,7 +43,6 @@ export class UsersService {
         direct_boss,
         telephone,
         admission_date,
-        demission_date,
         status,
       });
 

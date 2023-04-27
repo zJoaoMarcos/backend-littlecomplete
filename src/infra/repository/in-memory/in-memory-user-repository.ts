@@ -11,10 +11,10 @@ export class InMemoryUserRepository implements IUserRepository {
     department_id: string,
     direct_boss: string,
     smtp: string,
-    admission_date: string,
+    admission_date: Date,
     status: string,
     telephone?: number,
-    demission_date?: string,
+    demission_date?: Date,
   ): Promise<User> {
     const user = User.create({
       user_name,

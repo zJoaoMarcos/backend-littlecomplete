@@ -12,36 +12,27 @@ export class TypeOrmUserRepository implements IUserRepository {
     department_id: string,
     direct_boss: string,
     smtp: string,
-    admission_date: string,
+    admission_date: Date,
     status: string,
     telephone?: number,
-    demission_date?: string,
+    demission_date?: Date,
   ): Promise<User> {
-    const user = await this.ormRepo.save({
-      username: user_name,
+    const user = User.create({
+      user_name,
       complete_name,
       title,
       telephone,
       department_id,
       direct_boss,
       smtp,
-      admission_date,
+      admission_date: admission_date ? admission_date : new Date(),
       status,
-      demission_date,
+      demission_date: null,
     });
 
-    return User.create({
-      user_name: user.username,
-      complete_name: user.completeName,
-      title: user.title,
-      telephone: user.telephone,
-      department_id: user.departmentId,
-      direct_boss: user.directBoss,
-      smtp: user.smtp,
-      admission_date: user.admissionDate,
-      status: user.status,
-      demission_date: user.demissionDate,
-    });
+    await this.ormRepo.save(user);
+
+    return;
   }
 
   async findAll(): Promise<User[]> {
