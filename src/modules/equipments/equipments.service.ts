@@ -37,9 +37,7 @@ export class EquipmentsService {
       const { equipments } = await this.findAllUseCase.execute();
       return {
         equipments: equipments.map((equipment) => {
-          return {
-            equipment: equipment.props,
-          };
+          return equipment.props;
         }),
       };
     } catch (err) {
