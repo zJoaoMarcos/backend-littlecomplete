@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({ origin: 'https://dev-little-complete.vercel.app' });
 
   const config = new DocumentBuilder()
     .setTitle('Little Complete')
