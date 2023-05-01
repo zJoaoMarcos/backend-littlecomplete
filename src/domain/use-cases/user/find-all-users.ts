@@ -4,8 +4,16 @@ import { UserNotFoundError } from '../errors/user-not-found';
 export class FindAllUsersUseCase {
   constructor(private userRepository: IUserRepository) {}
 
-  async execute(): Promise<FindAllUsersOutput> {
-    const users = await this.userRepository.findAll();
+  async execute({
+    skip,
+    take,
+    where,
+  }: FindAllUsersInput): Promise<FindAllUsersOutput> {
+    const { users, totalCount } = await this.userRepository.findAll(
+      skip,
+      take,
+      where,
+    );
 
     if (!users) {
       throw new UserNotFoundError();
@@ -13,9 +21,16 @@ export class FindAllUsersUseCase {
 
     return {
       users,
+      totalCount,
     };
   }
 }
+
+type FindAllUsersInput = {
+  skip: number;
+  take: number;
+  where: string;
+};
 
 type FindAllUsersOutput = {
   users: {
@@ -32,4 +47,5 @@ type FindAllUsersOutput = {
       status: string;
     };
   }[];
+  totalCount: number;
 };

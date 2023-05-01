@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AssignTelephoneDto } from './dto/assign-telephone.dto';
 import { CreateUserDto } from './dto/create-user.dto';
+import { FindAllUsersOptionsDto } from './dto/find-all-users-options.dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { UpdateUserTitleDto } from './dto/update-user-title.dto';
 import { UpdateUserDepartmentDto } from './dto/updateUserDepartmentDto';
@@ -18,8 +27,10 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query() findAllUsersOptionsDto: FindAllUsersOptionsDto) {
+    const { skip, take, where } = findAllUsersOptionsDto;
+
+    return this.usersService.findAll(skip, take, where);
   }
 
   @Get(':id')

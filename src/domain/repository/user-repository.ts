@@ -14,7 +14,11 @@ export interface IUserRepository {
     demission_date?: Date,
   ): Promise<User>;
 
-  findAll(): Promise<User[]>;
+  findAll(
+    skip?: number,
+    take?: number,
+    where?: string,
+  ): Promise<FindAllResponse>;
 
   findByUserName(userName: string): Promise<User>;
 
@@ -31,3 +35,8 @@ export interface IUserRepository {
 
   assignTelephone(userName: string, telephone: number): Promise<User>;
 }
+
+export type FindAllResponse = {
+  users: User[];
+  totalCount: number;
+};

@@ -33,7 +33,6 @@ export class UsersService {
     direct_boss,
     telephone,
     admission_date,
-    status,
   }: CreateUserDto) {
     try {
       const { user } = await this.createUseCase.execute({
@@ -45,7 +44,6 @@ export class UsersService {
         direct_boss,
         telephone,
         admission_date,
-        status,
       });
 
       return {
@@ -55,15 +53,19 @@ export class UsersService {
       throw new ConflictException(err.message);
     }
   }
-  async findAll() {
+  async findAll(skip: number, take: number, where: string) {
     try {
-      const { users } = await this.findAllUseCase.execute();
+      const { users, totalCount } = await this.findAllUseCase.execute({
+        skip,
+        take,
+        where,
+      });
 
       return {
         users: users.map((users) => {
           return users.props;
         }),
-        totalCount: users.length,
+        totalCount: totalCount,
       };
     } catch (err) {
       throw new NotFoundException(err.message);

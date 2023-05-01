@@ -1,6 +1,9 @@
 import { User } from 'src/domain/entity/user';
 import { Repository } from 'typeorm';
-import { IUserRepository } from '../../../domain/repository/user-repository';
+import {
+  FindAllResponse,
+  IUserRepository,
+} from '../../../domain/repository/user-repository';
 import { UserSchema } from './entities/user.schema';
 
 export class TypeOrmUserRepository implements IUserRepository {
@@ -46,14 +49,24 @@ export class TypeOrmUserRepository implements IUserRepository {
     return;
   }
 
-  async findAll(): Promise<User[]> {
-    const user = await this.ormRepo.find();
+  async findAll(
+    skip?: number,
+    take?: number,
+    where?: string,
+  ): Promise<FindAllResponse> {
+    const [result, totalCount] = await this.ormRepo.findAndCount({
+      skip: skip,
+      take: take,
+      order: {
+        username: 'desc',
+      },
+    });
 
-    if (!user) {
+    if (!result) {
       return null;
     }
 
-    return user.map((user) => {
+    const users = result.map((user) => {
       return User.create({
         user_name: user.username,
         complete_name: user.completeName,
@@ -67,6 +80,11 @@ export class TypeOrmUserRepository implements IUserRepository {
         demission_date: user.demissionDate,
       });
     });
+
+    return {
+      users,
+      totalCount,
+    };
   }
 
   async findByUserName(userName: string): Promise<User> {

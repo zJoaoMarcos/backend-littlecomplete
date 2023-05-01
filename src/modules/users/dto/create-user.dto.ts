@@ -6,6 +6,5 @@ export class CreateUserDto {
   telephone: number | null;
   direct_boss: string;
   smtp: string;
-  admission_date?: Date;
-  status?: string;
+  admission_date: Date | null;
 }

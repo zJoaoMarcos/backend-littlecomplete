@@ -1,4 +1,7 @@
-import { IUserRepository } from 'src/domain/repository/user-repository';
+import {
+  FindAllResponse,
+  IUserRepository,
+} from 'src/domain/repository/user-repository';
 import { User } from '../../../domain/entity/user';
 
 export class InMemoryUserRepository implements IUserRepository {
@@ -37,8 +40,11 @@ export class InMemoryUserRepository implements IUserRepository {
     return Promise.resolve(user);
   }
 
-  findAll(): Promise<User[]> {
-    return Promise.resolve(this.users);
+  findAll(): Promise<FindAllResponse> {
+    const users = this.users;
+    const totalCount = this.users.length;
+
+    return Promise.resolve({ users, totalCount });
   }
 
   findByUserName(userName: string): Promise<User> {
