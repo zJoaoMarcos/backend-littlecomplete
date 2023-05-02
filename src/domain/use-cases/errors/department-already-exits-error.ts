@@ -2,6 +2,6 @@ import { HttpException } from '@nestjs/common';
 
 export class DepartmentAlreadyExistsError extends HttpException {
   constructor() {
-    super('Department already exits', 409);
+    super('Department already exists', 409);
   }
 }
