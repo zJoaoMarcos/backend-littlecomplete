@@ -58,7 +58,7 @@ export class TypeOrmUserRepository implements IUserRepository {
       skip: skip,
       take: take,
       order: {
-        username: 'desc',
+        username: 'asc',
       },
     });
 
