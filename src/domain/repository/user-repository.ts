@@ -21,6 +21,7 @@ export interface IUserRepository {
   ): Promise<FindAllResponse>;
 
   findByUserName(userName: string): Promise<User>;
+  findByEmail(email: string): Promise<User>;
 
   updateUserDepartment(
     userName: string,

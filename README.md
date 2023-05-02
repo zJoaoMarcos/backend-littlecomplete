@@ -22,6 +22,7 @@ Lil Complete app.
 - [x] Should not be able create an Equipment with Department not registered;
 - [x] Should not be able create an new User with Department not registered;
 - [x] Should not be able create an new User with duplicate user_name;
+- [x] Should not be able create an new User with duplicate smtp (email);
 - [x] Should not be able delete Department;
 - [ ] Should not possible create a User with a demission date before admission date;
 - [x] Should not be able delete User;

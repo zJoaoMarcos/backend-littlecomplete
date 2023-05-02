@@ -107,6 +107,26 @@ export class TypeOrmUserRepository implements IUserRepository {
       demission_date: user.demissionDate,
     });
   }
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.ormRepo.findOneBy({ smtp: email });
+
+    if (!user) {
+      return null;
+    }
+
+    return User.create({
+      user_name: user.username,
+      complete_name: user.completeName,
+      title: user.title,
+      telephone: user.telephone,
+      department_id: user.departmentId,
+      direct_boss: user.directBoss,
+      smtp: user.smtp,
+      admission_date: user.admissionDate,
+      status: user.status,
+      demission_date: user.demissionDate,
+    });
+  }
 
   async updateUserDepartment(
     userName: string,

@@ -2,6 +2,7 @@ import { User } from '../../../domain/entity/user';
 import { IDepartmentRepository } from '../../../domain/repository/department-repository';
 import { IUserRepository } from '../../../domain/repository/user-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
+import { EmailAlreadyExistsError } from '../errors/email-already-exists-error';
 import { UserNameAlreadyExistsError } from '../errors/user-name-already-exits-error';
 
 export class CreateUserUseCase {
@@ -32,6 +33,12 @@ export class CreateUserUseCase {
 
     if (userNameTwice) {
       throw new UserNameAlreadyExistsError();
+    }
+
+    const emailTwice = await this.userRepository.findByEmail(smtp);
+
+    if (emailTwice) {
+      throw new EmailAlreadyExistsError();
     }
 
     const user = User.create({
