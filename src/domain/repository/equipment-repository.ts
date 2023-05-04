@@ -1,30 +1,13 @@
 import { Equipment } from '../entity/equipment';
 
 export interface IEquipmentRepository {
-  create(
-    id: string,
-    brand: string,
-    model: string,
-    department: string,
-    status: string,
-    supplier?: string,
-    invoice?: string,
-    warranty?: string,
-    purchase_date?: string,
-    cpu?: string,
-    ram?: string,
-    slots?: number,
-    storage0_type?: string,
-    storage0_syze?: number,
-    storage1_type?: string,
-    storage1_syze?: number,
-    video?: string,
-    service_tag?: string,
-  ): Promise<Equipment>;
+  create(equipment: Equipment): Promise<Equipment>;
 
-  findAll(): Promise<Equipment[]>;
+  findAll(skip?: number, take?: number): Promise<Equipment[]>;
 
   findById(id: string): Promise<Equipment>;
+
+  findByUserId(userId: string): Promise<Equipment[]>;
 
   updateDepartment(id: string, department: string): Promise<void>;
 }

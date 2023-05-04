@@ -32,9 +32,10 @@ export class EquipmentsService {
     }
   }
 
-  async findAll() {
+  async findAll(take?: number, skip?: number) {
     try {
-      const { equipments } = await this.findAllUseCase.execute();
+      const { equipments } = await this.findAllUseCase.execute(take, skip);
+
       return {
         equipments: equipments.map((equipment) => {
           return equipment.props;

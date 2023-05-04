@@ -20,6 +20,7 @@ interface EquipmentProps {
   storage1_syze: number | null;
   video: string | null;
   service_tag: string | null;
+  user_id: string | null;
 }
 
 export class Equipment extends Entity<EquipmentProps> {
@@ -103,6 +104,10 @@ export class Equipment extends Entity<EquipmentProps> {
     return this.props.service_tag;
   }
 
+  get user_id() {
+    return this.props.user_id;
+  }
+
   set id(id: string) {
     this.props.id = id;
   }
@@ -173,5 +178,9 @@ export class Equipment extends Entity<EquipmentProps> {
 
   set service_tag(service_tag: string) {
     this.props.service_tag = service_tag;
+  }
+
+  set user_id(user_id: string) {
+    this.props.user_id = user_id;
   }
 }

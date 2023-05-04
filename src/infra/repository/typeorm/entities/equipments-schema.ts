@@ -1,5 +1,5 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { EquipmentUserSchema } from './equipments-user.schema';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { UserSchema } from './user.schema';
 
 @Index('equipments_pkey', ['id'], { unique: true })
 @Entity('equipments', { schema: 'public' })
@@ -58,9 +58,7 @@ export class EquipmentSchema {
   @Column('character', { name: 'service_tag', nullable: true, length: 50 })
   serviceTag: string | null;
 
-  @OneToMany(
-    () => EquipmentUserSchema,
-    (equipmentsUser) => equipmentsUser.equipment,
-  )
-  equipmentsUsers: EquipmentUserSchema[];
+  @ManyToOne(() => UserSchema, (users) => users.equipments, { eager: true })
+  @JoinColumn([{ name: 'user_id', referencedColumnName: 'username' }])
+  user: UserSchema;
 }

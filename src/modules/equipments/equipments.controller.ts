@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
+import { FindAllEquipmentsOptionsDto } from './dto/find-all-equipments-options.dto';
 import { UpdateEquipmentDeparmentDto } from './dto/update-equipment-department.dto';
 import { EquipmentsService } from './equipments.service';
 
@@ -15,8 +24,9 @@ export class EquipmentsController {
   }
 
   @Get()
-  findAll() {
-    return this.equipmentsService.findAll();
+  findAll(@Query() findAllEquipmentsOptionsDto: FindAllEquipmentsOptionsDto) {
+    const { skip, take } = findAllEquipmentsOptionsDto;
+    return this.equipmentsService.findAll(take, skip);
   }
 
   @Get(':id')

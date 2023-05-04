@@ -92,43 +92,9 @@ CREATE TABLE public.equipments (
     storage1_type character(5),
     storage1_syze integer,
     video character(20),
-    service_tag character(50)
+    service_tag character(50),
+    user_id character(40)
 );
-
-
---
--- TOC entry 207 (class 1259 OID 21013)
--- Name: equipments_user; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.equipments_user (
-    id integer NOT NULL,
-    user_id character(12),
-    equipment_id character(13)
-);
-
-
---
--- TOC entry 206 (class 1259 OID 21011)
--- Name: equipments_user_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.equipments_user_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- TOC entry 3901 (class 0 OID 0)
--- Dependencies: 206
--- Name: equipments_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.equipments_user_id_seq OWNED BY public.equipments_user.id;
 
 
 --
@@ -188,14 +154,6 @@ CREATE TABLE public.users (
 
 
 --
--- TOC entry 3746 (class 2604 OID 21016)
--- Name: equipments_user id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.equipments_user ALTER COLUMN id SET DEFAULT nextval('public.equipments_user_id_seq'::regclass);
-
-
---
 -- TOC entry 3758 (class 2606 OID 21010)
 -- Name: departments departments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
@@ -211,15 +169,6 @@ ALTER TABLE ONLY public.departments
 
 ALTER TABLE ONLY public.equipments
     ADD CONSTRAINT equipments_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 3760 (class 2606 OID 21018)
--- Name: equipments_user equipments_user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.equipments_user
-    ADD CONSTRAINT equipments_user_pkey PRIMARY KEY (id);
 
 
 --
@@ -259,21 +208,12 @@ ALTER TABLE ONLY public.users
 
 
 --
--- TOC entry 3762 (class 2606 OID 21024)
--- Name: equipments_user equipments_user_equipment_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.equipments_user
-    ADD CONSTRAINT equipments_user_equipment_id_fkey FOREIGN KEY (equipment_id) REFERENCES public.equipments(id);
-
-
---
 -- TOC entry 3763 (class 2606 OID 21019)
--- Name: equipments_user equipments_user_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: equipments equipments_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.equipments_user
-    ADD CONSTRAINT equipments_user_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(username);
+ALTER TABLE ONLY public.equipments
+    ADD CONSTRAINT equipments_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(username);
 
 
 --

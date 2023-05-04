@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { EquipmentUserSchema } from './equipments-user.schema';
+import { EquipmentSchema } from './equipments-schema';
 
 @Index('users_smtp_key', ['smtp'], { unique: true })
 @Index('users_pkey', ['username'], { unique: true })
@@ -40,6 +40,6 @@ export class UserSchema {
   @Column('character', { name: 'status', nullable: true, length: 50 })
   status: string | null;
 
-  @OneToMany(() => EquipmentUserSchema, (equipmentsUser) => equipmentsUser.user)
-  equipmentsUsers: EquipmentUserSchema[];
+  @OneToMany(() => EquipmentSchema, (equipments) => equipments.user)
+  equipments: EquipmentSchema[];
 }

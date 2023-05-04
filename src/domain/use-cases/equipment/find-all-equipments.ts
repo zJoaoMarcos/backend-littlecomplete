@@ -3,8 +3,11 @@ import { IEquipmentRepository } from 'src/domain/repository/equipment-repository
 export class FindAllEquipmentsUseCase {
   constructor(private equipmentRepository: IEquipmentRepository) {}
 
-  async execute(): Promise<FindAllEquipmentsOutput> {
-    const equipments = await this.equipmentRepository.findAll();
+  async execute(
+    skip?: number,
+    take?: number,
+  ): Promise<FindAllEquipmentsOutput> {
+    const equipments = await this.equipmentRepository.findAll(skip, take);
 
     if (!equipments) {
       throw new Error('Equipments not found');
@@ -37,6 +40,7 @@ type FindAllEquipmentsOutput = {
       storage1_syze: number | null;
       video: string | null;
       service_tag: string | null;
+      user_id: string | null;
     };
   }[];
 };

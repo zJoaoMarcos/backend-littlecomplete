@@ -6,55 +6,15 @@ import { EquipmentSchema } from './entities/equipments-schema';
 export class TypeOrmEquipmentRepository implements IEquipmentRepository {
   constructor(private ormRepo: Repository<EquipmentSchema>) {}
 
-  async create(
-    id: string,
-    brand: string,
-    model: string,
-    department: string,
-    status: string,
-    supplier?: string,
-    invoice?: string,
-    warranty?: string,
-    purchase_date?: string,
-    cpu?: string,
-    ram?: string,
-    slots?: number,
-    storage0_type?: string,
-    storage0_syze?: number,
-    storage1_type?: string,
-    storage1_syze?: number,
-    video?: string,
-    service_tag?: string,
-  ): Promise<Equipment> {
-    const equipment = Equipment.create({
-      id,
-      brand,
-      model,
-      department,
-      status,
-      supplier,
-      invoice,
-      warranty,
-      purchase_date,
-      cpu,
-      ram,
-      slots,
-      storage0_type,
-      storage0_syze,
-      storage1_type,
-      storage1_syze,
-      video,
-      service_tag,
-    });
+  async create(equipment: Equipment): Promise<Equipment> {
     return this.ormRepo.save(equipment);
   }
 
-  async findAll(): Promise<Equipment[]> {
-    const equipments = await this.ormRepo.find();
-
-    if (!equipments) {
-      return null;
-    }
+  async findAll(skip?: number, take?: number): Promise<Equipment[]> {
+    const equipments = await this.ormRepo.find({
+      skip: skip,
+      take: take,
+    });
 
     return equipments.map((equipment) => {
       return Equipment.create({
@@ -76,6 +36,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         storage1_syze: equipment.storage1Syze,
         video: equipment.video,
         service_tag: equipment.serviceTag,
+        user_id: equipment.user ? equipment.user.username : null,
       });
     });
   }
@@ -106,6 +67,38 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       storage1_syze: equipment.storage1Syze,
       video: equipment.video,
       service_tag: equipment.serviceTag,
+      user_id: equipment.user ? equipment.user.username : null,
+    });
+  }
+  async findByUserId(id: string): Promise<Equipment[]> {
+    const equipments = await this.ormRepo.findBy({ id: id });
+
+    if (!equipments) {
+      return null;
+    }
+
+    return equipments.map((equipment) => {
+      return Equipment.create({
+        id: equipment.id,
+        brand: equipment.brand,
+        model: equipment.model,
+        supplier: equipment.supplier,
+        invoice: equipment.invoice,
+        warranty: equipment.warranty,
+        purchase_date: equipment.purchaseDate,
+        department: equipment.department,
+        status: equipment.status,
+        cpu: equipment.cpu,
+        ram: equipment.ram,
+        slots: equipment.slots,
+        storage0_type: equipment.storage0Type,
+        storage0_syze: equipment.storage0Syze,
+        storage1_type: equipment.storage1Type,
+        storage1_syze: equipment.storage1Syze,
+        video: equipment.video,
+        service_tag: equipment.serviceTag,
+        user_id: equipment.user ? equipment.user.username : null,
+      });
     });
   }
 

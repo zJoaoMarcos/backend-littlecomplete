@@ -4,47 +4,7 @@ import { IEquipmentRepository } from '../../../domain/repository/equipment-repos
 export class InMemoryEquipmentRepository implements IEquipmentRepository {
   equipments: Equipment[] = [];
 
-  async create(
-    id: string,
-    brand: string,
-    model: string,
-    department: string,
-    status: string,
-    supplier = null,
-    invoice = null,
-    warranty = null,
-    purchase_date = null,
-    cpu = null,
-    ram = null,
-    slots = null,
-    storage0_type = null,
-    storage0_syze = null,
-    storage1_type = null,
-    storage1_syze = null,
-    video = null,
-    service_tag = null,
-  ): Promise<Equipment> {
-    const equipment = Equipment.create({
-      id,
-      brand,
-      model,
-      department,
-      status,
-      supplier,
-      invoice,
-      warranty,
-      purchase_date,
-      cpu,
-      ram,
-      slots,
-      storage0_type,
-      storage0_syze,
-      storage1_type,
-      storage1_syze,
-      video,
-      service_tag,
-    });
-
+  async create(equipment: Equipment): Promise<Equipment> {
     this.equipments.push(equipment);
 
     return Promise.resolve(equipment);
@@ -62,6 +22,10 @@ export class InMemoryEquipmentRepository implements IEquipmentRepository {
     }
 
     return Promise.resolve(equipment);
+  }
+
+  findByUserId(userId: string): Promise<Equipment[]> {
+    throw new Error('Method not implemented.');
   }
 
   async updateDepartment(id: string, department: string): Promise<void> {
