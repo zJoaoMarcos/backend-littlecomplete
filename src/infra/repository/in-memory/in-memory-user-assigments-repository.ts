@@ -1,7 +1,10 @@
 import { Equipment } from '../../../domain/entity/equipment';
 import { User } from '../../../domain/entity/user';
 import { UserAssignments } from '../../../domain/entity/user-assignments';
-import { IUserAssignmentsRepository } from '../../../domain/repository/user-assignments-repository';
+import {
+  IUserAssignmentsRepository,
+  ResponseUserAssignments,
+} from '../../../domain/repository/user-assignments-repository';
 
 export class InMemoryUserAssignmentsRepository
   implements IUserAssignmentsRepository
@@ -26,7 +29,7 @@ export class InMemoryUserAssignmentsRepository
     return userAssignments;
   }
 
-  async findByEquipmentId(id: string): Promise<UserAssignments> {
+  async findByEquipmentId(id: string): Promise<User> {
     const userAssignments = this.assignments.find(
       (item) => item.equipment.id === id,
     );
@@ -35,18 +38,10 @@ export class InMemoryUserAssignmentsRepository
       return null;
     }
 
-    return userAssignments;
+    return userAssignments.user;
   }
 
-  async findByUserName(id: string): Promise<UserAssignments[]> {
-    const userAssignments = this.assignments.filter(
-      (item) => item.user.user_name === id,
-    );
-
-    if (!userAssignments) {
-      return null;
-    }
-
-    return userAssignments;
+  findByUserName(id: string): Promise<ResponseUserAssignments> {
+    throw new Error('Method not implemented.');
   }
 }

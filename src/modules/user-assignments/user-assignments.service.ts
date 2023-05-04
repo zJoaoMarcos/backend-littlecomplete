@@ -56,15 +56,10 @@ export class UserAssignmentsService {
 
   async findByEquipmentId(id: string) {
     try {
-      const { userAssignments } = await this.FindByEquipmentIdUseCase.execute(
-        id,
-      );
+      const { user } = await this.FindByEquipmentIdUseCase.execute(id);
 
       return {
-        userAssignments: {
-          user: userAssignments.props.user.props,
-          equipment: userAssignments.props.equipment.props,
-        },
+        user: user.props,
       };
     } catch (err) {
       throw new NotFoundException(err.message);
@@ -72,16 +67,11 @@ export class UserAssignmentsService {
   }
   async findByUserName(id: string) {
     try {
-      const { userAssignments } = await this.FindByUserNameUseCase.execute(id);
+      const { equipments } = await this.FindByUserNameUseCase.execute(id);
 
       return {
-        userAssignments: userAssignments.map((assignments) => {
-          return {
-            assignments: {
-              user: assignments.props.user.props,
-              equipment: assignments.props.equipment.props,
-            },
-          };
+        equipments: equipments.map((equipment) => {
+          return equipment.props;
         }),
       };
     } catch (err) {
