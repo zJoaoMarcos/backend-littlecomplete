@@ -1,17 +1,21 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
+import { IEquipmentRepository } from 'src/domain/repository/equipment-repository';
 import { IUserRepository } from 'src/domain/repository/user-repository';
 import { AssignTelephoneForUserUseCase } from 'src/domain/use-cases/user/assign-telephone-for-user';
 import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
 import { FindAllUsersUseCase } from 'src/domain/use-cases/user/find-all-users';
+import { FindUserAssignmentsUseCase } from 'src/domain/use-cases/user/find-user-assignments';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
 import { UpdateUserDepartementUseCase } from 'src/domain/use-cases/user/update-user-department';
 import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
 import { UpdateUserTitleUseCase } from 'src/domain/use-cases/user/update-user-title';
 import { DepartmentSchema } from 'src/infra/repository/typeorm/entities/department.schema';
+import { EquipmentSchema } from 'src/infra/repository/typeorm/entities/equipments-schema';
 import { UserSchema } from 'src/infra/repository/typeorm/entities/user.schema';
 import { TypeOrmDepartmentRepository } from 'src/infra/repository/typeorm/typeorm-department-repository';
+import { TypeOrmEquipmentRepository } from 'src/infra/repository/typeorm/typeorm-equipment-repository';
 import { TypeOrmUserRepository } from 'src/infra/repository/typeorm/typeorm-user-repository';
 import { DataSource } from 'typeorm';
 import { UsersController } from './users.controller';
@@ -34,6 +38,15 @@ import { UsersService } from './users.service';
       useFactory: (dataSource: DataSource) => {
         return new TypeOrmDepartmentRepository(
           dataSource.getRepository(DepartmentSchema),
+        );
+      },
+      inject: [getDataSourceToken()],
+    },
+    {
+      provide: TypeOrmEquipmentRepository,
+      useFactory: (dataSource: DataSource) => {
+        return new TypeOrmEquipmentRepository(
+          dataSource.getRepository(EquipmentSchema),
         );
       },
       inject: [getDataSourceToken()],
@@ -63,6 +76,16 @@ import { UsersService } from './users.service';
       inject: [TypeOrmUserRepository],
     },
     {
+      provide: FindUserAssignmentsUseCase,
+      useFactory: (
+        userRepo: IUserRepository,
+        equipmentRepo: IEquipmentRepository,
+      ) => {
+        return new FindUserAssignmentsUseCase(userRepo, equipmentRepo);
+      },
+      inject: [TypeOrmUserRepository, TypeOrmEquipmentRepository],
+    },
+    {
       provide: UpdateUserDepartementUseCase,
       useFactory: (
         userRepo: IUserRepository,
@@ -74,10 +97,7 @@ import { UsersService } from './users.service';
     },
     {
       provide: UpdateUserStatusUseCase,
-      useFactory: (
-        userRepo: IUserRepository,
-        departmentRepo: IDepartmentRepository,
-      ) => {
+      useFactory: (userRepo: IUserRepository) => {
         return new UpdateUserStatusUseCase(userRepo);
       },
       inject: [TypeOrmUserRepository],

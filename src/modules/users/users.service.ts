@@ -6,6 +6,7 @@ import {
 import { AssignTelephoneForUserUseCase } from 'src/domain/use-cases/user/assign-telephone-for-user';
 import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
 import { FindAllUsersUseCase } from 'src/domain/use-cases/user/find-all-users';
+import { FindUserAssignmentsUseCase } from 'src/domain/use-cases/user/find-user-assignments';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
 import { UpdateUserDepartementUseCase } from 'src/domain/use-cases/user/update-user-department';
 import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
@@ -18,6 +19,7 @@ export class UsersService {
     private createUseCase: CreateUserUseCase,
     private findAllUseCase: FindAllUsersUseCase,
     private findByIdUseCase: FindUserByUserNameUseCase,
+    private findUserAssignmentsUseCase: FindUserAssignmentsUseCase,
     private updateTitleUseCase: UpdateUserTitleUseCase,
     private updateDepartmentUseCase: UpdateUserDepartementUseCase,
     private updateStatusUseCase: UpdateUserStatusUseCase,
@@ -78,6 +80,22 @@ export class UsersService {
 
       return {
         user: user.props,
+      };
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
+  }
+
+  async findUserAssignments(userName: string) {
+    try {
+      const { user, equipments } =
+        await this.findUserAssignmentsUseCase.execute(userName);
+
+      return {
+        user: user.props,
+        equipments: equipments.map((equipment) => {
+          return equipment.props;
+        }),
       };
     } catch (err) {
       throw new NotFoundException(err.message);

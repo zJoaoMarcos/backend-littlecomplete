@@ -35,7 +35,7 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findByUserName(id);
+    return this.usersService.findUserAssignments(id);
   }
 
   @Patch('department/:id')

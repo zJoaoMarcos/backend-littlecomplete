@@ -71,7 +71,9 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
     });
   }
   async findByUserId(id: string): Promise<Equipment[]> {
-    const equipments = await this.ormRepo.findBy({ id: id });
+    const equipments = await this.ormRepo.findBy({ user: { username: id } });
+
+    console.log(equipments);
 
     if (!equipments) {
       return null;
