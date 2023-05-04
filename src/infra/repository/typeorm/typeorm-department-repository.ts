@@ -27,8 +27,11 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
     });
   }
 
-  async findAll(): Promise<Department[]> {
-    const departments = await this.ormRepo.find();
+  async findAll(skip?: number, take?: number): Promise<Department[]> {
+    const departments = await this.ormRepo.find({
+      skip: skip,
+      take: take,
+    });
 
     if (!departments) {
       return null;

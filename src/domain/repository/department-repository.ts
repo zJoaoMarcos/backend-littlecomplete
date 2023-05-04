@@ -8,7 +8,7 @@ export interface IDepartmentRepository {
     board: string,
   ): Promise<Department>;
 
-  findAll(): Promise<Department[]>;
+  findAll(skip?: number, take?: number): Promise<Department[]>;
 
   findByName(name: string): Promise<Department>;
 

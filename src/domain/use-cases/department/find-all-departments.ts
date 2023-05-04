@@ -4,8 +4,11 @@ import { DepartmentNotFoundError } from '../errors/department-not-found';
 export class FindAllDepartmentsUseCase {
   constructor(private departmentsRepository: IDepartmentRepository) {}
 
-  async execute(): Promise<FindAllDepartmentOutput> {
-    const department = await this.departmentsRepository.findAll();
+  async execute(
+    skip?: number,
+    take?: number,
+  ): Promise<FindAllDepartmentOutput> {
+    const department = await this.departmentsRepository.findAll(skip, take);
 
     if (!department) {
       throw new DepartmentNotFoundError();

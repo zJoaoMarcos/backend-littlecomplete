@@ -31,14 +31,12 @@ export class DepartmentsService {
     }
   }
 
-  async findAll() {
+  async findAll(skip?: number, take?: number) {
     try {
-      const { department } = await this.findAllUseCase.execute();
+      const { department } = await this.findAllUseCase.execute(skip, take);
       return {
         departments: department.map((department) => {
-          return {
-            department: department.props,
-          };
+          return department.props;
         }),
       };
     } catch (err) {

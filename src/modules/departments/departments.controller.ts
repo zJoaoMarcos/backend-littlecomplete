@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { DepartmentsService } from './departments.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
+import { FindAllDepartmentsOptions } from './dto/find-all-departments-options.dto';
 
 @ApiTags('Departments')
 @Controller('departments')
@@ -14,12 +23,14 @@ export class DepartmentsController {
   }
 
   @Get()
-  findAll() {
-    return this.departmentsService.findAll();
+  findAll(@Query() findAllOptions: FindAllDepartmentsOptions) {
+    const { skip, take } = findAllOptions;
+    return this.departmentsService.findAll(skip, take);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get('/id')
+  findOne(@Query('id') id: string) {
+    console.log(id);
     return this.departmentsService.findByName(id);
   }
 
