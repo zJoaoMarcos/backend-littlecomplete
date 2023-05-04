@@ -74,10 +74,13 @@ export class UsersService {
 
   async findByUserName(userName: string) {
     try {
-      const { user } = await this.findByIdUseCase.execute(userName);
+      const { user, equipments } = await this.findByIdUseCase.execute(userName);
 
       return {
         user: user.props,
+        equipments: equipments.map((equip) => {
+          return equip.props;
+        }),
       };
     } catch (err) {
       throw new NotFoundException(err.message);

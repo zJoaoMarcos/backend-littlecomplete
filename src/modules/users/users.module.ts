@@ -10,8 +10,10 @@ import { UpdateUserDepartementUseCase } from 'src/domain/use-cases/user/update-u
 import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
 import { UpdateUserTitleUseCase } from 'src/domain/use-cases/user/update-user-title';
 import { DepartmentSchema } from 'src/infra/repository/typeorm/entities/department.schema';
+import { EquipmentUserSchema } from 'src/infra/repository/typeorm/entities/equipments-user.schema';
 import { UserSchema } from 'src/infra/repository/typeorm/entities/user.schema';
 import { TypeOrmDepartmentRepository } from 'src/infra/repository/typeorm/typeorm-department-repository';
+import { TypeOrmUserAssignmentsRepository } from 'src/infra/repository/typeorm/typeorm-user-assignments-repository';
 import { TypeOrmUserRepository } from 'src/infra/repository/typeorm/typeorm-user-repository';
 import { DataSource } from 'typeorm';
 import { UsersController } from './users.controller';
@@ -39,6 +41,15 @@ import { UsersService } from './users.service';
       inject: [getDataSourceToken()],
     },
     {
+      provide: TypeOrmUserAssignmentsRepository,
+      useFactory: (dataSource: DataSource) => {
+        return new TypeOrmUserAssignmentsRepository(
+          dataSource.getRepository(EquipmentUserSchema),
+        );
+      },
+      inject: [getDataSourceToken()],
+    },
+    {
       provide: CreateUserUseCase,
       useFactory: (
         userRepo: IUserRepository,
@@ -57,10 +68,10 @@ import { UsersService } from './users.service';
     },
     {
       provide: FindUserByUserNameUseCase,
-      useFactory: (userRepo: IUserRepository) => {
-        return new FindUserByUserNameUseCase(userRepo);
+      useFactory: (userRepo: IUserRepository, userAssignmentsRepo) => {
+        return new FindUserByUserNameUseCase(userRepo, userAssignmentsRepo);
       },
-      inject: [TypeOrmUserRepository],
+      inject: [TypeOrmUserRepository, TypeOrmUserAssignmentsRepository],
     },
     {
       provide: UpdateUserDepartementUseCase,
