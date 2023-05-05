@@ -62,10 +62,12 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.departments (
+    id integer NOT NULL,
     name character(50) NOT NULL,
     cost_center integer,
     is_board boolean,
-    board character(50)
+    board character(50),
+    responsible_id char(50)
 );
 
 
@@ -81,7 +83,7 @@ CREATE TABLE public.equipments (
     supplier character(50),
     invoice character(50),
     warranty character(10),
-    purchase_date character(20),
+    purchase_date date,
     department character(50),
     status character(30),
     cpu character(10),
@@ -103,7 +105,7 @@ CREATE TABLE public.equipments (
 
 CREATE TABLE public.equipments_user (
     id integer NOT NULL,
-    user_id character(12),
+    user_id character(59),
     equipment_id character(13)
 );
 
@@ -201,7 +203,7 @@ ALTER TABLE ONLY public.equipments_user ALTER COLUMN id SET DEFAULT nextval('pub
 --
 
 ALTER TABLE ONLY public.departments
-    ADD CONSTRAINT departments_pkey PRIMARY KEY (name);
+    ADD CONSTRAINT departments_pkey PRIMARY KEY (id);
 
 
 --
