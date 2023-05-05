@@ -31,7 +31,6 @@ export class DepartmentsController {
 
   @Get(':id')
   findOne(@Param('id') id: number) {
-    console.log(id);
     return this.departmentsService.findById(id);
   }
 
