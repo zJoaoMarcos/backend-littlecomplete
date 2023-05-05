@@ -1,10 +1,19 @@
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
-@Index('departments_pkey', ['name'], { unique: true })
+@Index('departments_id_key', ['id'], { unique: true })
+@Index('departments_pkey', ['id'], { unique: true })
 @Entity('departments', { schema: 'public' })
 export class DepartmentSchema {
-  @Column('character', { primary: true, name: 'name', length: 50 })
-  name: string;
+  @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
+  id: number;
+
+  @Column('character', {
+    name: 'department',
+    nullable: true,
+    unique: true,
+    length: 50,
+  })
+  name: string | null;
 
   @Column('integer', { name: 'cost_center', nullable: true })
   costCenter: number | null;
@@ -14,4 +23,7 @@ export class DepartmentSchema {
 
   @Column('character', { name: 'board', nullable: true, length: 50 })
   board: string | null;
+
+  @Column('character', { name: 'responsible_id', nullable: true, length: 50 })
+  responsibleId: string | null;
 }

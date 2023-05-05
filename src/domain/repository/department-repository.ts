@@ -6,11 +6,26 @@ export interface IDepartmentRepository {
     cost_center: number,
     is_board: boolean,
     board: string,
+    responsible_id: string,
   ): Promise<Department>;
 
-  findAll(skip?: number, take?: number): Promise<Department[]>;
+  findAll(skip?: number, take?: number): Promise<FindAllDepartmentsResponse>;
 
-  findByName(name: string): Promise<Department>;
+  findByName(departmentName: string): Promise<Department>;
 
-  updateCostCenter(name: string, cost_center: number): Promise<void>;
+  findById(departmentId: number): Promise<Department>;
+
+  update(
+    id: number,
+    name: string,
+    cost_center: number,
+    is_board: boolean,
+    board: string,
+    responsible_id: string,
+  ): Promise<void>;
 }
+
+export type FindAllDepartmentsResponse = {
+  departments: Department[];
+  totalCount: number;
+};

@@ -3,8 +3,9 @@ import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { CreateDepartmentUseCase } from 'src/domain/use-cases/department/create-department';
 import { FindAllDepartmentsUseCase } from 'src/domain/use-cases/department/find-all-departments';
-import { FindByNameDepartmentUseCase } from 'src/domain/use-cases/department/find-department-by-name';
-import { UpdateCostCenterDepartmentUseCase } from 'src/domain/use-cases/department/update-cost-center-department';
+import { FindDepartmentByIdUseCase } from 'src/domain/use-cases/department/find-department-by-id';
+import { FindDepartmentByNameUseCase } from 'src/domain/use-cases/department/find-department-by-name';
+import { UpdateDepartmentUseCase } from 'src/domain/use-cases/department/update-department';
 import { InMemoryDepartmentRepository } from 'src/infra/repository/in-memory/in-memory-department-repository';
 import { DepartmentSchema } from 'src/infra/repository/typeorm/entities/department.schema';
 import { TypeOrmDepartmentRepository } from 'src/infra/repository/typeorm/typeorm-department-repository';
@@ -45,16 +46,23 @@ import { DepartmentsService } from './departments.service';
       inject: [TypeOrmDepartmentRepository],
     },
     {
-      provide: FindByNameDepartmentUseCase,
+      provide: FindDepartmentByNameUseCase,
       useFactory: (departmentRepo: IDepartmentRepository) => {
-        return new FindByNameDepartmentUseCase(departmentRepo);
+        return new FindDepartmentByNameUseCase(departmentRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },
     {
-      provide: UpdateCostCenterDepartmentUseCase,
+      provide: FindDepartmentByIdUseCase,
       useFactory: (departmentRepo: IDepartmentRepository) => {
-        return new UpdateCostCenterDepartmentUseCase(departmentRepo);
+        return new FindDepartmentByIdUseCase(departmentRepo);
+      },
+      inject: [TypeOrmDepartmentRepository],
+    },
+    {
+      provide: UpdateDepartmentUseCase,
+      useFactory: (departmentRepo: IDepartmentRepository) => {
+        return new UpdateDepartmentUseCase(departmentRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },

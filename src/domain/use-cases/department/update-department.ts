@@ -1,15 +1,31 @@
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 
-export class FindDepartmentByNameUseCase {
+export class UpdateDepartmentUseCase {
   constructor(private departmentsRepository: IDepartmentRepository) {}
 
-  async execute(name: string): Promise<FindDepartmentByNameOutput> {
-    const department = await this.departmentsRepository.findByName(name);
+  async execute(
+    id: number,
+    name: string,
+    cost_center: number,
+    is_board: boolean,
+    board: string,
+    responsible_id: string,
+  ): Promise<UpdateDepartmentOutput> {
+    const department = await this.departmentsRepository.findById(id);
 
     if (!department) {
       throw new DepartmentNotFoundError();
     }
+
+    await this.departmentsRepository.update(
+      department.id,
+      name,
+      cost_center,
+      is_board,
+      board,
+      responsible_id,
+    );
 
     return {
       department,
@@ -17,7 +33,7 @@ export class FindDepartmentByNameUseCase {
   }
 }
 
-type FindDepartmentByNameOutput = {
+type UpdateDepartmentOutput = {
   department: {
     props: {
       id: number;

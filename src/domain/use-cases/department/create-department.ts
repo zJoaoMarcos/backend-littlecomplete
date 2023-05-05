@@ -1,3 +1,4 @@
+import { randomInt } from 'node:crypto';
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { Department } from '../../../domain/entity/department';
 import { DepartmentAlreadyExistsError } from '../errors/department-already-exits-error';
@@ -10,6 +11,7 @@ export class CreateDepartmentUseCase {
     cost_center,
     is_board,
     board,
+    responsible_id,
   }: CreateDepartmentInput): Promise<CreateDepartmentOutput> {
     const departmentAlreadyExists = await this.departmentRepository.findByName(
       name,
@@ -19,18 +21,21 @@ export class CreateDepartmentUseCase {
       throw new DepartmentAlreadyExistsError();
     }
 
-    const department = Department.create({
+    const newDepartment = Department.create({
+      id: randomInt(1, 200),
       name,
       cost_center,
       is_board,
       board,
+      responsible_id,
     });
 
-    await this.departmentRepository.create(
-      department.name,
-      department.cost_center,
-      department.is_board,
-      department.board,
+    const department = await this.departmentRepository.create(
+      newDepartment.name,
+      newDepartment.cost_center,
+      newDepartment.is_board,
+      newDepartment.board,
+      newDepartment.responsible_id,
     );
 
     return {
@@ -44,15 +49,18 @@ type CreateDepartmentInput = {
   cost_center: number;
   is_board: boolean;
   board: string;
+  responsible_id: string;
 };
 
 type CreateDepartmentOutput = {
   department: {
     props: {
+      id: number;
       name: string;
       cost_center: number;
       is_board: boolean;
       board: string;
+      responsible_id: string;
     };
   };
 };

@@ -8,25 +8,29 @@ export class FindAllDepartmentsUseCase {
     skip?: number,
     take?: number,
   ): Promise<FindAllDepartmentOutput> {
-    const department = await this.departmentsRepository.findAll(skip, take);
+    const { departments, totalCount } =
+      await this.departmentsRepository.findAll(skip, take);
 
-    if (!department) {
+    if (!departments) {
       throw new DepartmentNotFoundError();
     }
-
     return {
-      department,
+      departments,
+      totalCount,
     };
   }
 }
 
 type FindAllDepartmentOutput = {
-  department: {
+  departments: {
     props: {
+      id: number;
       name: string;
       cost_center: number;
       is_board: boolean;
       board: string;
+      responsible_id: string;
     };
   }[];
+  totalCount: number;
 };

@@ -6,4 +6,6 @@ export class CreateDepartmentDto {
   is_board: boolean;
 
   board: string;
+
+  responsible_id: string;
 }
