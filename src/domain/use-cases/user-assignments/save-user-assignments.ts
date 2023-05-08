@@ -60,6 +60,7 @@ type SaveUserAssignmentsOutput = {
       equipment: {
         props: {
           id: string;
+          type: string | null;
           brand: string;
           model: string;
           supplier: string;

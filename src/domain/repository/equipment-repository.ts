@@ -1,3 +1,4 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { Equipment } from '../entity/equipment';
 
 export interface IEquipmentRepository {
@@ -21,10 +22,12 @@ export interface IEquipmentRepository {
     video?: string,
     service_tag?: string,
   ): Promise<Equipment>;
-
-  findAll(): Promise<Equipment[]>;
-
+  findMany(params: PaginationParams): Promise<FindManyOutput>;
   findById(id: string): Promise<Equipment>;
-
   updateDepartment(id: string, department: string): Promise<void>;
+}
+
+export interface FindManyOutput {
+  equipments: Equipment[];
+  totalCount: number;
 }

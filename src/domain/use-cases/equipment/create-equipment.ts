@@ -15,7 +15,6 @@ export class CreateEquipmentUseCase {
     brand,
     model,
     department,
-    status,
     supplier,
     invoice,
     warranty,
@@ -49,7 +48,7 @@ export class CreateEquipmentUseCase {
       brand,
       model,
       department,
-      status,
+      status: 'available',
       supplier,
       invoice,
       warranty,
@@ -101,7 +100,6 @@ type CreateEquipmentInput = {
   warranty?: string;
   purchase_date?: string;
   department: string;
-  status: string;
   cpu?: string;
   ram?: string;
   slots?: number;
@@ -117,6 +115,7 @@ type CreateEquipmentOutput = {
   equipment: {
     props: {
       id: string;
+      type: string | null;
       brand: string;
       model: string;
       supplier: string;

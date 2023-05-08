@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/adjacent-overload-signatures */
+import { Optional } from 'src/core/types/optional';
 import { Entity } from '../../core/entities/entity';
+import { getTypeOfEquipment } from '../utils/get-type-of-equipment';
 
 interface EquipmentProps {
   id: string;
+  type: string | null;
   brand: string;
   model: string;
   supplier: string | null;
@@ -23,8 +26,9 @@ interface EquipmentProps {
 }
 
 export class Equipment extends Entity<EquipmentProps> {
-  static create(props: EquipmentProps) {
+  static create(props: Optional<EquipmentProps, 'type'>) {
     const equipment = new Equipment({
+      type: getTypeOfEquipment(props.id),
       ...props,
     });
 
@@ -33,6 +37,10 @@ export class Equipment extends Entity<EquipmentProps> {
 
   get id() {
     return this.props.id;
+  }
+
+  get type() {
+    return this.props.type;
   }
 
   get brand() {
@@ -105,6 +113,12 @@ export class Equipment extends Entity<EquipmentProps> {
 
   set id(id: string) {
     this.props.id = id;
+  }
+
+  set type(id: string) {
+    const type = getTypeOfEquipment(id);
+
+    this.props.type = type;
   }
 
   set brand(brand: string) {

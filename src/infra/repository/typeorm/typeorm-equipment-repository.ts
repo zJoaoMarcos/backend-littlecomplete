@@ -1,6 +1,10 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { Equipment } from 'src/domain/entity/equipment';
 import { Repository } from 'typeorm';
-import { IEquipmentRepository } from '../../../domain/repository/equipment-repository';
+import {
+  FindManyOutput,
+  IEquipmentRepository,
+} from '../../../domain/repository/equipment-repository';
 import { EquipmentSchema } from './entities/equipments-schema';
 
 export class TypeOrmEquipmentRepository implements IEquipmentRepository {
@@ -49,14 +53,17 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
     return this.ormRepo.save(equipment);
   }
 
-  async findAll(): Promise<Equipment[]> {
-    const equipments = await this.ormRepo.find();
+  async findMany(params: PaginationParams): Promise<FindManyOutput> {
+    const [result, totalCount] = await this.ormRepo.findAndCount({
+      skip: params.skip,
+      take: params.take,
+    });
 
-    if (!equipments) {
+    if (!result) {
       return null;
     }
 
-    return equipments.map((equipment) => {
+    const equipments = result.map((equipment) => {
       return Equipment.create({
         id: equipment.id,
         brand: equipment.brand,
@@ -78,6 +85,11 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         service_tag: equipment.serviceTag,
       });
     });
+
+    return {
+      equipments,
+      totalCount,
+    };
   }
 
   async findById(id: string): Promise<Equipment> {

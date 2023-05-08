@@ -3,8 +3,14 @@ import { IEquipmentRepository } from 'src/domain/repository/equipment-repository
 export class FindAllEquipmentsUseCase {
   constructor(private equipmentRepository: IEquipmentRepository) {}
 
-  async execute(): Promise<FindAllEquipmentsOutput> {
-    const equipments = await this.equipmentRepository.findAll();
+  async execute({
+    skip,
+    take,
+  }: FindAllEquipmentsInput): Promise<FindAllEquipmentsOutput> {
+    const { equipments, totalCount } = await this.equipmentRepository.findMany({
+      skip,
+      take,
+    });
 
     if (!equipments) {
       throw new Error('Equipments not found');
@@ -12,14 +18,22 @@ export class FindAllEquipmentsUseCase {
 
     return {
       equipments,
+      totalCount,
     };
   }
 }
 
+type FindAllEquipmentsInput = {
+  skip?: number;
+  take?: number;
+};
+
 type FindAllEquipmentsOutput = {
+  totalCount?: number;
   equipments: {
     props: {
       id: string;
+      type: string | null;
       brand: string;
       model: string;
       supplier: string;

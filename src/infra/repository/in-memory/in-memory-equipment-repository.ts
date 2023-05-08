@@ -1,5 +1,9 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { Equipment } from '../../../domain/entity/equipment';
-import { IEquipmentRepository } from '../../../domain/repository/equipment-repository';
+import {
+  FindManyOutput,
+  IEquipmentRepository,
+} from '../../../domain/repository/equipment-repository';
 
 export class InMemoryEquipmentRepository implements IEquipmentRepository {
   equipments: Equipment[] = [];
@@ -50,8 +54,13 @@ export class InMemoryEquipmentRepository implements IEquipmentRepository {
     return Promise.resolve(equipment);
   }
 
-  async findAll(): Promise<Equipment[]> {
-    return Promise.resolve(this.equipments);
+  async findMany(params: PaginationParams): Promise<FindManyOutput> {
+    const equipments = this.equipments;
+    const totalCount = equipments.length;
+    return {
+      equipments,
+      totalCount,
+    };
   }
 
   async findById(id: string): Promise<Equipment> {
