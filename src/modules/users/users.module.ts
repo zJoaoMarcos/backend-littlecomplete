@@ -72,10 +72,13 @@ import { UsersService } from './users.service';
     },
     {
       provide: EditUserUseCase,
-      useFactory: (userRepo: IUserRepository) => {
-        return new EditUserUseCase(userRepo);
+      useFactory: (
+        userRepo: IUserRepository,
+        departmentRepo: IDepartmentRepository,
+      ) => {
+        return new EditUserUseCase(userRepo, departmentRepo);
       },
-      inject: [TypeOrmUserRepository],
+      inject: [TypeOrmUserRepository, TypeOrmDepartmentRepository],
     },
   ],
 })

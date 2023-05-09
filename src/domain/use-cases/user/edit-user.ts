@@ -1,9 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { IUserRepository } from 'src/domain/repository/user-repository';
 import { UserNotFoundError } from '../errors/user-not-found';
 
 export class EditUserUseCase {
-  constructor(private userRepository: IUserRepository) {}
+  constructor(
+    private userRepository: IUserRepository,
+    private departmentRepository: IDepartmentRepository,
+  ) {}
 
   async execute({
     user_name,
@@ -23,8 +27,10 @@ export class EditUserUseCase {
       throw new UserNotFoundError();
     }
 
+    const department = await this.departmentRepository.findById(department_id);
+
     user.complete_name = complete_name;
-    user.department_id = department_id;
+    user.department_id = department.name;
     user.title = title;
     user.status = status;
     user.telephone = telephone;
@@ -43,7 +49,7 @@ type UpdateUserInput = {
   user_name: string;
   complete_name: string;
   title: string;
-  department_id: string;
+  department_id: number;
   telephone: number | null;
   direct_boss: string;
   smtp: string;
