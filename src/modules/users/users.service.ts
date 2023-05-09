@@ -3,14 +3,12 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { AssignTelephoneForUserUseCase } from 'src/domain/use-cases/user/assign-telephone-for-user';
 import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
+import { EditUserUseCase } from 'src/domain/use-cases/user/edit-user';
 import { FindAllUsersUseCase } from 'src/domain/use-cases/user/find-all-users';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
-import { UpdateUserDepartementUseCase } from 'src/domain/use-cases/user/update-user-department';
-import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
-import { UpdateUserTitleUseCase } from 'src/domain/use-cases/user/update-user-title';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -18,10 +16,7 @@ export class UsersService {
     private createUseCase: CreateUserUseCase,
     private findAllUseCase: FindAllUsersUseCase,
     private findByIdUseCase: FindUserByUserNameUseCase,
-    private updateTitleUseCase: UpdateUserTitleUseCase,
-    private updateDepartmentUseCase: UpdateUserDepartementUseCase,
-    private updateStatusUseCase: UpdateUserStatusUseCase,
-    private assignTelephoneUseCase: AssignTelephoneForUserUseCase,
+    private updateUsecase: EditUserUseCase,
   ) {}
 
   async create({
@@ -53,6 +48,7 @@ export class UsersService {
       throw new ConflictException(err.message);
     }
   }
+
   async findAll(skip: number, take: number, where: string) {
     try {
       const { users, totalCount } = await this.findAllUseCase.execute({
@@ -87,68 +83,11 @@ export class UsersService {
     }
   }
 
-  async updateTitle(userName: string, title: string) {
+  async updateUser(id: string, user: UpdateUserDto) {
     try {
-      const { updatedUser } = await this.updateTitleUseCase.execute(
-        userName,
-        title,
-      );
-
-      return {
-        user: updatedUser.props,
-      };
+      await this.updateUsecase.execute({ user_name: id, ...user });
     } catch (err) {
-      throw new ConflictException(err.message);
-    }
-  }
-
-  async updateDepartment(
-    userName: string,
-    department_id: string,
-    title: string,
-    direct_boss: string,
-  ) {
-    try {
-      const { updatedUser } = await this.updateDepartmentUseCase.execute(
-        userName,
-        department_id,
-        title,
-        direct_boss,
-      );
-      return {
-        user: updatedUser.props,
-      };
-    } catch (err) {
-      throw new ConflictException(err.message);
-    }
-  }
-
-  async updateStatus(userName: string, status: string) {
-    try {
-      const { updatedUser } = await this.updateStatusUseCase.execute(
-        userName,
-        status,
-      );
-      return {
-        user: updatedUser.props,
-      };
-    } catch (err) {
-      throw new ConflictException(err.message);
-    }
-  }
-
-  async assignTelephone(userName: string, telephone: number) {
-    try {
-      const { updatedUser } = await this.assignTelephoneUseCase.execute(
-        userName,
-        telephone,
-      );
-
-      return {
-        user: updatedUser.props,
-      };
-    } catch (err) {
-      throw new ConflictException(err.message);
+      throw new NotFoundException(err.message);
     }
   }
 }

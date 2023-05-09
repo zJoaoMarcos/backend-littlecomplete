@@ -2,13 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { IUserRepository } from 'src/domain/repository/user-repository';
-import { AssignTelephoneForUserUseCase } from 'src/domain/use-cases/user/assign-telephone-for-user';
 import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
+import { EditUserUseCase } from 'src/domain/use-cases/user/edit-user';
 import { FindAllUsersUseCase } from 'src/domain/use-cases/user/find-all-users';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
-import { UpdateUserDepartementUseCase } from 'src/domain/use-cases/user/update-user-department';
-import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
-import { UpdateUserTitleUseCase } from 'src/domain/use-cases/user/update-user-title';
 import { DepartmentSchema } from 'src/infra/repository/typeorm/entities/department.schema';
 import { EquipmentUserSchema } from 'src/infra/repository/typeorm/entities/equipments-user.schema';
 import { UserSchema } from 'src/infra/repository/typeorm/entities/user.schema';
@@ -74,36 +71,9 @@ import { UsersService } from './users.service';
       inject: [TypeOrmUserRepository, TypeOrmUserAssignmentsRepository],
     },
     {
-      provide: UpdateUserDepartementUseCase,
-      useFactory: (
-        userRepo: IUserRepository,
-        departmentRepo: IDepartmentRepository,
-      ) => {
-        return new UpdateUserDepartementUseCase(userRepo, departmentRepo);
-      },
-      inject: [TypeOrmUserRepository, TypeOrmDepartmentRepository],
-    },
-    {
-      provide: UpdateUserStatusUseCase,
-      useFactory: (
-        userRepo: IUserRepository,
-        departmentRepo: IDepartmentRepository,
-      ) => {
-        return new UpdateUserStatusUseCase(userRepo);
-      },
-      inject: [TypeOrmUserRepository],
-    },
-    {
-      provide: UpdateUserTitleUseCase,
+      provide: EditUserUseCase,
       useFactory: (userRepo: IUserRepository) => {
-        return new UpdateUserTitleUseCase(userRepo);
-      },
-      inject: [TypeOrmUserRepository],
-    },
-    {
-      provide: AssignTelephoneForUserUseCase,
-      useFactory: (userRepo: IUserRepository) => {
-        return new AssignTelephoneForUserUseCase(userRepo);
+        return new EditUserUseCase(userRepo);
       },
       inject: [TypeOrmUserRepository],
     },

@@ -40,14 +40,14 @@ export class InMemoryUserRepository implements IUserRepository {
     return Promise.resolve(user);
   }
 
-  findAll(): Promise<FindAllResponse> {
+  async findAll(): Promise<FindAllResponse> {
     const users = this.users;
     const totalCount = this.users.length;
 
     return Promise.resolve({ users, totalCount });
   }
 
-  findByUserName(userName: string): Promise<User> {
+  async findByUserName(userName: string): Promise<User> {
     const user = this.users.find((user) => user.user_name === userName);
 
     if (!user) {
@@ -56,7 +56,7 @@ export class InMemoryUserRepository implements IUserRepository {
 
     return Promise.resolve(user);
   }
-  findByEmail(email: string): Promise<User> {
+  async findByEmail(email: string): Promise<User> {
     const user = this.users.find((user) => user.smtp === email);
 
     if (!user) {
@@ -66,30 +66,11 @@ export class InMemoryUserRepository implements IUserRepository {
     return Promise.resolve(user);
   }
 
-  async updateUserDepartment(
-    userName: string,
-    department: string,
-  ): Promise<User> {
-    const user = this.users.find((user) => user.user_name === userName);
+  async save(user: User): Promise<void> {
+    const itemIndex = this.users.findIndex(
+      (item) => item.user_name === user.user_name,
+    );
 
-    user.department_id = department;
-
-    return Promise.resolve(user);
-  }
-
-  updateUserTitle(userName: string, title: string): Promise<User> {
-    const user = this.users.find((user) => user.user_name === userName);
-
-    user.title = title;
-
-    return Promise.resolve(user);
-  }
-
-  assignTelephone(userName: string, telephone: number): Promise<User> {
-    const user = this.users.find((user) => user.user_name === userName);
-
-    user.telephone = telephone;
-
-    return Promise.resolve(user);
+    this.users[itemIndex] = user;
   }
 }

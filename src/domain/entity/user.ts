@@ -63,15 +63,39 @@ export class User extends Entity<UserProps> {
     return this.props.status;
   }
 
+  set complete_name(complete_name: string) {
+    this.props.complete_name = complete_name;
+  }
+
   set title(title: string) {
     this.props.title = title;
   }
 
-  set department_id(department: string) {
-    this.props.department_id = department;
+  set department_id(department_id: string) {
+    this.props.department_id = department_id;
   }
 
   set telephone(telephone: number) {
     this.props.telephone = telephone;
+  }
+
+  set direct_boss(direct_boss: string) {
+    this.props.direct_boss = direct_boss;
+  }
+
+  set smtp(smtp: string) {
+    this.props.smtp = smtp;
+  }
+
+  set admission_date(admission_date: Date) {
+    this.props.admission_date = admission_date;
+  }
+
+  set demission_date(demission_date: Date) {
+    this.props.demission_date = demission_date;
+  }
+
+  set status(status: string) {
+    this.props.status = status;
   }
 }

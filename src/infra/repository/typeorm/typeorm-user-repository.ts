@@ -128,114 +128,22 @@ export class TypeOrmUserRepository implements IUserRepository {
     });
   }
 
-  async updateUserDepartment(
-    userName: string,
-    department: string,
-    title: string,
-    direct_boss: string,
-  ): Promise<User> {
+  async save(user: User): Promise<void> {
     await this.ormRepo.update(
       {
-        username: userName,
+        username: user.user_name,
       },
       {
-        departmentId: department,
-        title: title,
-        directBoss: direct_boss,
+        completeName: user.complete_name,
+        title: user.title,
+        telephone: user.telephone,
+        departmentId: user.department_id,
+        directBoss: user.direct_boss,
+        smtp: user.smtp,
+        status: user.status,
+        admissionDate: user.admission_date,
+        demissionDate: user.demission_date,
       },
     );
-
-    const user = await this.ormRepo.findOneBy({ username: userName });
-
-    return User.create({
-      user_name: user.username,
-      complete_name: user.completeName,
-      title: user.title,
-      telephone: user.telephone,
-      department_id: user.departmentId,
-      direct_boss: user.directBoss,
-      smtp: user.smtp,
-      admission_date: user.admissionDate,
-      status: user.status,
-      demission_date: user.demissionDate,
-    });
-  }
-
-  async updateUserTitle(userName: string, title: string): Promise<User> {
-    await this.ormRepo.update(
-      {
-        username: userName,
-      },
-      {
-        title: title,
-      },
-    );
-
-    const user = await this.ormRepo.findOneBy({ username: userName });
-
-    return User.create({
-      user_name: user.username,
-      complete_name: user.completeName,
-      title: user.title,
-      telephone: user.telephone,
-      department_id: user.departmentId,
-      direct_boss: user.directBoss,
-      smtp: user.smtp,
-      admission_date: user.admissionDate,
-      status: user.status,
-      demission_date: user.demissionDate,
-    });
-  }
-
-  async updateUserStatus(userName: string, status: string): Promise<User> {
-    await this.ormRepo.update(
-      {
-        username: userName,
-      },
-      {
-        status: status,
-      },
-    );
-
-    const user = await this.ormRepo.findOneBy({ username: userName });
-
-    return User.create({
-      user_name: user.username,
-      complete_name: user.completeName,
-      title: user.title,
-      telephone: user.telephone,
-      department_id: user.departmentId,
-      direct_boss: user.directBoss,
-      smtp: user.smtp,
-      admission_date: user.admissionDate,
-      status: user.status,
-      demission_date: user.demissionDate,
-    });
-  }
-
-  async assignTelephone(userName: string, telephone: number): Promise<User> {
-    await this.ormRepo.update(
-      {
-        username: userName,
-      },
-      {
-        telephone,
-      },
-    );
-
-    const user = await this.ormRepo.findOneBy({ username: userName });
-
-    return User.create({
-      user_name: user.username,
-      complete_name: user.completeName,
-      title: user.title,
-      telephone: user.telephone,
-      department_id: user.departmentId,
-      direct_boss: user.directBoss,
-      smtp: user.smtp,
-      admission_date: user.admissionDate,
-      status: user.status,
-      demission_date: user.demissionDate,
-    });
   }
 }
