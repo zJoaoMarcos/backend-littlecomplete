@@ -68,7 +68,7 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
   }
 
   async findByName(name: string): Promise<Department | null> {
-    const department = await this.ormRepo.findOneBy({ name });
+    const department = await this.ormRepo.findOneBy({ name: name });
 
     if (!department) {
       return null;

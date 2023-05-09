@@ -21,7 +21,7 @@ export class CreateUserUseCase {
     smtp,
     admission_date,
   }: CreateUserInput): Promise<CreateUserOutput> {
-    const departmentExists = await this.departmentRepository.findByName(
+    const departmentExists = await this.departmentRepository.findById(
       department_id,
     );
 
@@ -45,7 +45,7 @@ export class CreateUserUseCase {
       user_name,
       complete_name,
       title,
-      department_id,
+      department_id: departmentExists.name,
       telephone,
       direct_boss,
       smtp,
@@ -77,7 +77,7 @@ type CreateUserInput = {
   user_name: string;
   complete_name: string;
   title: string;
-  department_id: string;
+  department_id: number;
   telephone: number | null;
   direct_boss: string;
   smtp: string;
