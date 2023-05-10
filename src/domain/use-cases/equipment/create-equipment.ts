@@ -74,7 +74,6 @@ export class CreateEquipmentUseCase {
 
 type CreateEquipmentInput = {
   id: string;
-  type: string | null;
   brand: string;
   model: string;
   supplier: string;

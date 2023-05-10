@@ -2,10 +2,10 @@ export class CreateEquipmentDto {
   id: string;
   brand: string;
   model: string;
-  supplier: string | null;
+  supplier: string;
   invoice: string | null;
   warranty: string | null;
-  purchase_date: string | null;
+  purchase_date: Date | null;
   department: string;
   status: string;
   cpu: string | null;
