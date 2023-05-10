@@ -11,7 +11,7 @@ interface EquipmentProps {
   supplier: string | null;
   invoice: string | null;
   warranty: string | null;
-  purchase_date: string | null;
+  purchase_date: Date | null;
   department: string;
   status: string;
   cpu: string | null;
@@ -141,7 +141,7 @@ export class Equipment extends Entity<EquipmentProps> {
     this.props.warranty = warranty;
   }
 
-  set purchase_date(purchase_date: string) {
+  set purchase_date(purchase_date: Date) {
     this.props.purchase_date = purchase_date;
   }
 
