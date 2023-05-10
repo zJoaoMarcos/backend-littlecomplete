@@ -23,7 +23,7 @@ export class EquipmentSchema {
   warranty: string | null;
 
   @Column('character', { name: 'purchase_date', nullable: true, length: 20 })
-  purchaseDate: string | null;
+  purchaseDate: Date | null;
 
   @Column('character', { name: 'department', nullable: true, length: 50 })
   department: string | null;
