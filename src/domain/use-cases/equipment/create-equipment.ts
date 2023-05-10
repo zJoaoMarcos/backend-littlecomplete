@@ -35,7 +35,7 @@ export class CreateEquipmentUseCase {
       throw new EquipmentAlreadyExistsError();
     }
 
-    const departmentExists = await this.departmentRepository.findByName(
+    const departmentExists = await this.departmentRepository.findById(
       department,
     );
 
@@ -47,7 +47,7 @@ export class CreateEquipmentUseCase {
       id,
       brand,
       model,
-      department,
+      department: departmentExists.name,
       status: 'available',
       supplier,
       invoice,
@@ -80,7 +80,7 @@ type CreateEquipmentInput = {
   invoice: string | null;
   warranty: string | null;
   purchase_date: Date | null;
-  department: string;
+  department: number;
   status: string;
   cpu: string | null;
   ram: string | null;
