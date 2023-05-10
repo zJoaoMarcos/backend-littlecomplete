@@ -1,4 +1,19 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateEquipmentDto } from './create-equipment.dto';
-
-export class UpdateEquipmentDto extends PartialType(CreateEquipmentDto) {}
+export class UpdateEquipmentDto {
+  brand: string;
+  model: string;
+  supplier: string;
+  invoice: string | null;
+  warranty: string | null;
+  purchase_date: Date | null;
+  department: number;
+  status: string;
+  cpu: string | null;
+  ram: string | null;
+  slots: number | null;
+  storage0_type: string | null;
+  storage0_syze: number | null;
+  storage1_type: string | null;
+  storage1_syze: number | null;
+  video: string | null;
+  service_tag: string | null;
+}

@@ -81,7 +81,6 @@ type CreateEquipmentInput = {
   warranty: string | null;
   purchase_date: Date | null;
   department: number;
-  status: string;
   cpu: string | null;
   ram: string | null;
   slots: number | null;

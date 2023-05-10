@@ -33,9 +33,11 @@ export class InMemoryEquipmentRepository implements IEquipmentRepository {
     return Promise.resolve(equipment);
   }
 
-  async updateDepartment(id: string, department: string): Promise<void> {
-    const equipment = this.equipments.find((equipment) => equipment.id === id);
+  async save(equipment: Equipment): Promise<void> {
+    const itemIndex = this.equipments.findIndex(
+      (item) => item.id === equipment.id,
+    );
 
-    equipment.department = department;
+    this.equipments[itemIndex] = equipment;
   }
 }

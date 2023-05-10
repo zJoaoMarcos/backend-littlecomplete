@@ -4,10 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common/exceptions';
 import { CreateEquipmentUseCase } from 'src/domain/use-cases/equipment/create-equipment';
+import { EditEquipmentUseCase } from 'src/domain/use-cases/equipment/edit-equipment';
 import { FindAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/find-all-equipments';
 import { FindEquipmentByIdUseCase } from 'src/domain/use-cases/equipment/find-equipment-by-id';
-import { updateEquipmentDepartmentUseCase } from 'src/domain/use-cases/equipment/update-equipment-department';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
+import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 
 @Injectable()
 export class EquipmentsService {
@@ -15,7 +16,7 @@ export class EquipmentsService {
     private createUseCase: CreateEquipmentUseCase,
     private findAllUseCase: FindAllEquipmentsUseCase,
     private findByIdUseCase: FindEquipmentByIdUseCase,
-    private updateDepartmentUseCase: updateEquipmentDepartmentUseCase,
+    private updateDepartmentUseCase: EditEquipmentUseCase,
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto) {
@@ -60,9 +61,12 @@ export class EquipmentsService {
     }
   }
 
-  async update(id: string, department: string) {
+  async update(id: string, updateEquipmentDto: UpdateEquipmentDto) {
     try {
-      return this.updateDepartmentUseCase.execute(id, department);
+      return this.updateDepartmentUseCase.execute({
+        id,
+        ...updateEquipmentDto,
+      });
     } catch (err) {
       throw new ConflictException(err.message);
     }

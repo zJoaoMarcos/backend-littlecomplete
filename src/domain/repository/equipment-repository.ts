@@ -5,7 +5,7 @@ export interface IEquipmentRepository {
   create(equipment: Equipment): Promise<Equipment>;
   findMany(params: PaginationParams): Promise<FindManyOutput>;
   findById(id: string): Promise<Equipment>;
-  updateDepartment(id: string, department: string): Promise<void>;
+  save(equipment: Equipment): Promise<void>;
 }
 
 export interface FindManyOutput {

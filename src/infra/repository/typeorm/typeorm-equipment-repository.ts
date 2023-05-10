@@ -82,11 +82,27 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
     });
   }
 
-  async updateDepartment(id: string, department: string): Promise<void> {
+  async save(equipment: Equipment): Promise<void> {
     await this.ormRepo.update(
-      { id },
+      { id: equipment.id },
       {
-        department,
+        brand: equipment.brand,
+        model: equipment.model,
+        supplier: equipment.supplier,
+        invoice: equipment.invoice,
+        warranty: equipment.warranty,
+        purchaseDate: equipment.purchase_date,
+        department: equipment.department,
+        status: equipment.status,
+        cpu: equipment.cpu,
+        ram: equipment.ram,
+        slots: equipment.slots,
+        storage0Type: equipment.storage0_type,
+        storage0Syze: equipment.storage0_syze,
+        storage1Type: equipment.storage1_type,
+        storage1Syze: equipment.storage1_syze,
+        video: equipment.video,
+        serviceTag: equipment.service_tag,
       },
     );
   }
