@@ -27,7 +27,6 @@ export class FetchAllUsersUseCase {
 type FetchAllUsersInput = {
   skip: number;
   take: number;
-  where: string;
 };
 
 type FetchAllUsersOutput = {

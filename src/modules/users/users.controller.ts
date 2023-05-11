@@ -25,9 +25,9 @@ export class UsersController {
 
   @Get()
   findAll(@Query() findAllUsersOptionsDto: FindAllUsersOptionsDto) {
-    const { skip, take, where } = findAllUsersOptionsDto;
+    const { skip, take } = findAllUsersOptionsDto;
 
-    return this.usersService.findAll(skip, take, where);
+    return this.usersService.findAll(skip, take);
   }
 
   @Get(':id')

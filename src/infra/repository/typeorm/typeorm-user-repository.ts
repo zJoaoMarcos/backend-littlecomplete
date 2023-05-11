@@ -15,13 +15,16 @@ export class TypeOrmUserRepository implements IUserRepository {
       username: user.user_name,
       completeName: user.complete_name,
       title: user.title,
-      departmentId: user.department_id,
+
       directBoss: user.direct_boss,
       telephone: user.telephone,
       smtp: user.smtp,
       admissionDate: user.admission_date,
       demissionDate: user.demission_date,
       status: user.status,
+      department: {
+        id: user.department_id,
+      },
     });
 
     return;
@@ -36,6 +39,9 @@ export class TypeOrmUserRepository implements IUserRepository {
       order: {
         username: 'asc',
       },
+      relations: {
+        department: true,
+      },
     });
 
     if (!result) {
@@ -48,7 +54,7 @@ export class TypeOrmUserRepository implements IUserRepository {
         complete_name: user.completeName,
         title: user.title,
         telephone: user.telephone,
-        department_id: user.department.id,
+        department_id: user.department ? user.department.id : null,
         direct_boss: user.directBoss,
         smtp: user.smtp,
         admission_date: user.admissionDate,
@@ -75,7 +81,7 @@ export class TypeOrmUserRepository implements IUserRepository {
       complete_name: user.completeName,
       title: user.title,
       telephone: user.telephone,
-      department_id: user.department.id,
+      department_id: user.department ? user.department.id : null,
       direct_boss: user.directBoss,
       smtp: user.smtp,
       admission_date: user.admissionDate,
@@ -83,6 +89,7 @@ export class TypeOrmUserRepository implements IUserRepository {
       demission_date: user.demissionDate,
     });
   }
+
   async findByEmail(email: string): Promise<User> {
     const user = await this.ormRepo.findOneBy({ smtp: email });
 
@@ -95,7 +102,7 @@ export class TypeOrmUserRepository implements IUserRepository {
       complete_name: user.completeName,
       title: user.title,
       telephone: user.telephone,
-      department_id: user.department.id,
+      department_id: user.department ? user.department.id : null,
       direct_boss: user.directBoss,
       smtp: user.smtp,
       admission_date: user.admissionDate,
@@ -113,7 +120,9 @@ export class TypeOrmUserRepository implements IUserRepository {
         completeName: user.complete_name,
         title: user.title,
         telephone: user.telephone,
-        department: () => String(user.department_id),
+        department: {
+          id: user.department_id,
+        },
         directBoss: user.direct_boss,
         smtp: user.smtp,
         status: user.status,

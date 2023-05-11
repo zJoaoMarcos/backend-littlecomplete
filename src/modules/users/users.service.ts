@@ -45,19 +45,17 @@ export class UsersService {
     }
   }
 
-  async findAll(skip: number, take: number, where: string) {
+  async findAll(skip?: number, take?: number) {
     try {
       const { users, totalCount } = await this.findAllUseCase.execute({
         skip,
         take,
-        where,
       });
-
       return {
+        totalCount: totalCount,
         users: users.map((users) => {
           return users.props;
         }),
-        totalCount: totalCount,
       };
     } catch (err) {
       throw new NotFoundException(err.message);
