@@ -8,10 +8,8 @@ import {
 export class InMemoryEquipmentRepository implements IEquipmentRepository {
   equipments: Equipment[] = [];
 
-  async create(equipment: Equipment): Promise<Equipment> {
+  async create(equipment: Equipment): Promise<void> {
     this.equipments.push(equipment);
-
-    return Promise.resolve(equipment);
   }
 
   async findMany(params: PaginationParams): Promise<FindManyOutput> {
