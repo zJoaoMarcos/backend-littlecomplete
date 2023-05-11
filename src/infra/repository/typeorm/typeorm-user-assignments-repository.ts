@@ -14,7 +14,7 @@ export class TypeOrmUserAssignmentsRepository
   constructor(private ormRepo: Repository<EquipmentsUserSchema>) {}
 
   async save(userAssignments: UserAssignments): Promise<void> {
-    const assignment = await this.ormRepo.save({
+    await this.ormRepo.save({
       user: {
         username: userAssignments.user.user_name,
       },
