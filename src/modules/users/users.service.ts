@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common/exceptions';
 import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
 import { EditUserUseCase } from 'src/domain/use-cases/user/edit-user';
-import { FindAllUsersUseCase } from 'src/domain/use-cases/user/find-all-users';
+import { FetchAllUsersUseCase } from 'src/domain/use-cases/user/fetch-all-users';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,7 +14,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(
     private createUseCase: CreateUserUseCase,
-    private findAllUseCase: FindAllUsersUseCase,
+    private findAllUseCase: FetchAllUsersUseCase,
     private findByIdUseCase: FindUserByUserNameUseCase,
     private updateUsecase: EditUserUseCase,
   ) {}
@@ -30,7 +30,7 @@ export class UsersService {
     admission_date,
   }: CreateUserDto) {
     try {
-      const { user } = await this.createUseCase.execute({
+      return this.createUseCase.execute({
         user_name,
         complete_name,
         title,
@@ -40,10 +40,6 @@ export class UsersService {
         telephone,
         admission_date,
       });
-
-      return {
-        user: user.props,
-      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
