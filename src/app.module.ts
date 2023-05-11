@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DepartmentSchema } from './infra/repository/typeorm/entities/department.schema';
-import { EquipmentSchema } from './infra/repository/typeorm/entities/equipments-schema';
-import { EquipmentUserSchema } from './infra/repository/typeorm/entities/equipments-user.schema';
-import { UserSchema } from './infra/repository/typeorm/entities/user.schema';
+import { DepartmentsSchema } from './infra/repository/typeorm/entities/departments.schema';
+import { EquipmentsUserSchema } from './infra/repository/typeorm/entities/equipments-user.schema';
+import { EquipmentsSchema } from './infra/repository/typeorm/entities/equipments.schema';
+import { UsersSchema } from './infra/repository/typeorm/entities/users.schema';
 import { DepartmentsModule } from './modules/departments/departments.module';
 import { EquipmentsModule } from './modules/equipments/equipments.module';
-import { UsersModule } from './modules/users/users.module';
 import { UserAssignmentsModule } from './modules/user-assignments/user-assignments.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -21,10 +21,10 @@ import { UserAssignmentsModule } from './modules/user-assignments/user-assignmen
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       entities: [
-        DepartmentSchema,
-        EquipmentSchema,
-        EquipmentUserSchema,
-        UserSchema,
+        DepartmentsSchema,
+        EquipmentsSchema,
+        EquipmentsUserSchema,
+        UsersSchema,
       ],
     }),
     DepartmentsModule,

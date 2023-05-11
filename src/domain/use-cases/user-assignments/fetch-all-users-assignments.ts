@@ -5,7 +5,7 @@ export class FindAllUsersAssignmentsUseCase {
   constructor(private userAssignmentsRepository: IUserAssignmentsRepository) {}
 
   async execute(): Promise<FindAllEquipmentsPerUserOutput> {
-    const userAssignments = await this.userAssignmentsRepository.findAll();
+    const userAssignments = await this.userAssignmentsRepository.findMany();
 
     if (!userAssignments) {
       throw new EquipmentNotFoundError();

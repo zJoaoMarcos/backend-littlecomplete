@@ -39,4 +39,5 @@ lerna-debug.log*
 !.vscode/extensions.json
 
 # Docker Initial Database Schema and Pré-Data
+*.sql
 docker_postgres_dump_init.sql

@@ -1,14 +1,22 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { EquipmentsSchema } from './equipments.schema';
+import { UsersSchema } from './users.schema';
 
-@Index('departments_id_key', ['id'], { unique: true })
 @Index('departments_pkey', ['id'], { unique: true })
+@Index('departments_name_key', ['name'], { unique: true })
 @Entity('departments', { schema: 'public' })
-export class DepartmentSchema {
+export class DepartmentsSchema {
   @PrimaryGeneratedColumn({ type: 'integer', name: 'id' })
   id: number;
 
   @Column('character', {
-    name: 'department',
+    name: 'name',
     nullable: true,
     unique: true,
     length: 50,
@@ -26,4 +34,10 @@ export class DepartmentSchema {
 
   @Column('character', { name: 'responsible_id', nullable: true, length: 50 })
   responsibleId: string | null;
+
+  @OneToMany(() => EquipmentsSchema, (equipments) => equipments.department)
+  equipments: EquipmentsSchema[];
+
+  @OneToMany(() => UsersSchema, (users) => users.department)
+  users: UsersSchema[];
 }

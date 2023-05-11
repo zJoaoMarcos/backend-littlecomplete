@@ -1,15 +1,15 @@
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 
-export class FindAllDepartmentsUseCase {
+export class FetchAllDepartmentsUseCase {
   constructor(private departmentsRepository: IDepartmentRepository) {}
 
   async execute(
     skip?: number,
     take?: number,
-  ): Promise<FindAllDepartmentOutput> {
+  ): Promise<FetchAllDepartmentOutput> {
     const { departments, totalCount } =
-      await this.departmentsRepository.findAll(skip, take);
+      await this.departmentsRepository.findMany({ skip, take });
 
     if (!departments) {
       throw new DepartmentNotFoundError();
@@ -21,7 +21,7 @@ export class FindAllDepartmentsUseCase {
   }
 }
 
-type FindAllDepartmentOutput = {
+type FetchAllDepartmentOutput = {
   departments: {
     props: {
       id: number;
