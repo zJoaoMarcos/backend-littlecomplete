@@ -12,10 +12,10 @@ export class SaveUserAssignmentsUseCase {
     private equipmentRepository: IEquipmentRepository,
   ) {}
 
-  async execute(
-    user_id: string,
-    equipment_id: string,
-  ): Promise<SaveUserAssignmentsOutput> {
+  async execute({
+    user_id,
+    equipment_id,
+  }: SaveUserAssignmentInput): Promise<SaveUserAssignmentsOutput> {
     const user = await this.userRepository.findByUserName(user_id);
     if (!user) {
       throw new UserNotFoundError();
@@ -27,18 +27,23 @@ export class SaveUserAssignmentsUseCase {
       throw new EquipmentNotFoundError();
     }
 
-    await this.userAssignmentsRepository.save(user, equipment);
-
     const userAssignments = UserAssignments.create({
       user,
       equipment,
     });
+
+    await this.userAssignmentsRepository.save(userAssignments);
 
     return {
       userAssignments,
     };
   }
 }
+
+type SaveUserAssignmentInput = {
+  user_id: string;
+  equipment_id: string;
+};
 
 type SaveUserAssignmentsOutput = {
   userAssignments: {
