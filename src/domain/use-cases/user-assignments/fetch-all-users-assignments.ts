@@ -1,10 +1,10 @@
 import { IUserAssignmentsRepository } from '../../../domain/repository/user-assignments-repository';
 import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
-export class FindAllUsersAssignmentsUseCase {
+export class FetchAllUsersAssignmentsUseCase {
   constructor(private userAssignmentsRepository: IUserAssignmentsRepository) {}
 
-  async execute(): Promise<FindAllEquipmentsPerUserOutput> {
+  async execute(): Promise<FetchAllEquipmentsPerUserOutput> {
     const userAssignments = await this.userAssignmentsRepository.findMany();
 
     if (!userAssignments) {
@@ -17,7 +17,7 @@ export class FindAllUsersAssignmentsUseCase {
   }
 }
 
-type FindAllEquipmentsPerUserOutput = {
+type FetchAllEquipmentsPerUserOutput = {
   userAssignments: {
     props: {
       user: {

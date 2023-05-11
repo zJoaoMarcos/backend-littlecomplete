@@ -5,7 +5,7 @@ export class UpdateEquipmentDto {
   invoice: string | null;
   warranty: string | null;
   purchase_date: Date | null;
-  department: number;
+  department_id: number;
   status: string;
   cpu: string | null;
   ram: string | null;

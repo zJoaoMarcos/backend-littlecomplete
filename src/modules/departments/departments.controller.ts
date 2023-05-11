@@ -8,9 +8,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { DepartmentsService } from './departments.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
-import { FindAllDepartmentsOptions } from './dto/find-all-departments-options.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 
 @ApiTags('Departments')
@@ -24,8 +24,8 @@ export class DepartmentsController {
   }
 
   @Get()
-  findAll(@Query() findAllOptions: FindAllDepartmentsOptions) {
-    const { skip, take } = findAllOptions;
+  findAll(@Query() params: FindManyParamsDto) {
+    const { skip, take } = params;
     return this.departmentsService.findAll(skip, take);
   }
 
@@ -39,15 +39,6 @@ export class DepartmentsController {
     @Param('id') id: number,
     @Body() updateDepartmentDto: UpdateDepartmentDto,
   ) {
-    const { name, cost_center, is_board, board, responsible_id } =
-      updateDepartmentDto;
-    return this.departmentsService.update(
-      id,
-      name,
-      cost_center,
-      is_board,
-      board,
-      responsible_id,
-    );
+    return this.departmentsService.update(id, updateDepartmentDto);
   }
 }

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common/exceptions';
 import { CreateEquipmentUseCase } from 'src/domain/use-cases/equipment/create-equipment';
 import { EditEquipmentUseCase } from 'src/domain/use-cases/equipment/edit-equipment';
-import { FindAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/find-all-equipments';
+import { FetchAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/fetch-all-equipments';
 import { FindEquipmentByIdUseCase } from 'src/domain/use-cases/equipment/find-equipment-by-id';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
@@ -14,20 +14,14 @@ import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 export class EquipmentsService {
   constructor(
     private createUseCase: CreateEquipmentUseCase,
-    private findAllUseCase: FindAllEquipmentsUseCase,
+    private findAllUseCase: FetchAllEquipmentsUseCase,
     private findByIdUseCase: FindEquipmentByIdUseCase,
     private updateDepartmentUseCase: EditEquipmentUseCase,
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto) {
     try {
-      const { equipment } = await this.createUseCase.execute(
-        createEquipmentDto,
-      );
-
-      return {
-        equipment: equipment.props,
-      };
+      return this.createUseCase.execute(createEquipmentDto);
     } catch (err) {
       throw new ConflictException(err.message);
     }
