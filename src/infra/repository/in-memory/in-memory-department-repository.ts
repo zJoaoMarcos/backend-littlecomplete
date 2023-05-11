@@ -1,35 +1,18 @@
-import { randomInt } from 'node:crypto';
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { Department } from '../../../domain/entity/department';
 import {
-  FindAllDepartmentsResponse,
+  FindManyOutput,
   IDepartmentRepository,
 } from '../../../domain/repository/department-repository';
 
 export class InMemoryDepartmentRepository implements IDepartmentRepository {
   departments: Department[] = [];
 
-  async create(
-    name: string,
-    cost_center: number,
-    is_board: boolean,
-    board: string,
-    responsible_id: string,
-  ): Promise<Department> {
-    const department = Department.create({
-      id: randomInt(1, 200),
-      name,
-      cost_center,
-      is_board,
-      board,
-      responsible_id,
-    });
-
+  async create(department: Department): Promise<void> {
     this.departments.push(department);
-
-    return department;
   }
 
-  async findAll(): Promise<FindAllDepartmentsResponse> {
+  async findMany(params: PaginationParams): Promise<FindManyOutput> {
     const departments = this.departments;
     const totalCount = departments.length;
 
@@ -63,23 +46,11 @@ export class InMemoryDepartmentRepository implements IDepartmentRepository {
     return Promise.resolve(department);
   }
 
-  async update(
-    id: number,
-    name: string,
-    cost_center: number,
-    is_board: boolean,
-    board: string,
-    responsible_id: string,
-  ): Promise<void> {
-    const department = this.departments.find(
-      (department) => department.id === id,
+  async save(department: Department): Promise<void> {
+    const itemIndex = this.departments.findIndex(
+      (item) => item.id === department.id,
     );
 
-    department.name = name;
-    department.cost_center = cost_center;
-    department.is_board = is_board;
-    department.board = board;
-    department.cost_center = cost_center;
-    department.responsible_id = responsible_id;
+    this.departments[itemIndex] = department;
   }
 }

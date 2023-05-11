@@ -1,9 +1,8 @@
-import { Equipment } from '../../../domain/entity/equipment';
 import { User } from '../../../domain/entity/user';
 import { UserAssignments } from '../../../domain/entity/user-assignments';
 import {
+  FindByUserNameOutput,
   IUserAssignmentsRepository,
-  ResponseUserAssignments,
 } from '../../../domain/repository/user-assignments-repository';
 
 export class InMemoryUserAssignmentsRepository
@@ -11,15 +10,11 @@ export class InMemoryUserAssignmentsRepository
 {
   assignments: UserAssignments[] = [];
 
-  async save(user: User, equipment: Equipment): Promise<UserAssignments> {
-    const userAssignments = UserAssignments.create({ user, equipment });
-
+  async save(userAssignments: UserAssignments): Promise<void> {
     this.assignments.push(userAssignments);
-
-    return userAssignments;
   }
 
-  async findAll(): Promise<UserAssignments[]> {
+  async findMany(): Promise<UserAssignments[]> {
     const userAssignments = this.assignments;
 
     if (!userAssignments) {
@@ -41,7 +36,7 @@ export class InMemoryUserAssignmentsRepository
     return userAssignments.user;
   }
 
-  findByUserName(id: string): Promise<ResponseUserAssignments> {
+  findByUserName(id: string): Promise<FindByUserNameOutput> {
     throw new Error('Method not implemented.');
   }
 }
