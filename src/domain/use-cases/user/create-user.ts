@@ -46,7 +46,7 @@ export class CreateUserUseCase {
       user_name,
       complete_name,
       title,
-      department_id: departmentExists.name,
+      department_id,
       telephone,
       direct_boss,
       smtp,

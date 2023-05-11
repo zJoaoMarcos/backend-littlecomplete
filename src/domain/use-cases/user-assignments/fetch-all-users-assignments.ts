@@ -25,7 +25,7 @@ type FindAllEquipmentsPerUserOutput = {
           user_name: string;
           complete_name: string;
           title: string;
-          department_id: string;
+          department_id: number;
           telephone: number | null;
           direct_boss: string;
           smtp: string;
@@ -44,7 +44,7 @@ type FindAllEquipmentsPerUserOutput = {
           invoice: string | null;
           warranty: string | null;
           purchase_date: Date | null;
-          department: string;
+          department_id: number;
           status: string;
           cpu: string | null;
           ram: string | null;

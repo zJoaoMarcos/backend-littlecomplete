@@ -28,7 +28,7 @@ type FindEquipmentByIdOutput = {
       invoice: string | null;
       warranty: string | null;
       purchase_date: Date | null;
-      department: string;
+      department_id: number;
       status: string;
       cpu: string | null;
       ram: string | null;

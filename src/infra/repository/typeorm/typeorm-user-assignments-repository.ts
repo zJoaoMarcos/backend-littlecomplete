@@ -3,63 +3,28 @@ import { Equipment } from '../../../domain/entity/equipment';
 import { User } from '../../../domain/entity/user';
 import { UserAssignments } from '../../../domain/entity/user-assignments';
 import {
+  FindByUserNameOutput,
   IUserAssignmentsRepository,
-  ResponseUserAssignments,
 } from '../../../domain/repository/user-assignments-repository';
-import { EquipmentUserSchema } from './entities/equipments-user.schema';
+import { EquipmentsUserSchema } from './entities/equipments-user.schema';
 
 export class TypeOrmUserAssignmentsRepository
   implements IUserAssignmentsRepository
 {
-  constructor(private ormRepo: Repository<EquipmentUserSchema>) {}
+  constructor(private ormRepo: Repository<EquipmentsUserSchema>) {}
 
-  async save(user: User, equipment: Equipment): Promise<UserAssignments> {
+  async save(userAssignments: UserAssignments): Promise<void> {
     const assignment = await this.ormRepo.save({
       user: {
-        username: user.user_name,
+        username: userAssignments.user.user_name,
       },
       equipment: {
-        id: equipment.id,
+        id: userAssignments.equipment.id,
       },
-    });
-
-    return UserAssignments.create({
-      user: User.create({
-        user_name: assignment.user.username,
-        complete_name: assignment.user.completeName,
-        title: assignment.user.title,
-        telephone: assignment.user.telephone,
-        department_id: assignment.user.departmentId,
-        direct_boss: assignment.user.directBoss,
-        smtp: assignment.user.smtp,
-        admission_date: assignment.user.admissionDate,
-        status: assignment.user.status,
-        demission_date: assignment.user.demissionDate,
-      }),
-      equipment: Equipment.create({
-        id: assignment.equipment.id,
-        brand: assignment.equipment.brand,
-        model: assignment.equipment.model,
-        supplier: assignment.equipment.supplier,
-        invoice: assignment.equipment.invoice,
-        warranty: assignment.equipment.warranty,
-        purchase_date: assignment.equipment.purchaseDate,
-        department: assignment.equipment.department,
-        status: assignment.equipment.status,
-        cpu: assignment.equipment.cpu,
-        ram: assignment.equipment.ram,
-        slots: assignment.equipment.slots,
-        storage0_type: assignment.equipment.storage0Type,
-        storage0_syze: assignment.equipment.storage0Syze,
-        storage1_type: assignment.equipment.storage1Type,
-        storage1_syze: assignment.equipment.storage1Syze,
-        video: assignment.equipment.video,
-        service_tag: assignment.equipment.serviceTag,
-      }),
     });
   }
 
-  async findAll(): Promise<UserAssignments[]> {
+  async findMany(): Promise<UserAssignments[]> {
     const assignments = await this.ormRepo.find({
       relations: {
         user: true,
@@ -78,7 +43,7 @@ export class TypeOrmUserAssignmentsRepository
           complete_name: assignments.user.completeName,
           title: assignments.user.title,
           telephone: assignments.user.telephone,
-          department_id: assignments.user.departmentId,
+          department_id: assignments.user.department.id,
           direct_boss: assignments.user.directBoss,
           smtp: assignments.user.smtp,
           admission_date: assignments.user.admissionDate,
@@ -93,7 +58,7 @@ export class TypeOrmUserAssignmentsRepository
           invoice: assignments.equipment.invoice,
           warranty: assignments.equipment.warranty,
           purchase_date: assignments.equipment.purchaseDate,
-          department: assignments.equipment.department,
+          department_id: assignments.equipment.department.id,
           status: assignments.equipment.status,
           cpu: assignments.equipment.cpu,
           ram: assignments.equipment.ram,
@@ -126,7 +91,7 @@ export class TypeOrmUserAssignmentsRepository
       complete_name: assignment.user.completeName,
       title: assignment.user.title,
       telephone: assignment.user.telephone,
-      department_id: assignment.user.departmentId,
+      department_id: assignment.user.department.id,
       direct_boss: assignment.user.directBoss,
       smtp: assignment.user.smtp,
       admission_date: assignment.user.admissionDate,
@@ -135,7 +100,7 @@ export class TypeOrmUserAssignmentsRepository
     });
   }
 
-  async findByUserName(userId: string): Promise<ResponseUserAssignments> {
+  async findByUserName(userId: string): Promise<FindByUserNameOutput> {
     const assignments = await this.ormRepo.find({
       where: { user: { username: userId } },
       relations: { user: true, equipment: true },
@@ -154,7 +119,7 @@ export class TypeOrmUserAssignmentsRepository
         invoice: assignments.equipment.invoice,
         warranty: assignments.equipment.warranty,
         purchase_date: assignments.equipment.purchaseDate,
-        department: assignments.equipment.department,
+        department_id: assignments.equipment.department.id,
         status: assignments.equipment.status,
         cpu: assignments.equipment.cpu,
         ram: assignments.equipment.ram,

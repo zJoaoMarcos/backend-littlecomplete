@@ -5,7 +5,7 @@ interface UserProps {
   user_name: string;
   complete_name: string;
   title: string;
-  department_id: string;
+  department_id: number;
   telephone: number | null;
   direct_boss: string;
   smtp: string;
@@ -71,7 +71,7 @@ export class User extends Entity<UserProps> {
     this.props.title = title;
   }
 
-  set department_id(department_id: string) {
+  set department_id(department_id: number) {
     this.props.department_id = department_id;
   }
 

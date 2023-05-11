@@ -14,7 +14,7 @@ export class CreateEquipmentUseCase {
     id,
     brand,
     model,
-    department,
+    department_id,
     supplier,
     invoice,
     warranty,
@@ -36,7 +36,7 @@ export class CreateEquipmentUseCase {
     }
 
     const departmentExists = await this.departmentRepository.findById(
-      department,
+      department_id,
     );
 
     if (!departmentExists) {
@@ -47,7 +47,7 @@ export class CreateEquipmentUseCase {
       id,
       brand,
       model,
-      department: departmentExists.name,
+      department_id,
       status: 'available',
       supplier,
       invoice,
@@ -80,7 +80,7 @@ type CreateEquipmentInput = {
   invoice: string | null;
   warranty: string | null;
   purchase_date: Date | null;
-  department: number;
+  department_id: number;
   cpu: string | null;
   ram: string | null;
   slots: number | null;
@@ -103,7 +103,7 @@ type CreateEquipmentOutput = {
       invoice: string | null;
       warranty: string | null;
       purchase_date: Date | null;
-      department: string;
+      department_id: number;
       status: string;
       cpu: string | null;
       ram: string | null;

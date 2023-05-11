@@ -1,38 +1,16 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { User } from 'src/domain/entity/user';
 import { Repository } from 'typeorm';
 import {
-  FindAllResponse,
+  FindManyOutput,
   IUserRepository,
 } from '../../../domain/repository/user-repository';
-import { UserSchema } from './entities/user.schema';
+import { UsersSchema } from './entities/users.schema';
 
 export class TypeOrmUserRepository implements IUserRepository {
-  constructor(private ormRepo: Repository<UserSchema>) {}
-  async create(
-    user_name: string,
-    complete_name: string,
-    title: string,
-    department_id: string,
-    direct_boss: string,
-    smtp: string,
-    admission_date: Date,
-    status: string,
-    telephone?: number,
-    demission_date?: Date,
-  ): Promise<User> {
-    const user = User.create({
-      user_name,
-      complete_name,
-      title,
-      telephone,
-      department_id,
-      direct_boss,
-      smtp,
-      admission_date,
-      status: status,
-      demission_date,
-    });
+  constructor(private ormRepo: Repository<UsersSchema>) {}
 
+  async create(user: User): Promise<void> {
     await this.ormRepo.save({
       username: user.user_name,
       completeName: user.complete_name,
@@ -49,11 +27,9 @@ export class TypeOrmUserRepository implements IUserRepository {
     return;
   }
 
-  async findAll(
-    skip?: number,
-    take?: number,
-    where?: string,
-  ): Promise<FindAllResponse> {
+  async findMany(params: PaginationParams): Promise<FindManyOutput> {
+    const { skip, take } = params;
+
     const [result, totalCount] = await this.ormRepo.findAndCount({
       skip: skip,
       take: take,
@@ -72,7 +48,7 @@ export class TypeOrmUserRepository implements IUserRepository {
         complete_name: user.completeName,
         title: user.title,
         telephone: user.telephone,
-        department_id: user.departmentId,
+        department_id: user.department.id,
         direct_boss: user.directBoss,
         smtp: user.smtp,
         admission_date: user.admissionDate,
@@ -99,7 +75,7 @@ export class TypeOrmUserRepository implements IUserRepository {
       complete_name: user.completeName,
       title: user.title,
       telephone: user.telephone,
-      department_id: user.departmentId,
+      department_id: user.department.id,
       direct_boss: user.directBoss,
       smtp: user.smtp,
       admission_date: user.admissionDate,
@@ -119,7 +95,7 @@ export class TypeOrmUserRepository implements IUserRepository {
       complete_name: user.completeName,
       title: user.title,
       telephone: user.telephone,
-      department_id: user.departmentId,
+      department_id: user.department.id,
       direct_boss: user.directBoss,
       smtp: user.smtp,
       admission_date: user.admissionDate,
@@ -137,7 +113,7 @@ export class TypeOrmUserRepository implements IUserRepository {
         completeName: user.complete_name,
         title: user.title,
         telephone: user.telephone,
-        departmentId: user.department_id,
+        department: () => String(user.department_id),
         directBoss: user.direct_boss,
         smtp: user.smtp,
         status: user.status,

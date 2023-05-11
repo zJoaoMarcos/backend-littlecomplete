@@ -5,10 +5,10 @@ import {
   FindManyOutput,
   IEquipmentRepository,
 } from '../../../domain/repository/equipment-repository';
-import { EquipmentSchema } from './entities/equipments-schema';
+import { EquipmentsSchema } from './entities/equipments.schema';
 
 export class TypeOrmEquipmentRepository implements IEquipmentRepository {
-  constructor(private ormRepo: Repository<EquipmentSchema>) {}
+  constructor(private ormRepo: Repository<EquipmentsSchema>) {}
 
   async create(equipment: Equipment): Promise<Equipment> {
     return this.ormRepo.save(equipment);
@@ -33,7 +33,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         invoice: equipment.invoice,
         warranty: equipment.warranty,
         purchase_date: equipment.purchaseDate,
-        department: equipment.department,
+        department_id: equipment.department.id,
         status: equipment.status,
         cpu: equipment.cpu,
         ram: equipment.ram,
@@ -68,7 +68,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       invoice: equipment.invoice,
       warranty: equipment.warranty,
       purchase_date: equipment.purchaseDate,
-      department: equipment.department,
+      department_id: equipment.department.id,
       status: equipment.status,
       cpu: equipment.cpu,
       ram: equipment.ram,
@@ -92,7 +92,6 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         invoice: equipment.invoice,
         warranty: equipment.warranty,
         purchaseDate: equipment.purchase_date,
-        department: equipment.department,
         status: equipment.status,
         cpu: equipment.cpu,
         ram: equipment.ram,
@@ -103,6 +102,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         storage1Syze: equipment.storage1_syze,
         video: equipment.video,
         serviceTag: equipment.service_tag,
+        department: () => String(equipment.department_id),
       },
     );
   }
