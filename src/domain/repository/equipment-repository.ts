@@ -4,7 +4,7 @@ import { Equipment } from '../entity/equipment';
 export interface IEquipmentRepository {
   findMany(params: PaginationParams): Promise<FindManyOutput>;
   findById(id: string): Promise<Equipment>;
-  create(equipment: Equipment): Promise<Equipment>;
+  create(equipment: Equipment): Promise<void>;
   save(equipment: Equipment): Promise<void>;
 }
 
