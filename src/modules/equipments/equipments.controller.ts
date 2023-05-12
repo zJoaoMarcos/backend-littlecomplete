@@ -39,7 +39,6 @@ export class EquipmentsController {
     @Param('id') id: string,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
   ) {
-    console.log(updateEquipmentDto);
     return this.equipmentsService.update(id, updateEquipmentDto);
   }
 }
