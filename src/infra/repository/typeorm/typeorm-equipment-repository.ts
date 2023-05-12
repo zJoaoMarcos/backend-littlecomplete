@@ -54,7 +54,10 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         invoice: equipment.invoice,
         warranty: equipment.warranty,
         purchase_date: equipment.purchaseDate,
-        department_id: equipment.department.id,
+        department: {
+          id: equipment.department.id,
+          name: equipment.department.name,
+        },
         status: equipment.status,
         cpu: equipment.cpu,
         ram: equipment.ram,
@@ -89,7 +92,10 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       invoice: equipment.invoice,
       warranty: equipment.warranty,
       purchase_date: equipment.purchaseDate,
-      department_id: equipment.department.id,
+      department: {
+        id: equipment.department.id,
+        name: equipment.department.name,
+      },
       status: equipment.status,
       cpu: equipment.cpu,
       ram: equipment.ram,

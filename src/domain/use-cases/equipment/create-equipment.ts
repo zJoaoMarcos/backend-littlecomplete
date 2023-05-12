@@ -43,11 +43,16 @@ export class CreateEquipmentUseCase {
       throw new DepartmentNotFoundError();
     }
 
+    const departmentName = departmentExists.name;
+
     const equipment = Equipment.create({
       id,
       brand,
       model,
-      department_id,
+      department: {
+        id: department_id,
+        name: departmentName,
+      },
       status: 'available',
       supplier,
       invoice,
@@ -103,7 +108,7 @@ type CreateEquipmentOutput = {
       invoice: string | null;
       warranty: string | null;
       purchase_date: Date | null;
-      department_id: number;
+      department: { id: number; name: string };
       status: string;
       cpu: string | null;
       ram: string | null;

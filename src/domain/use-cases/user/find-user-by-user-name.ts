@@ -32,7 +32,7 @@ type FindUserByUserNameOutput = {
       user_name: string;
       complete_name: string;
       title: string;
-      department_id: number;
+      department: { id: number; name: string };
       telephone: number | null;
       direct_boss: string;
       smtp: string;
@@ -50,7 +50,7 @@ type FindUserByUserNameOutput = {
       invoice: string | null;
       warranty: string | null;
       purchase_date: Date | null;
-      department_id: number;
+      department: { id: number; name: string };
       status: string;
       cpu: string | null;
       ram: string | null;

@@ -30,6 +30,8 @@ export class CreateUserUseCase {
       throw new DepartmentNotFoundError();
     }
 
+    const departmentName = departmentExists.name;
+
     const userNameTwice = await this.userRepository.findByUserName(user_name);
 
     if (userNameTwice) {
@@ -46,7 +48,10 @@ export class CreateUserUseCase {
       user_name,
       complete_name,
       title,
-      department_id,
+      department: {
+        id: department_id,
+        name: departmentName,
+      },
       telephone,
       direct_boss,
       smtp,

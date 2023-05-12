@@ -12,7 +12,7 @@ interface EquipmentProps {
   invoice: string | null;
   warranty: string | null;
   purchase_date: Date | null;
-  department_id: number;
+  department: { id: number; name: string };
   status: string;
   cpu: string | null;
   ram: string | null;
@@ -68,7 +68,11 @@ export class Equipment extends Entity<EquipmentProps> {
   }
 
   get department_id() {
-    return this.props.department_id;
+    return this.props.department.id;
+  }
+
+  get department_name() {
+    return this.props.department.name;
   }
 
   get status() {
@@ -146,7 +150,11 @@ export class Equipment extends Entity<EquipmentProps> {
   }
 
   set department_id(id: number) {
-    this.props.department_id = id;
+    this.props.department.id = id;
+  }
+
+  set department_name(name: string) {
+    this.props.department.name = name;
   }
 
   set status(status: string) {

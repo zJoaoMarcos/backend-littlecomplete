@@ -26,7 +26,7 @@ type FindAssignmentByEquipmentIdOutput = {
       user_name: string;
       complete_name: string;
       title: string;
-      department_id: number;
+      department: { id: number; name: string };
       telephone: number | null;
       direct_boss: string;
       smtp: string;
