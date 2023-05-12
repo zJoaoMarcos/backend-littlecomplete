@@ -39,6 +39,9 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
     const [result, totalCount] = await this.ormRepo.findAndCount({
       skip: params.skip,
       take: params.take,
+      relations: {
+        department: true,
+      },
     });
 
     if (!result) {
@@ -78,7 +81,12 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
   }
 
   async findById(id: string): Promise<Equipment> {
-    const equipment = await this.ormRepo.findOneBy({ id: id });
+    const equipment = await this.ormRepo.findOne({
+      where: { id: id },
+      relations: {
+        department: true,
+      },
+    });
 
     if (!equipment) {
       return null;

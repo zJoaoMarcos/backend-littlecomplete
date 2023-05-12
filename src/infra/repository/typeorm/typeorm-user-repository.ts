@@ -73,11 +73,18 @@ export class TypeOrmUserRepository implements IUserRepository {
   }
 
   async findByUserName(userName: string): Promise<User> {
-    const user = await this.ormRepo.findOneBy({ username: userName });
+    const user = await this.ormRepo.findOne({
+      where: { username: userName },
+      relations: {
+        department: true,
+      },
+    });
 
     if (!user) {
       return null;
     }
+
+    console.log(user);
 
     return User.create({
       user_name: user.username,
@@ -97,7 +104,12 @@ export class TypeOrmUserRepository implements IUserRepository {
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = await this.ormRepo.findOneBy({ smtp: email });
+    const user = await this.ormRepo.findOne({
+      where: { smtp: email },
+      relations: {
+        department: true,
+      },
+    });
 
     if (!user) {
       return null;
