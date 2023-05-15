@@ -75,7 +75,9 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
       cost_center: department.costCenter,
       is_board: department.isBoard,
       board: department.board,
-      responsible_id: department.responsibleId.username,
+      responsible_id: department.responsibleId
+        ? department.responsibleId.username
+        : null,
     });
   }
 
@@ -97,7 +99,9 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
       cost_center: department.costCenter,
       is_board: department.isBoard,
       board: department.board,
-      responsible_id: department.responsibleId.username,
+      responsible_id: department.responsibleId
+        ? department.responsibleId.username
+        : null,
     });
   }
 
