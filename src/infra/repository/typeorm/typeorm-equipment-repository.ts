@@ -121,9 +121,14 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
     departmentId: number,
     params: PaginationParams,
   ): Promise<FindManyOutput> {
-    const [result, totalCount] = await this.ormRepo.findAndCountBy({
-      department: {
-        id: departmentId,
+    const [result, totalCount] = await this.ormRepo.findAndCount({
+      where: {
+        department: {
+          id: departmentId,
+        },
+      },
+      relations: {
+        department: true,
       },
     });
 
