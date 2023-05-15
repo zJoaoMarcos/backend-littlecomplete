@@ -17,7 +17,7 @@ export class FetchByDepartmentIdUseCase {
       department_id,
     );
 
-    if (departmentExists) {
+    if (!departmentExists) {
       throw new DepartmentNotFoundError();
     }
 
