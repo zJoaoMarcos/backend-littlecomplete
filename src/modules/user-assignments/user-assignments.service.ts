@@ -3,7 +3,7 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { FindAllUsersAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/find-all-users-assignments';
+import { FetchAllUsersAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/fetch-all-users-assignments';
 import { FindAssignmentByEquipmentIdUseCase } from 'src/domain/use-cases/user-assignments/find-assignment-by-equipment-id';
 import { FindAssignmentsByUserNameUseCase } from 'src/domain/use-cases/user-assignments/find-assignments-by-user-name';
 import { SaveUserAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/save-user-assignments';
@@ -12,25 +12,15 @@ import { CreateUserAssignmentDto } from './dto/create-user-assignment.dto';
 @Injectable()
 export class UserAssignmentsService {
   constructor(
-    private findAllUseCase: FindAllUsersAssignmentsUseCase,
+    private findAllUseCase: FetchAllUsersAssignmentsUseCase,
     private FindByEquipmentIdUseCase: FindAssignmentByEquipmentIdUseCase,
     private FindByUserNameUseCase: FindAssignmentsByUserNameUseCase,
     private SaveUserAssignmentUseCase: SaveUserAssignmentsUseCase,
   ) {}
 
-  async save({ user_name, equipment_id }: CreateUserAssignmentDto) {
+  async create(createUserAssignmentDto: CreateUserAssignmentDto) {
     try {
-      const { userAssignments } = await this.SaveUserAssignmentUseCase.execute(
-        user_name,
-        equipment_id,
-      );
-
-      return {
-        userAssignments: {
-          user: userAssignments.props.user.props,
-          equipment: userAssignments.props.equipment.props,
-        },
-      };
+      return this.SaveUserAssignmentUseCase.execute(createUserAssignmentDto);
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -78,12 +68,4 @@ export class UserAssignmentsService {
       throw new NotFoundException(err.message);
     }
   }
-
-  /* async update(id: number, updateUserAssignmentDto: UpdateUserAssignmentDto) {
-    return `This action updates a #${id} userAssignment`;
-  } */
-  /* 
-  remove(id: number) {
-    return `This action removes a #${id} userAssignment`;
-  } */
 }

@@ -1,48 +1,36 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { Department } from 'src/domain/entity/department';
 import {
-  FindAllDepartmentsResponse,
+  FindManyOutput,
   IDepartmentRepository,
 } from 'src/domain/repository/department-repository';
 import { Repository } from 'typeorm';
-import { DepartmentSchema } from './entities/department.schema';
+import { DepartmentsSchema } from './entities/departments.schema';
 
 export class TypeOrmDepartmentRepository implements IDepartmentRepository {
-  constructor(private ormRepo: Repository<DepartmentSchema>) {}
+  constructor(private ormRepo: Repository<DepartmentsSchema>) {}
 
-  async create(
-    name: string,
-    cost_center: number,
-    is_board: boolean,
-    board: string,
-    responsible_id: string,
-  ): Promise<Department> {
-    const department = await this.ormRepo.save({
-      name: name,
-      costCenter: cost_center,
-      isBoard: is_board,
-      board: board,
-      responsibleId: responsible_id,
-    });
-
-    return Department.create({
-      id: department.id,
+  async create(department: Department): Promise<void> {
+    await this.ormRepo.save({
       name: department.name,
-      cost_center: department.costCenter,
-      is_board: department.isBoard,
+      costCenter: department.cost_center,
+      isBoard: department.is_board,
       board: department.board,
-      responsible_id: department.responsibleId,
+      responsibleId: { username: department.responsible_id },
     });
   }
 
-  async findAll(
-    skip?: number,
-    take?: number,
-  ): Promise<FindAllDepartmentsResponse> {
+  async findMany(params: PaginationParams): Promise<FindManyOutput> {
+    const { skip, take } = params;
+
     const [result, totalCount] = await this.ormRepo.findAndCount({
       skip: skip,
       take: take,
       order: {
         name: 'asc',
+      },
+      relations: {
+        responsibleId: true,
       },
     });
 
@@ -57,7 +45,9 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
         cost_center: department.costCenter,
         is_board: department.isBoard,
         board: department.board,
-        responsible_id: department.responsibleId,
+        responsible_id: department.responsibleId
+          ? department.responsibleId.username
+          : null,
       });
     });
 
@@ -67,8 +57,13 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
     };
   }
 
-  async findByName(name: string): Promise<Department | null> {
-    const department = await this.ormRepo.findOneBy({ name: name });
+  async findByName(name: string): Promise<Department> {
+    const department = await this.ormRepo.findOne({
+      where: { name: name },
+      relations: {
+        responsibleId: true,
+      },
+    });
 
     if (!department) {
       return null;
@@ -80,12 +75,19 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
       cost_center: department.costCenter,
       is_board: department.isBoard,
       board: department.board,
-      responsible_id: department.responsibleId,
+      responsible_id: department.responsibleId
+        ? department.responsibleId.username
+        : null,
     });
   }
 
   async findById(departmentId: number): Promise<Department> {
-    const department = await this.ormRepo.findOneBy({ id: departmentId });
+    const department = await this.ormRepo.findOne({
+      where: { id: departmentId },
+      relations: {
+        responsibleId: true,
+      },
+    });
 
     if (!department) {
       return null;
@@ -97,26 +99,21 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
       cost_center: department.costCenter,
       is_board: department.isBoard,
       board: department.board,
-      responsible_id: department.responsibleId,
+      responsible_id: department.responsibleId
+        ? department.responsibleId.username
+        : null,
     });
   }
 
-  async update(
-    id: number,
-    name: string,
-    cost_center: number,
-    is_board: boolean,
-    board: string,
-    responsible_id: string,
-  ): Promise<void> {
+  async save(department: Department): Promise<void> {
     await this.ormRepo.update(
-      { id: id },
+      { id: department.id },
       {
-        name: name,
-        costCenter: cost_center,
-        board: board,
-        isBoard: is_board,
-        responsibleId: responsible_id,
+        name: department.name,
+        costCenter: department.cost_center,
+        board: department.board,
+        isBoard: department.is_board,
+        responsibleId: { username: department.responsible_id },
       },
     );
   }

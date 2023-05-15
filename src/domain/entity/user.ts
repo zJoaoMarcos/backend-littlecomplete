@@ -5,7 +5,10 @@ interface UserProps {
   user_name: string;
   complete_name: string;
   title: string;
-  department_id: string;
+  department: {
+    id: number;
+    name: string;
+  };
   telephone: number | null;
   direct_boss: string;
   smtp: string;
@@ -36,7 +39,11 @@ export class User extends Entity<UserProps> {
   }
 
   get department_id() {
-    return this.props.department_id;
+    return this.props.department.id;
+  }
+
+  get department_name() {
+    return this.props.department.name;
   }
 
   get telephone() {
@@ -71,8 +78,12 @@ export class User extends Entity<UserProps> {
     this.props.title = title;
   }
 
-  set department_id(department_id: string) {
-    this.props.department_id = department_id;
+  set department_id(department_id: number) {
+    this.props.department.id = department_id;
+  }
+
+  set department_name(department_name: string) {
+    this.props.department.name = department_name;
   }
 
   set telephone(telephone: number) {

@@ -1,12 +1,12 @@
 import { IEquipmentRepository } from 'src/domain/repository/equipment-repository';
 
-export class FindAllEquipmentsUseCase {
+export class FetchAllEquipmentsUseCase {
   constructor(private equipmentRepository: IEquipmentRepository) {}
 
   async execute({
     skip,
     take,
-  }: FindAllEquipmentsInput): Promise<FindAllEquipmentsOutput> {
+  }: FetchAllEquipmentsInput): Promise<FetchAllEquipmentsOutput> {
     const { equipments, totalCount } = await this.equipmentRepository.findMany({
       skip,
       take,
@@ -23,12 +23,12 @@ export class FindAllEquipmentsUseCase {
   }
 }
 
-type FindAllEquipmentsInput = {
+type FetchAllEquipmentsInput = {
   skip?: number;
   take?: number;
 };
 
-type FindAllEquipmentsOutput = {
+type FetchAllEquipmentsOutput = {
   totalCount?: number;
   equipments: {
     props: {
@@ -39,8 +39,8 @@ type FindAllEquipmentsOutput = {
       supplier: string;
       invoice: string | null;
       warranty: string | null;
-      purchase_date: string | null;
-      department: string;
+      purchase_date: Date | null;
+      department: { id: number; name: string };
       status: string;
       cpu: string | null;
       ram: string | null;

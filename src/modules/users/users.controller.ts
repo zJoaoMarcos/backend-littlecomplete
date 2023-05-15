@@ -8,6 +8,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FindAllUsersOptionsDto } from './dto/find-all-users-options.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -25,9 +26,18 @@ export class UsersController {
 
   @Get()
   findAll(@Query() findAllUsersOptionsDto: FindAllUsersOptionsDto) {
-    const { skip, take, where } = findAllUsersOptionsDto;
+    const { skip, take } = findAllUsersOptionsDto;
 
-    return this.usersService.findAll(skip, take, where);
+    return this.usersService.findAll(skip, take);
+  }
+
+  @Get('department/:id')
+  findMany(
+    @Param('id') id: number,
+    @Query() findManyParams: FindManyParamsDto,
+  ) {
+    const { skip, take } = findManyParams;
+    return this.usersService.findByDepartmentId(id, skip, take);
   }
 
   @Get(':id')

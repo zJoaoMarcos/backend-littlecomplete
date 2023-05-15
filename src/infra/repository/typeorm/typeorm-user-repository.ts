@@ -1,64 +1,49 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { User } from 'src/domain/entity/user';
 import { Repository } from 'typeorm';
 import {
-  FindAllResponse,
+  FindManyOutput,
   IUserRepository,
 } from '../../../domain/repository/user-repository';
-import { UserSchema } from './entities/user.schema';
+import { UsersSchema } from './entities/users.schema';
 
 export class TypeOrmUserRepository implements IUserRepository {
-  constructor(private ormRepo: Repository<UserSchema>) {}
-  async create(
-    user_name: string,
-    complete_name: string,
-    title: string,
-    department_id: string,
-    direct_boss: string,
-    smtp: string,
-    admission_date: Date,
-    status: string,
-    telephone?: number,
-    demission_date?: Date,
-  ): Promise<User> {
-    const user = User.create({
-      user_name,
-      complete_name,
-      title,
-      telephone,
-      department_id,
-      direct_boss,
-      smtp,
-      admission_date,
-      status: status,
-      demission_date,
-    });
+  constructor(private ormRepo: Repository<UsersSchema>) {}
 
+  async create(user: User): Promise<void> {
     await this.ormRepo.save({
       username: user.user_name,
       completeName: user.complete_name,
       title: user.title,
-      departmentId: user.department_id,
-      directBoss: user.direct_boss,
+
+      directBoss: {
+        username: user.direct_boss,
+      },
       telephone: user.telephone,
       smtp: user.smtp,
       admissionDate: user.admission_date,
       demissionDate: user.demission_date,
       status: user.status,
+      department: {
+        id: user.department_id,
+      },
     });
 
     return;
   }
 
-  async findAll(
-    skip?: number,
-    take?: number,
-    where?: string,
-  ): Promise<FindAllResponse> {
+  async findMany(params: PaginationParams): Promise<FindManyOutput> {
+    const { skip, take } = params;
+
     const [result, totalCount] = await this.ormRepo.findAndCount({
       skip: skip,
       take: take,
       order: {
         username: 'asc',
+      },
+      relations: {
+        department: true,
+        directBoss: true,
       },
     });
 
@@ -72,8 +57,11 @@ export class TypeOrmUserRepository implements IUserRepository {
         complete_name: user.completeName,
         title: user.title,
         telephone: user.telephone,
-        department_id: user.departmentId,
-        direct_boss: user.directBoss,
+        department: {
+          id: user.department.id,
+          name: user.department.name,
+        },
+        direct_boss: user.directBoss ? user.directBoss.username : null,
         smtp: user.smtp,
         admission_date: user.admissionDate,
         status: user.status,
@@ -88,7 +76,12 @@ export class TypeOrmUserRepository implements IUserRepository {
   }
 
   async findByUserName(userName: string): Promise<User> {
-    const user = await this.ormRepo.findOneBy({ username: userName });
+    const user = await this.ormRepo.findOne({
+      where: { username: userName },
+      relations: {
+        department: true,
+      },
+    });
 
     if (!user) {
       return null;
@@ -99,16 +92,25 @@ export class TypeOrmUserRepository implements IUserRepository {
       complete_name: user.completeName,
       title: user.title,
       telephone: user.telephone,
-      department_id: user.departmentId,
-      direct_boss: user.directBoss,
+      department: {
+        id: user.department.id,
+        name: user.department.name,
+      },
+      direct_boss: user.directBoss ? user.directBoss.username : null,
       smtp: user.smtp,
       admission_date: user.admissionDate,
       status: user.status,
       demission_date: user.demissionDate,
     });
   }
+
   async findByEmail(email: string): Promise<User> {
-    const user = await this.ormRepo.findOneBy({ smtp: email });
+    const user = await this.ormRepo.findOne({
+      where: { smtp: email },
+      relations: {
+        department: true,
+      },
+    });
 
     if (!user) {
       return null;
@@ -119,13 +121,57 @@ export class TypeOrmUserRepository implements IUserRepository {
       complete_name: user.completeName,
       title: user.title,
       telephone: user.telephone,
-      department_id: user.departmentId,
-      direct_boss: user.directBoss,
+      department: {
+        id: user.department.id,
+        name: user.department.name,
+      },
+      direct_boss: user.directBoss ? user.directBoss.username : null,
       smtp: user.smtp,
       admission_date: user.admissionDate,
       status: user.status,
       demission_date: user.demissionDate,
     });
+  }
+
+  async findByDepartmentId(
+    departmentId: number,
+    params: PaginationParams,
+  ): Promise<FindManyOutput> {
+    const [result, totalCount] = await this.ormRepo.findAndCount({
+      where: {
+        department: { id: departmentId },
+      },
+      relations: {
+        department: true,
+        directBoss: true,
+      },
+      order: {
+        username: 'ASC',
+      },
+    });
+
+    const users = result.map((user) => {
+      return User.create({
+        user_name: user.username,
+        complete_name: user.completeName,
+        title: user.title,
+        telephone: user.telephone,
+        department: {
+          id: user.department.id,
+          name: user.department.name,
+        },
+        direct_boss: user.directBoss ? user.directBoss.username : null,
+        smtp: user.smtp,
+        admission_date: user.admissionDate,
+        status: user.status,
+        demission_date: user.demissionDate,
+      });
+    });
+
+    return {
+      users,
+      totalCount,
+    };
   }
 
   async save(user: User): Promise<void> {
@@ -137,8 +183,10 @@ export class TypeOrmUserRepository implements IUserRepository {
         completeName: user.complete_name,
         title: user.title,
         telephone: user.telephone,
-        departmentId: user.department_id,
-        directBoss: user.direct_boss,
+        department: {
+          id: user.department_id,
+        },
+        directBoss: { username: user.direct_boss },
         smtp: user.smtp,
         status: user.status,
         admissionDate: user.admission_date,

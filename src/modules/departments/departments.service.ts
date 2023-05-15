@@ -3,29 +3,25 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { FindAllDepartmentsUseCase } from 'src/domain/use-cases/department/find-all-departments';
+import { EditDepartmentUseCase } from 'src/domain/use-cases/department/edit-department';
+import { FetchAllDepartmentsUseCase } from 'src/domain/use-cases/department/fetch-all-departments';
 import { FindDepartmentByIdUseCase } from 'src/domain/use-cases/department/find-department-by-id';
-import { UpdateDepartmentUseCase } from 'src/domain/use-cases/department/update-department';
 import { CreateDepartmentUseCase } from '../../domain/use-cases/department/create-department';
 import { CreateDepartmentDto } from './dto/create-department.dto';
+import { UpdateDepartmentDto } from './dto/update-department.dto';
 
 @Injectable()
 export class DepartmentsService {
   constructor(
     private createUseCase: CreateDepartmentUseCase,
-    private findAllUseCase: FindAllDepartmentsUseCase,
+    private findAllUseCase: FetchAllDepartmentsUseCase,
     private findByIdUseCase: FindDepartmentByIdUseCase,
-    private updateCostCenterUseCase: UpdateDepartmentUseCase,
+    private updateCostCenterUseCase: EditDepartmentUseCase,
   ) {}
 
   async create(createDepartmentDto: CreateDepartmentDto) {
     try {
-      const { department } = await this.createUseCase.execute(
-        createDepartmentDto,
-      );
-      return {
-        department: department.props,
-      };
+      return this.createUseCase.execute(createDepartmentDto);
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -59,26 +55,12 @@ export class DepartmentsService {
     }
   }
 
-  async update(
-    id: number,
-    name: string,
-    cost_center: number,
-    is_board: boolean,
-    board: string,
-    responsible_id: string,
-  ) {
+  async update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
     try {
-      const { department } = await this.updateCostCenterUseCase.execute(
+      return this.updateCostCenterUseCase.execute({
         id,
-        name,
-        cost_center,
-        is_board,
-        board,
-        responsible_id,
-      );
-      return {
-        department: department.props,
-      };
+        ...updateDepartmentDto,
+      });
     } catch (err) {
       throw new ConflictException(err.message);
     }

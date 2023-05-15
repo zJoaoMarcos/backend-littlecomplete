@@ -12,7 +12,7 @@ export class UserAssignmentsController {
 
   @Post()
   create(@Body() createUserAssignmentDto: CreateUserAssignmentDto) {
-    return this.userAssignmentsService.save(createUserAssignmentDto);
+    return this.userAssignmentsService.create(createUserAssignmentDto);
   }
 
   @Get()
@@ -29,17 +29,4 @@ export class UserAssignmentsController {
   findByUserName(@Param('id') id: string) {
     return this.userAssignmentsService.findByUserName(id);
   }
-
-  /* @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateUserAssignmentDto: UpdateUserAssignmentDto,
-  ) {
-    return this.userAssignmentsService.update(+id, updateUserAssignmentDto);
-  } */
-
-  /*   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userAssignmentsService.remove(+id);
-  } */
 }

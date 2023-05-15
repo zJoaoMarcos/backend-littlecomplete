@@ -1,11 +1,11 @@
 import { IUserAssignmentsRepository } from '../../../domain/repository/user-assignments-repository';
 import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
-export class FindAllUsersAssignmentsUseCase {
+export class FetchAllUsersAssignmentsUseCase {
   constructor(private userAssignmentsRepository: IUserAssignmentsRepository) {}
 
-  async execute(): Promise<FindAllEquipmentsPerUserOutput> {
-    const userAssignments = await this.userAssignmentsRepository.findAll();
+  async execute(): Promise<FetchAllEquipmentsPerUserOutput> {
+    const userAssignments = await this.userAssignmentsRepository.findMany();
 
     if (!userAssignments) {
       throw new EquipmentNotFoundError();
@@ -17,7 +17,7 @@ export class FindAllUsersAssignmentsUseCase {
   }
 }
 
-type FindAllEquipmentsPerUserOutput = {
+type FetchAllEquipmentsPerUserOutput = {
   userAssignments: {
     props: {
       user: {
@@ -25,7 +25,7 @@ type FindAllEquipmentsPerUserOutput = {
           user_name: string;
           complete_name: string;
           title: string;
-          department_id: string;
+          department: { id: number; name: string };
           telephone: number | null;
           direct_boss: string;
           smtp: string;
@@ -43,8 +43,11 @@ type FindAllEquipmentsPerUserOutput = {
           supplier: string;
           invoice: string | null;
           warranty: string | null;
-          purchase_date: string | null;
-          department: string;
+          purchase_date: Date | null;
+          department: {
+            id: number;
+            name: string;
+          };
           status: string;
           cpu: string | null;
           ram: string | null;

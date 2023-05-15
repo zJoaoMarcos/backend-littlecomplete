@@ -1,9 +1,9 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { StockTransactions } from './StockTransactions';
+import { StockTransactionsSchema } from './stock-transactions.schema';
 
 @Index('stock_pkey', ['id'], { unique: true })
 @Entity('stock', { schema: 'public' })
-export class Stock {
+export class StockSchema {
   @Column('uuid', {
     primary: true,
     name: 'id',
@@ -43,8 +43,8 @@ export class Stock {
   updatedAt: Date | null;
 
   @OneToMany(
-    () => StockTransactions,
+    () => StockTransactionsSchema,
     (stockTransactions) => stockTransactions.stock,
   )
-  stockTransactions: StockTransactions[];
+  stockTransactions: StockTransactionsSchema[];
 }

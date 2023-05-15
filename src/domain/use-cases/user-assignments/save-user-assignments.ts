@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { UserAssignments } from '../../../domain/entity/user-assignments';
 import { IEquipmentRepository } from '../../../domain/repository/equipment-repository';
 import { IUserAssignmentsRepository } from '../../../domain/repository/user-assignments-repository';
@@ -12,10 +13,10 @@ export class SaveUserAssignmentsUseCase {
     private equipmentRepository: IEquipmentRepository,
   ) {}
 
-  async execute(
-    user_id: string,
-    equipment_id: string,
-  ): Promise<SaveUserAssignmentsOutput> {
+  async execute({
+    user_id,
+    equipment_id,
+  }: SaveUserAssignmentInput): Promise<SaveUserAssignmentsOutput> {
     const user = await this.userRepository.findByUserName(user_id);
     if (!user) {
       throw new UserNotFoundError();
@@ -27,59 +28,20 @@ export class SaveUserAssignmentsUseCase {
       throw new EquipmentNotFoundError();
     }
 
-    await this.userAssignmentsRepository.save(user, equipment);
-
     const userAssignments = UserAssignments.create({
       user,
       equipment,
     });
 
-    return {
-      userAssignments,
-    };
+    await this.userAssignmentsRepository.save(userAssignments);
+
+    return {};
   }
 }
 
-type SaveUserAssignmentsOutput = {
-  userAssignments: {
-    props: {
-      user: {
-        props: {
-          user_name: string;
-          complete_name: string;
-          title: string;
-          department_id: string;
-          telephone: number | null;
-          direct_boss: string;
-          smtp: string;
-          admission_date: Date;
-          demission_date: Date | null;
-          status: string;
-        };
-      };
-      equipment: {
-        props: {
-          id: string;
-          type: string | null;
-          brand: string;
-          model: string;
-          supplier: string;
-          invoice: string | null;
-          warranty: string | null;
-          purchase_date: string | null;
-          department: string;
-          status: string;
-          cpu: string | null;
-          ram: string | null;
-          slots: number | null;
-          storage0_type: string | null;
-          storage0_syze: number | null;
-          storage1_type: string | null;
-          storage1_syze: number | null;
-          video: string | null;
-          service_tag: string | null;
-        };
-      };
-    };
-  };
+type SaveUserAssignmentInput = {
+  user_id: string;
+  equipment_id: string;
 };
+
+type SaveUserAssignmentsOutput = {};

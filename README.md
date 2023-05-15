@@ -37,4 +37,4 @@ Lil Complete app.
 
 ## TypeOrm
 
-`typeorm-model-generator -h localhost -d db_patriani -u docker -x docker -e postgres -o ./src/infra/repository/typeorm -s public`
+`typeorm-model-generator -h localhost -d dev -u docker -x docker -e postgres -o ./ -s public`

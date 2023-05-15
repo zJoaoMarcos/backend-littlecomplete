@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { IUserRepository } from 'src/domain/repository/user-repository';
+import { DepartmentNotFoundError } from '../errors/department-not-found';
 import { UserNotFoundError } from '../errors/user-not-found';
 
 export class EditUserUseCase {
@@ -27,10 +28,16 @@ export class EditUserUseCase {
       throw new UserNotFoundError();
     }
 
-    const department = await this.departmentRepository.findById(department_id);
+    const departmentExists = await this.departmentRepository.findById(
+      department_id,
+    );
+
+    if (!departmentExists) {
+      return new DepartmentNotFoundError();
+    }
 
     user.complete_name = complete_name;
-    user.department_id = department.name;
+    user.department_id = department_id;
     user.title = title;
     user.status = status;
     user.telephone = telephone;

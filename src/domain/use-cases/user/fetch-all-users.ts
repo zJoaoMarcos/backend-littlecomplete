@@ -1,19 +1,17 @@
 import { IUserRepository } from '../../../domain/repository/user-repository';
 import { UserNotFoundError } from '../errors/user-not-found';
 
-export class FindAllUsersUseCase {
+export class FetchAllUsersUseCase {
   constructor(private userRepository: IUserRepository) {}
 
   async execute({
     skip,
     take,
-    where,
-  }: FindAllUsersInput): Promise<FindAllUsersOutput> {
-    const { users, totalCount } = await this.userRepository.findAll(
+  }: FetchAllUsersInput): Promise<FetchAllUsersOutput> {
+    const { users, totalCount } = await this.userRepository.findMany({
       skip,
       take,
-      where,
-    );
+    });
 
     if (!users) {
       throw new UserNotFoundError();
@@ -26,19 +24,18 @@ export class FindAllUsersUseCase {
   }
 }
 
-type FindAllUsersInput = {
+type FetchAllUsersInput = {
   skip: number;
   take: number;
-  where: string;
 };
 
-type FindAllUsersOutput = {
+type FetchAllUsersOutput = {
   users: {
     props: {
       user_name: string;
       complete_name: string;
       title: string;
-      department_id: string;
+      department: { id: number; name: string };
       telephone: number | null;
       direct_boss: string;
       smtp: string;

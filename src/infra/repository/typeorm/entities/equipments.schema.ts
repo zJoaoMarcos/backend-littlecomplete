@@ -1,9 +1,17 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { EquipmentUserSchema } from './equipments-user.schema';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
+import { DepartmentsSchema } from './departments.schema';
+import { EquipmentsUserSchema } from './equipments-user.schema';
 
 @Index('equipments_pkey', ['id'], { unique: true })
 @Entity('equipments', { schema: 'public' })
-export class EquipmentSchema {
+export class EquipmentsSchema {
   @Column('character', { primary: true, name: 'id', length: 13 })
   id: string;
 
@@ -22,11 +30,8 @@ export class EquipmentSchema {
   @Column('character', { name: 'warranty', nullable: true, length: 10 })
   warranty: string | null;
 
-  @Column('character', { name: 'purchase_date', nullable: true, length: 20 })
-  purchaseDate: string | null;
-
-  @Column('character', { name: 'department', nullable: true, length: 50 })
-  department: string | null;
+  @Column('date', { name: 'purchase_date', nullable: true })
+  purchaseDate: Date | null;
 
   @Column('character', { name: 'status', nullable: true, length: 30 })
   status: string | null;
@@ -58,9 +63,13 @@ export class EquipmentSchema {
   @Column('character', { name: 'service_tag', nullable: true, length: 50 })
   serviceTag: string | null;
 
+  @ManyToOne(() => DepartmentsSchema, (departments) => departments.equipments)
+  @JoinColumn([{ name: 'department_id', referencedColumnName: 'id' }])
+  department: DepartmentsSchema;
+
   @OneToMany(
-    () => EquipmentUserSchema,
+    () => EquipmentsUserSchema,
     (equipmentsUser) => equipmentsUser.equipment,
   )
-  equipmentsUsers: EquipmentUserSchema[];
+  equipmentsUsers: EquipmentsUserSchema[];
 }

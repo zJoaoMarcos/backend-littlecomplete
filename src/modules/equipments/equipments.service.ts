@@ -4,29 +4,26 @@ import {
   NotFoundException,
 } from '@nestjs/common/exceptions';
 import { CreateEquipmentUseCase } from 'src/domain/use-cases/equipment/create-equipment';
-import { FindAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/find-all-equipments';
+import { EditEquipmentUseCase } from 'src/domain/use-cases/equipment/edit-equipment';
+import { FetchAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/fetch-all-equipments';
+import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/equipment/fetch-by-department-id';
 import { FindEquipmentByIdUseCase } from 'src/domain/use-cases/equipment/find-equipment-by-id';
-import { updateEquipmentDepartmentUseCase } from 'src/domain/use-cases/equipment/update-equipment-department';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
+import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 
 @Injectable()
 export class EquipmentsService {
   constructor(
     private createUseCase: CreateEquipmentUseCase,
-    private findAllUseCase: FindAllEquipmentsUseCase,
+    private findAllUseCase: FetchAllEquipmentsUseCase,
     private findByIdUseCase: FindEquipmentByIdUseCase,
-    private updateDepartmentUseCase: updateEquipmentDepartmentUseCase,
+    private findByDepartmentIdUseCase: FetchByDepartmentIdUseCase,
+    private updateDepartmentUseCase: EditEquipmentUseCase,
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto) {
     try {
-      const { equipment } = await this.createUseCase.execute(
-        createEquipmentDto,
-      );
-
-      return {
-        equipment: equipment.props,
-      };
+      return this.createUseCase.execute(createEquipmentDto);
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -60,9 +57,36 @@ export class EquipmentsService {
     }
   }
 
-  async update(id: string, department: string) {
+  async findByDepartmentId(
+    department_id: number,
+    skip?: number,
+    take?: number,
+  ) {
     try {
-      return this.updateDepartmentUseCase.execute(id, department);
+      const { equipments, totalCount } =
+        await this.findByDepartmentIdUseCase.execute({
+          department_id,
+          skip,
+          take,
+        });
+
+      return {
+        totalCount,
+        equipments: equipments.map((equipment) => {
+          return equipment.props;
+        }),
+      };
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
+  }
+
+  async update(id: string, updateEquipmentDto: UpdateEquipmentDto) {
+    try {
+      return this.updateDepartmentUseCase.execute({
+        id,
+        ...updateEquipmentDto,
+      });
     } catch (err) {
       throw new ConflictException(err.message);
     }

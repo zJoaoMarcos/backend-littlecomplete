@@ -14,7 +14,7 @@ export class CreateEquipmentUseCase {
     id,
     brand,
     model,
-    department,
+    department_id,
     supplier,
     invoice,
     warranty,
@@ -35,19 +35,24 @@ export class CreateEquipmentUseCase {
       throw new EquipmentAlreadyExistsError();
     }
 
-    const departmentExists = await this.departmentRepository.findByName(
-      department,
+    const departmentExists = await this.departmentRepository.findById(
+      department_id,
     );
 
     if (!departmentExists) {
       throw new DepartmentNotFoundError();
     }
 
+    const departmentName = departmentExists.name;
+
     const equipment = Equipment.create({
       id,
       brand,
       model,
-      department,
+      department: {
+        id: department_id,
+        name: departmentName,
+      },
       status: 'available',
       supplier,
       invoice,
@@ -64,26 +69,7 @@ export class CreateEquipmentUseCase {
       service_tag,
     });
 
-    await this.equipmentRepository.create(
-      equipment.id,
-      equipment.brand,
-      equipment.model,
-      equipment.department,
-      equipment.status,
-      equipment.supplier,
-      equipment.invoice,
-      equipment.warranty,
-      equipment.purchase_date,
-      equipment.cpu,
-      equipment.ram,
-      equipment.slots,
-      equipment.storage0_type,
-      equipment.storage0_syze,
-      equipment.storage1_type,
-      equipment.storage1_syze,
-      equipment.video,
-      equipment.service_tag,
-    );
+    await this.equipmentRepository.create(equipment);
 
     return {
       equipment,
@@ -95,20 +81,20 @@ type CreateEquipmentInput = {
   id: string;
   brand: string;
   model: string;
-  supplier?: string;
-  invoice?: string;
-  warranty?: string;
-  purchase_date?: string;
-  department: string;
-  cpu?: string;
-  ram?: string;
-  slots?: number;
-  storage0_type?: string;
-  storage0_syze?: number;
-  storage1_type?: string;
-  storage1_syze?: number;
-  video?: string;
-  service_tag?: string;
+  supplier: string;
+  invoice: string | null;
+  warranty: string | null;
+  purchase_date: Date | null;
+  department_id: number;
+  cpu: string | null;
+  ram: string | null;
+  slots: number | null;
+  storage0_type: string | null;
+  storage0_syze: number | null;
+  storage1_type: string | null;
+  storage1_syze: number | null;
+  video: string | null;
+  service_tag: string | null;
 };
 
 type CreateEquipmentOutput = {
@@ -121,8 +107,8 @@ type CreateEquipmentOutput = {
       supplier: string;
       invoice: string | null;
       warranty: string | null;
-      purchase_date: string | null;
-      department: string;
+      purchase_date: Date | null;
+      department: { id: number; name: string };
       status: string;
       cpu: string | null;
       ram: string | null;

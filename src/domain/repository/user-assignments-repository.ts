@@ -3,13 +3,12 @@ import { User } from '../entity/user';
 import { UserAssignments } from '../entity/user-assignments';
 
 export interface IUserAssignmentsRepository {
-  save(user: User, equipment: Equipment): Promise<UserAssignments>;
-  findAll(): Promise<UserAssignments[]>;
+  findMany(): Promise<UserAssignments[]>;
   findByEquipmentId(id: string): Promise<User>;
-
-  findByUserName(userId: string): Promise<ResponseUserAssignments>;
+  findByUserName(userName: string): Promise<FindByUserNameOutput>;
+  save(userAssignments: UserAssignments): Promise<void>;
 }
 
-export type ResponseUserAssignments = {
+export type FindByUserNameOutput = {
   equipments: Equipment[];
 };

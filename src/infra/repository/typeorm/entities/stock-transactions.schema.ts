@@ -1,9 +1,9 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { Stock } from './Stock';
+import { StockSchema } from './stock.schema';
 
 @Index('stock_transactions_pkey', ['id'], { unique: true })
 @Entity('stock_transactions', { schema: 'public' })
-export class StockTransactions {
+export class StockTransactionsSchema {
   @Column('uuid', {
     primary: true,
     name: 'id',
@@ -40,7 +40,7 @@ export class StockTransactions {
   @Column('character varying', { name: 'value', nullable: true, length: 30 })
   value: string | null;
 
-  @ManyToOne(() => Stock, (stock) => stock.stockTransactions)
+  @ManyToOne(() => StockSchema, (stock) => stock.stockTransactions)
   @JoinColumn([{ name: 'stock_id', referencedColumnName: 'id' }])
-  stock: Stock;
+  stock: StockSchema;
 }

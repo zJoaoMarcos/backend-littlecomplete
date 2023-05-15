@@ -2,19 +2,19 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { CreateDepartmentUseCase } from 'src/domain/use-cases/department/create-department';
-import { FindAllDepartmentsUseCase } from 'src/domain/use-cases/department/find-all-departments';
+import { EditDepartmentUseCase } from 'src/domain/use-cases/department/edit-department';
+import { FetchAllDepartmentsUseCase } from 'src/domain/use-cases/department/fetch-all-departments';
 import { FindDepartmentByIdUseCase } from 'src/domain/use-cases/department/find-department-by-id';
 import { FindDepartmentByNameUseCase } from 'src/domain/use-cases/department/find-department-by-name';
-import { UpdateDepartmentUseCase } from 'src/domain/use-cases/department/update-department';
 import { InMemoryDepartmentRepository } from 'src/infra/repository/in-memory/in-memory-department-repository';
-import { DepartmentSchema } from 'src/infra/repository/typeorm/entities/department.schema';
+import { DepartmentsSchema } from 'src/infra/repository/typeorm/entities/departments.schema';
 import { TypeOrmDepartmentRepository } from 'src/infra/repository/typeorm/typeorm-department-repository';
 import { DataSource } from 'typeorm';
 import { DepartmentsController } from './departments.controller';
 import { DepartmentsService } from './departments.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([DepartmentSchema])],
+  imports: [TypeOrmModule.forFeature([DepartmentsSchema])],
   controllers: [DepartmentsController],
   providers: [
     DepartmentsService,
@@ -22,7 +22,7 @@ import { DepartmentsService } from './departments.service';
       provide: TypeOrmDepartmentRepository,
       useFactory: (dataSource: DataSource) => {
         return new TypeOrmDepartmentRepository(
-          dataSource.getRepository(DepartmentSchema),
+          dataSource.getRepository(DepartmentsSchema),
         );
       },
       inject: [getDataSourceToken()],
@@ -39,9 +39,9 @@ import { DepartmentsService } from './departments.service';
       inject: [TypeOrmDepartmentRepository],
     },
     {
-      provide: FindAllDepartmentsUseCase,
+      provide: FetchAllDepartmentsUseCase,
       useFactory: (departmentRepo: IDepartmentRepository) => {
-        return new FindAllDepartmentsUseCase(departmentRepo);
+        return new FetchAllDepartmentsUseCase(departmentRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },
@@ -60,9 +60,9 @@ import { DepartmentsService } from './departments.service';
       inject: [TypeOrmDepartmentRepository],
     },
     {
-      provide: UpdateDepartmentUseCase,
+      provide: EditDepartmentUseCase,
       useFactory: (departmentRepo: IDepartmentRepository) => {
-        return new UpdateDepartmentUseCase(departmentRepo);
+        return new EditDepartmentUseCase(departmentRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },

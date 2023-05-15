@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common/exceptions';
 import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
 import { EditUserUseCase } from 'src/domain/use-cases/user/edit-user';
-import { FindAllUsersUseCase } from 'src/domain/use-cases/user/find-all-users';
+import { FetchAllUsersUseCase } from 'src/domain/use-cases/user/fetch-all-users';
+import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/user/fetch-by-department-id';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -14,7 +15,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(
     private createUseCase: CreateUserUseCase,
-    private findAllUseCase: FindAllUsersUseCase,
+    private findAllUseCase: FetchAllUsersUseCase,
+    private findByDepartmentIdUseCase: FetchByDepartmentIdUseCase,
     private findByIdUseCase: FindUserByUserNameUseCase,
     private updateUsecase: EditUserUseCase,
   ) {}
@@ -30,7 +32,7 @@ export class UsersService {
     admission_date,
   }: CreateUserDto) {
     try {
-      const { user } = await this.createUseCase.execute({
+      return this.createUseCase.execute({
         user_name,
         complete_name,
         title,
@@ -40,28 +42,22 @@ export class UsersService {
         telephone,
         admission_date,
       });
-
-      return {
-        user: user.props,
-      };
     } catch (err) {
       throw new ConflictException(err.message);
     }
   }
 
-  async findAll(skip: number, take: number, where: string) {
+  async findAll(skip?: number, take?: number) {
     try {
       const { users, totalCount } = await this.findAllUseCase.execute({
         skip,
         take,
-        where,
       });
-
       return {
+        totalCount: totalCount,
         users: users.map((users) => {
           return users.props;
         }),
-        totalCount: totalCount,
       };
     } catch (err) {
       throw new NotFoundException(err.message);
@@ -81,6 +77,21 @@ export class UsersService {
     } catch (err) {
       throw new NotFoundException(err.message);
     }
+  }
+
+  async findByDepartmentId(departmentId: number, skip?: number, take?: number) {
+    const { users, totalCount } = await this.findByDepartmentIdUseCase.execute({
+      departmentId,
+      skip,
+      take,
+    });
+
+    return {
+      totalCount,
+      users: users.map((users) => {
+        return users.props;
+      }),
+    };
   }
 
   async updateUser(id: string, user: UpdateUserDto) {

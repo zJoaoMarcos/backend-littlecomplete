@@ -10,7 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
-import { UpdateEquipmentDeparmentDto } from './dto/update-equipment-department.dto';
+import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { EquipmentsService } from './equipments.service';
 
 @ApiTags('Equipments')
@@ -34,12 +34,20 @@ export class EquipmentsController {
     return this.equipmentsService.findById(id);
   }
 
+  @Get('department/:id')
+  findMany(
+    @Param('id') id: number,
+    @Query() findManyParams: FindManyParamsDto,
+  ) {
+    const { skip, take } = findManyParams;
+    return this.equipmentsService.findByDepartmentId(id, skip, take);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateEquipmentDeparmentDto: UpdateEquipmentDeparmentDto,
+    @Body() updateEquipmentDto: UpdateEquipmentDto,
   ) {
-    const { department } = updateEquipmentDeparmentDto;
-    return this.equipmentsService.update(id, department);
+    return this.equipmentsService.update(id, updateEquipmentDto);
   }
 }
