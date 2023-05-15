@@ -1,3 +1,4 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import {
   FindManyOutput,
   IUserRepository,
@@ -38,6 +39,21 @@ export class InMemoryUserRepository implements IUserRepository {
     }
 
     return Promise.resolve(user);
+  }
+
+  async findByDepartmentId(
+    departmentId: number,
+    params: PaginationParams,
+  ): Promise<FindManyOutput> {
+    const users = await this.users.filter(
+      (user) => user.department_id === departmentId,
+    );
+    const totalCount = users.length;
+
+    return {
+      users,
+      totalCount,
+    };
   }
 
   async save(user: User): Promise<void> {

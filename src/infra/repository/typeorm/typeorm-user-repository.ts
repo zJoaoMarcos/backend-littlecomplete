@@ -133,6 +133,47 @@ export class TypeOrmUserRepository implements IUserRepository {
     });
   }
 
+  async findByDepartmentId(
+    departmentId: number,
+    params: PaginationParams,
+  ): Promise<FindManyOutput> {
+    const [result, totalCount] = await this.ormRepo.findAndCount({
+      where: {
+        department: { id: departmentId },
+      },
+      relations: {
+        department: true,
+        directBoss: true,
+      },
+      order: {
+        username: 'ASC',
+      },
+    });
+
+    const users = result.map((user) => {
+      return User.create({
+        user_name: user.username,
+        complete_name: user.completeName,
+        title: user.title,
+        telephone: user.telephone,
+        department: {
+          id: user.department.id,
+          name: user.department.name,
+        },
+        direct_boss: user.directBoss ? user.directBoss.username : null,
+        smtp: user.smtp,
+        admission_date: user.admissionDate,
+        status: user.status,
+        demission_date: user.demissionDate,
+      });
+    });
+
+    return {
+      users,
+      totalCount,
+    };
+  }
+
   async save(user: User): Promise<void> {
     await this.ormRepo.update(
       {
