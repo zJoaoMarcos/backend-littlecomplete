@@ -25,9 +25,6 @@ export class UsersSchema {
   @Column('integer', { name: 'telephone', nullable: true })
   telephone: number | null;
 
-  @Column('character', { name: 'direct_boss', nullable: true, length: 50 })
-  directBoss: string | null;
-
   @Column('character', {
     name: 'smtp',
     nullable: true,
@@ -46,6 +43,12 @@ export class UsersSchema {
   status: string | null;
 
   @OneToMany(
+    () => DepartmentsSchema,
+    (departments) => departments.responsibleId,
+  )
+  departments: DepartmentsSchema[];
+
+  @OneToMany(
     () => EquipmentsUserSchema,
     (equipmentsUser) => equipmentsUser.user,
   )
@@ -54,4 +57,11 @@ export class UsersSchema {
   @ManyToOne(() => DepartmentsSchema, (departments) => departments.users)
   @JoinColumn([{ name: 'department_id', referencedColumnName: 'id' }])
   department: DepartmentsSchema;
+
+  @ManyToOne(() => UsersSchema, (users) => users.users)
+  @JoinColumn([{ name: 'direct_boss', referencedColumnName: 'username' }])
+  directBoss: UsersSchema;
+
+  @OneToMany(() => UsersSchema, (users) => users.directBoss)
+  users: UsersSchema[];
 }

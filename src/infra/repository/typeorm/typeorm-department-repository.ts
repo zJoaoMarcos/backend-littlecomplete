@@ -16,7 +16,7 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
       costCenter: department.cost_center,
       isBoard: department.is_board,
       board: department.board,
-      responsibleId: department.responsible_id,
+      responsibleId: { username: department.responsible_id },
     });
   }
 
@@ -28,6 +28,9 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
       take: take,
       order: {
         name: 'asc',
+      },
+      relations: {
+        responsibleId: true,
       },
     });
 
@@ -42,7 +45,9 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
         cost_center: department.costCenter,
         is_board: department.isBoard,
         board: department.board,
-        responsible_id: department.responsibleId,
+        responsible_id: department.responsibleId
+          ? department.responsibleId.username
+          : null,
       });
     });
 
@@ -53,7 +58,12 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
   }
 
   async findByName(name: string): Promise<Department> {
-    const department = await this.ormRepo.findOneBy({ name: name });
+    const department = await this.ormRepo.findOne({
+      where: { name: name },
+      relations: {
+        responsibleId: true,
+      },
+    });
 
     if (!department) {
       return null;
@@ -65,12 +75,17 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
       cost_center: department.costCenter,
       is_board: department.isBoard,
       board: department.board,
-      responsible_id: department.responsibleId,
+      responsible_id: department.responsibleId.username,
     });
   }
 
   async findById(departmentId: number): Promise<Department> {
-    const department = await this.ormRepo.findOneBy({ id: departmentId });
+    const department = await this.ormRepo.findOne({
+      where: { id: departmentId },
+      relations: {
+        responsibleId: true,
+      },
+    });
 
     if (!department) {
       return null;
@@ -82,7 +97,7 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
       cost_center: department.costCenter,
       is_board: department.isBoard,
       board: department.board,
-      responsible_id: department.responsibleId,
+      responsible_id: department.responsibleId.username,
     });
   }
 
@@ -94,7 +109,7 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
         costCenter: department.cost_center,
         board: department.board,
         isBoard: department.is_board,
-        responsibleId: department.responsible_id,
+        responsibleId: { username: department.responsible_id },
       },
     );
   }

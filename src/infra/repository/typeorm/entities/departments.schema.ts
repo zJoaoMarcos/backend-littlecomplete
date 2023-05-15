@@ -2,6 +2,8 @@ import {
   Column,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -32,8 +34,9 @@ export class DepartmentsSchema {
   @Column('character', { name: 'board', nullable: true, length: 50 })
   board: string | null;
 
-  @Column('character', { name: 'responsible_id', nullable: true, length: 50 })
-  responsibleId: string | null;
+  @ManyToOne(() => UsersSchema, (users) => users.departments)
+  @JoinColumn([{ name: 'responsible_id', referencedColumnName: 'username' }])
+  responsibleId: UsersSchema;
 
   @OneToMany(() => EquipmentsSchema, (equipments) => equipments.department)
   equipments: EquipmentsSchema[];

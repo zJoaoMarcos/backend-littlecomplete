@@ -16,7 +16,9 @@ export class TypeOrmUserRepository implements IUserRepository {
       completeName: user.complete_name,
       title: user.title,
 
-      directBoss: user.direct_boss,
+      directBoss: {
+        username: user.direct_boss,
+      },
       telephone: user.telephone,
       smtp: user.smtp,
       admissionDate: user.admission_date,
@@ -41,8 +43,11 @@ export class TypeOrmUserRepository implements IUserRepository {
       },
       relations: {
         department: true,
+        directBoss: true,
       },
     });
+
+    console.log(result);
 
     if (!result) {
       return null;
@@ -58,7 +63,7 @@ export class TypeOrmUserRepository implements IUserRepository {
           id: user.department.id,
           name: user.department.name,
         },
-        direct_boss: user.directBoss,
+        direct_boss: user.directBoss ? user.directBoss.username : null,
         smtp: user.smtp,
         admission_date: user.admissionDate,
         status: user.status,
@@ -95,7 +100,7 @@ export class TypeOrmUserRepository implements IUserRepository {
         id: user.department.id,
         name: user.department.name,
       },
-      direct_boss: user.directBoss,
+      direct_boss: user.directBoss.username,
       smtp: user.smtp,
       admission_date: user.admissionDate,
       status: user.status,
@@ -124,7 +129,7 @@ export class TypeOrmUserRepository implements IUserRepository {
         id: user.department.id,
         name: user.department.name,
       },
-      direct_boss: user.directBoss,
+      direct_boss: user.directBoss.username,
       smtp: user.smtp,
       admission_date: user.admissionDate,
       status: user.status,
@@ -144,7 +149,7 @@ export class TypeOrmUserRepository implements IUserRepository {
         department: {
           id: user.department_id,
         },
-        directBoss: user.direct_boss,
+        directBoss: { username: user.direct_boss },
         smtp: user.smtp,
         status: user.status,
         admissionDate: user.admission_date,
