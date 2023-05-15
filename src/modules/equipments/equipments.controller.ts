@@ -34,6 +34,15 @@ export class EquipmentsController {
     return this.equipmentsService.findById(id);
   }
 
+  @Get('department/:id')
+  findMany(
+    @Param('id') id: number,
+    @Query() findManyParams: FindManyParamsDto,
+  ) {
+    const { skip, take } = findManyParams;
+    return this.equipmentsService.findByDepartmentId(id, skip, take);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
