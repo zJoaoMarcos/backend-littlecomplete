@@ -47,8 +47,6 @@ export class TypeOrmUserRepository implements IUserRepository {
       },
     });
 
-    console.log(result);
-
     if (!result) {
       return null;
     }
@@ -88,8 +86,6 @@ export class TypeOrmUserRepository implements IUserRepository {
     if (!user) {
       return null;
     }
-
-    console.log(user);
 
     return User.create({
       user_name: user.username,
