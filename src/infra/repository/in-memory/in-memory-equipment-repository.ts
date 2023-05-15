@@ -31,6 +31,21 @@ export class InMemoryEquipmentRepository implements IEquipmentRepository {
     return Promise.resolve(equipment);
   }
 
+  async FindByDepartmentId(
+    departmentId: number,
+    params: PaginationParams,
+  ): Promise<FindManyOutput> {
+    const equipments = this.equipments.filter(
+      (equipment) => equipment.department_id === departmentId,
+    );
+    const totalCount = equipments.length;
+
+    return {
+      equipments,
+      totalCount,
+    };
+  }
+
   async save(equipment: Equipment): Promise<void> {
     const itemIndex = this.equipments.findIndex(
       (item) => item.id === equipment.id,
