@@ -6,6 +6,7 @@ import {
 import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
 import { EditUserUseCase } from 'src/domain/use-cases/user/edit-user';
 import { FetchAllUsersUseCase } from 'src/domain/use-cases/user/fetch-all-users';
+import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/user/fetch-by-department-id';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -15,6 +16,7 @@ export class UsersService {
   constructor(
     private createUseCase: CreateUserUseCase,
     private findAllUseCase: FetchAllUsersUseCase,
+    private findByDepartmentIdUseCase: FetchByDepartmentIdUseCase,
     private findByIdUseCase: FindUserByUserNameUseCase,
     private updateUsecase: EditUserUseCase,
   ) {}
@@ -75,6 +77,21 @@ export class UsersService {
     } catch (err) {
       throw new NotFoundException(err.message);
     }
+  }
+
+  async findByDepartmentId(departmentId: number, skip?: number, take?: number) {
+    const { users, totalCount } = await this.findByDepartmentIdUseCase.execute({
+      departmentId,
+      skip,
+      take,
+    });
+
+    return {
+      totalCount,
+      users: users.map((users) => {
+        return users.props;
+      }),
+    };
   }
 
   async updateUser(id: string, user: UpdateUserDto) {

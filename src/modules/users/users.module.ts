@@ -5,6 +5,7 @@ import { IUserRepository } from 'src/domain/repository/user-repository';
 import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
 import { EditUserUseCase } from 'src/domain/use-cases/user/edit-user';
 import { FetchAllUsersUseCase } from 'src/domain/use-cases/user/fetch-all-users';
+import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/user/fetch-by-department-id';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
 import { DepartmentsSchema } from 'src/infra/repository/typeorm/entities/departments.schema';
 import { EquipmentsUserSchema } from 'src/infra/repository/typeorm/entities/equipments-user.schema';
@@ -69,6 +70,16 @@ import { UsersService } from './users.service';
         return new FindUserByUserNameUseCase(userRepo, userAssignmentsRepo);
       },
       inject: [TypeOrmUserRepository, TypeOrmUserAssignmentsRepository],
+    },
+    {
+      provide: FetchByDepartmentIdUseCase,
+      useFactory: (
+        userRepo: IUserRepository,
+        departmentRepo: IDepartmentRepository,
+      ) => {
+        return new FetchByDepartmentIdUseCase(userRepo, departmentRepo);
+      },
+      inject: [TypeOrmUserRepository, TypeOrmDepartmentRepository],
     },
     {
       provide: EditUserUseCase,
