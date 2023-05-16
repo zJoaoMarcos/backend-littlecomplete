@@ -27,8 +27,8 @@ export class TypeOrmUserAssignmentsRepository
   async findMany(): Promise<UserAssignments[]> {
     const assignments = await this.ormRepo.find({
       relations: {
-        user: true,
-        equipment: true,
+        user: { department: true, directBoss: true },
+        equipment: { department: true },
       },
     });
 
@@ -84,7 +84,7 @@ export class TypeOrmUserAssignmentsRepository
     const assignment = await this.ormRepo.findOne({
       where: { equipment: { id: id } },
       relations: {
-        user: true,
+        user: { department: true, directBoss: true },
       },
     });
 
@@ -112,7 +112,10 @@ export class TypeOrmUserAssignmentsRepository
   async findByUserName(userId: string): Promise<FindByUserNameOutput> {
     const assignments = await this.ormRepo.find({
       where: { user: { username: userId } },
-      relations: { user: true, equipment: true },
+      relations: {
+        user: { department: true, directBoss: true },
+        equipment: { department: true },
+      },
     });
 
     if (!assignments) {
