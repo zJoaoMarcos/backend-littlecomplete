@@ -32,11 +32,11 @@ type FindUserByUserNameOutput = {
       user_name: string;
       complete_name: string;
       title: string;
-      department: { id: number; name: string };
+      department: { id: number | null; name: string | null };
       telephone: number | null;
       direct_boss: string;
       smtp: string;
-      admission_date: Date;
+      admission_date: Date | null;
       demission_date: Date | null;
       status: string;
     };
@@ -44,13 +44,17 @@ type FindUserByUserNameOutput = {
   equipments: {
     props: {
       id: string;
+      type: string;
       brand: string;
       model: string;
       supplier: string;
       invoice: string | null;
       warranty: string | null;
       purchase_date: Date | null;
-      department: { id: number; name: string };
+      department: {
+        id: number | null;
+        name: string | null;
+      };
       status: string;
       cpu: string | null;
       ram: string | null;
