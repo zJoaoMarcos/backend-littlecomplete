@@ -58,8 +58,8 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         warranty: equipment.warranty,
         purchase_date: equipment.purchaseDate,
         department: {
-          id: equipment.department.id,
-          name: equipment.department.name,
+          id: equipment.department ? equipment.department.id : null,
+          name: equipment.department ? equipment.department.name : null,
         },
         status: equipment.status,
         cpu: equipment.cpu,
