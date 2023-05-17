@@ -18,7 +18,7 @@ export class EquipmentsSchema {
   @Column('character', { name: 'brand', nullable: true, length: 20 })
   brand: string | null;
 
-  @Column('character', { name: 'model', nullable: true, length: 15 })
+  @Column('character', { name: 'model', nullable: true, length: 50 })
   model: string | null;
 
   @Column('character', { name: 'supplier', nullable: true, length: 50 })
