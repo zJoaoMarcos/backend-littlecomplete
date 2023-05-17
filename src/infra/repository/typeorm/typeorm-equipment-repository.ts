@@ -79,6 +79,53 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       totalCount,
     };
   }
+  async findAvaliable(params: PaginationParams): Promise<FindManyOutput> {
+    const [result, totalCount] = await this.ormRepo.findAndCount({
+      skip: params.skip,
+      take: params.take,
+      relations: {
+        department: true,
+      },
+      where: {
+        status: 'stock      ',
+      },
+    });
+
+    if (!result) {
+      return null;
+    }
+
+    const equipments = result.map((equipment) => {
+      return Equipment.create({
+        id: equipment.id,
+        brand: equipment.brand,
+        model: equipment.model,
+        supplier: equipment.supplier,
+        invoice: equipment.invoice,
+        warranty: equipment.warranty,
+        purchase_date: equipment.purchaseDate,
+        department: {
+          id: equipment.department ? equipment.department.id : null,
+          name: equipment.department ? equipment.department.name : null,
+        },
+        status: equipment.status,
+        cpu: equipment.cpu,
+        ram: equipment.ram,
+        slots: equipment.slots,
+        storage0_type: equipment.storage0Type,
+        storage0_syze: equipment.storage0Syze,
+        storage1_type: equipment.storage1Type,
+        storage1_syze: equipment.storage1Syze,
+        video: equipment.video,
+        service_tag: equipment.serviceTag,
+      });
+    });
+
+    return {
+      equipments,
+      totalCount,
+    };
+  }
 
   async findById(id: string): Promise<Equipment> {
     const equipment = await this.ormRepo.findOne({

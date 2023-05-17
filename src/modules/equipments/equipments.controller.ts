@@ -29,6 +29,12 @@ export class EquipmentsController {
     return this.equipmentsService.findAll(skip, take);
   }
 
+  @Get('/avaliable')
+  findAvaliable(@Query() findManyParamsDto: FindManyParamsDto) {
+    const { skip, take } = findManyParamsDto;
+    return this.equipmentsService.findAvaliable(skip, take);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.equipmentsService.findById(id);
