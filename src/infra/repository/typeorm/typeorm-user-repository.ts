@@ -80,6 +80,7 @@ export class TypeOrmUserRepository implements IUserRepository {
       where: { username: userName },
       relations: {
         department: true,
+        directBoss: true,
       },
     });
 
@@ -96,7 +97,7 @@ export class TypeOrmUserRepository implements IUserRepository {
         id: user.department.id,
         name: user.department.name,
       },
-      direct_boss: user.directBoss ? user.directBoss.username : null,
+      direct_boss: user.directBoss.username,
       smtp: user.smtp,
       admission_date: user.admissionDate,
       status: user.status,
