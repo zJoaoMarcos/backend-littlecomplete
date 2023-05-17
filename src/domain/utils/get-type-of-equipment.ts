@@ -1,4 +1,4 @@
-export const getTypeOfEquipment = (equipmentId: string): string | null => {
+export const getTypeOfEquipment = (equipmentId: string): string => {
   if (equipmentId.startsWith('01-001')) {
     return 'desktop';
   } else if (equipmentId.startsWith('01-002')) {
@@ -12,5 +12,6 @@ export const getTypeOfEquipment = (equipmentId: string): string | null => {
   } else if (equipmentId.startsWith('01-010')) {
     return 'scanner';
   }
-  return null;
+
+  return 'server';
 };
