@@ -1,21 +1,14 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { IEquipmentRepository } from 'src/domain/repository/equipment-repository';
 
 export class FetchAllEquipmentsUseCase {
   constructor(private equipmentRepository: IEquipmentRepository) {}
 
   async execute({
-    skip,
-    take,
-    query,
-    where,
-    department_id,
+    params,
   }: FetchAllEquipmentsInput): Promise<FetchAllEquipmentsOutput> {
     const { equipments, totalCount } = await this.equipmentRepository.findMany({
-      skip,
-      take,
-      query,
-      where,
-      department_id,
+      ...params,
     });
 
     if (!equipments) {
@@ -30,11 +23,7 @@ export class FetchAllEquipmentsUseCase {
 }
 
 type FetchAllEquipmentsInput = {
-  skip?: number;
-  take?: number;
-  where?: string;
-  query?: string;
-  department_id?: number;
+  params: PaginationParams;
 };
 
 type FetchAllEquipmentsOutput = {

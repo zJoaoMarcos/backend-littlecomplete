@@ -1,7 +1,7 @@
 export interface PaginationParams {
   skip?: number;
   take?: number;
-  query?: string;
-  where?: string;
+  id?: string;
+  status?: string;
   department_id?: number;
 }

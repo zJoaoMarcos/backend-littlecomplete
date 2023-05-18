@@ -1,6 +1,6 @@
 import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { Equipment } from 'src/domain/entity/equipment';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import {
   FindManyOutput,
   IEquipmentRepository,
@@ -43,10 +43,10 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         department: true,
       },
       where: {
-        id: params.query,
-        status: params.where,
+        id: params.id && Like(`%${params.id}%`),
+        status: params.status && Like(`%${params.status}%`),
         department: {
-          id: params.department_id,
+          id: params.department_id && params.department_id,
         },
       },
     });

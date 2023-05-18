@@ -1,7 +1,7 @@
 export interface FindManyParamsDto {
   skip?: number;
   take?: number;
-  where?: string;
-  query?: string;
+  id?: string;
+  status?: string;
   department_id?: number;
 }

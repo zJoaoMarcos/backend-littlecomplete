@@ -8,6 +8,7 @@ import { EditEquipmentUseCase } from 'src/domain/use-cases/equipment/edit-equipm
 import { FetchAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/fetch-all-equipments';
 import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/equipment/fetch-by-department-id';
 import { FindEquipmentByIdUseCase } from 'src/domain/use-cases/equipment/find-equipment-by-id';
+import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 
@@ -29,20 +30,10 @@ export class EquipmentsService {
     }
   }
 
-  async findAll(
-    skip?: number,
-    take?: number,
-    where?: string,
-    query?: string,
-    department_id?: number,
-  ) {
+  async findAll(params: FindManyParamsDto) {
     try {
       const { equipments, totalCount } = await this.findAllUseCase.execute({
-        skip,
-        take,
-        where,
-        query,
-        department_id,
+        params,
       });
       return {
         totalCount,

@@ -25,14 +25,7 @@ export class EquipmentsController {
 
   @Get()
   findAll(@Query() params: FindManyParamsDto) {
-    const { skip, take, where, department_id, query } = params;
-    return this.equipmentsService.findAll(
-      skip,
-      take,
-      where,
-      query,
-      department_id,
-    );
+    return this.equipmentsService.findAll(params);
   }
 
   @Get(':id')
