@@ -42,6 +42,13 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       relations: {
         department: true,
       },
+      where: {
+        id: params.query,
+        status: params.where,
+        department: {
+          id: params.department_id,
+        },
+      },
     });
 
     if (!result) {

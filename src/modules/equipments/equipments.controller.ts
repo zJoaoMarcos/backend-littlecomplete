@@ -24,15 +24,15 @@ export class EquipmentsController {
   }
 
   @Get()
-  findAll(@Query() findManyParamsDto: FindManyParamsDto) {
-    const { skip, take } = findManyParamsDto;
-    return this.equipmentsService.findAll(skip, take);
-  }
-
-  @Get('/avaliable')
-  findAvaliable(@Query() findManyParamsDto: FindManyParamsDto) {
-    const { skip, take } = findManyParamsDto;
-    return this.equipmentsService.findAvaliable(skip, take);
+  findAll(@Query() params: FindManyParamsDto) {
+    const { skip, take, where, department_id, query } = params;
+    return this.equipmentsService.findAll(
+      skip,
+      take,
+      where,
+      query,
+      department_id,
+    );
   }
 
   @Get(':id')

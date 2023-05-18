@@ -6,10 +6,16 @@ export class FetchAllEquipmentsUseCase {
   async execute({
     skip,
     take,
+    query,
+    where,
+    department_id,
   }: FetchAllEquipmentsInput): Promise<FetchAllEquipmentsOutput> {
     const { equipments, totalCount } = await this.equipmentRepository.findMany({
       skip,
       take,
+      query,
+      where,
+      department_id,
     });
 
     if (!equipments) {
@@ -26,6 +32,9 @@ export class FetchAllEquipmentsUseCase {
 type FetchAllEquipmentsInput = {
   skip?: number;
   take?: number;
+  where?: string;
+  query?: string;
+  department_id?: number;
 };
 
 type FetchAllEquipmentsOutput = {

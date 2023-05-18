@@ -6,7 +6,6 @@ import {
 import { CreateEquipmentUseCase } from 'src/domain/use-cases/equipment/create-equipment';
 import { EditEquipmentUseCase } from 'src/domain/use-cases/equipment/edit-equipment';
 import { FetchAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/fetch-all-equipments';
-import { FetchAvaliableEquipmentsUseCase } from 'src/domain/use-cases/equipment/fetch-avaliable-equipments';
 import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/equipment/fetch-by-department-id';
 import { FindEquipmentByIdUseCase } from 'src/domain/use-cases/equipment/find-equipment-by-id';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
@@ -20,7 +19,6 @@ export class EquipmentsService {
     private findByIdUseCase: FindEquipmentByIdUseCase,
     private findByDepartmentIdUseCase: FetchByDepartmentIdUseCase,
     private updateDepartmentUseCase: EditEquipmentUseCase,
-    private findAvaliableUseCase: FetchAvaliableEquipmentsUseCase,
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto) {
@@ -31,11 +29,20 @@ export class EquipmentsService {
     }
   }
 
-  async findAll(skip?: number, take?: number) {
+  async findAll(
+    skip?: number,
+    take?: number,
+    where?: string,
+    query?: string,
+    department_id?: number,
+  ) {
     try {
       const { equipments, totalCount } = await this.findAllUseCase.execute({
         skip,
         take,
+        where,
+        query,
+        department_id,
       });
       return {
         totalCount,
@@ -53,24 +60,6 @@ export class EquipmentsService {
       const { equipment } = await this.findByIdUseCase.execute(id);
       return {
         equipment: equipment.props,
-      };
-    } catch (err) {
-      throw new NotFoundException(err.message);
-    }
-  }
-
-  async findAvaliable(skip?: number, take?: number) {
-    try {
-      const { equipments, totalCount } =
-        await this.findAvaliableUseCase.execute({
-          skip,
-          take,
-        });
-      return {
-        totalCount,
-        equipments: equipments.map((equipment) => {
-          return equipment.props;
-        }),
       };
     } catch (err) {
       throw new NotFoundException(err.message);
