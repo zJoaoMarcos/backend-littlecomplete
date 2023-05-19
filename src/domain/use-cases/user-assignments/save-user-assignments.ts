@@ -3,6 +3,7 @@ import { UserAssignments } from '../../../domain/entity/user-assignments';
 import { IEquipmentRepository } from '../../../domain/repository/equipment-repository';
 import { IUserAssignmentsRepository } from '../../../domain/repository/user-assignments-repository';
 import { IUserRepository } from '../../../domain/repository/user-repository';
+import { EquipmentIsUnavailableError } from '../errors/equipment-is-unavailable-error';
 import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 import { UserNotFoundError } from '../errors/user-not-found';
 
@@ -26,6 +27,8 @@ export class SaveUserAssignmentsUseCase {
 
     if (!equipment) {
       throw new EquipmentNotFoundError();
+    } else if (equipment.status.trim() !== 'avaliable') {
+      throw new EquipmentIsUnavailableError();
     }
 
     const userAssignments = UserAssignments.create({
@@ -34,6 +37,10 @@ export class SaveUserAssignmentsUseCase {
     });
 
     await this.userAssignmentsRepository.save(userAssignments);
+
+    equipment.status = 'in use';
+
+    await this.equipmentRepository.save(equipment);
 
     return {};
   }
