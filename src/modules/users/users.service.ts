@@ -20,7 +20,7 @@ export class UsersService {
     private findByDepartmentIdUseCase: FetchByDepartmentIdUseCase,
     private findByIdUseCase: FindUserByUserNameUseCase,
     private updateUsecase: EditUserUseCase,
-    private updateUserStatusUsecase: UpdateUserStatusUseCase,
+    private updateUserStatusUseCase: UpdateUserStatusUseCase,
   ) {}
 
   async create({
@@ -106,7 +106,7 @@ export class UsersService {
 
   async updateStatus(id: string, status: string) {
     try {
-      await this.updateUserStatusUsecase.execute({ username: id, status });
+      await this.updateUserStatusUseCase.execute({ username: id, status });
     } catch (err) {
       throw new NotFoundException(err.message);
     }

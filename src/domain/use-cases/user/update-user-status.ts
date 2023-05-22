@@ -10,26 +10,26 @@ export class UpdateUserStatusUseCase {
     username,
   }: UpdateStatusInput): Promise<UpdateStatusOutput> {
     const user = await this.userRepository.findByUserName(username);
+
     if (!user) {
       throw new UserNotFoundError();
     }
 
-    switch (status.toLocaleLowerCase()) {
+    switch (status) {
       case 'disabled':
         user.status = status;
-        await this.userRepository.save(user);
         break;
       case 'vacation':
         user.status = status;
-        await this.userRepository.save(user);
         break;
       case 'active':
         user.status = status;
-        await this.userRepository.save(user);
         break;
       default:
         throw new Error();
     }
+
+    await this.userRepository.save(user);
     return {};
   }
 }

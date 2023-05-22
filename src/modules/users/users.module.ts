@@ -94,10 +94,7 @@ import { UsersService } from './users.service';
     },
     {
       provide: UpdateUserStatusUseCase,
-      useFactory: (
-        userRepo: IUserRepository,
-        departmentRepo: IDepartmentRepository,
-      ) => {
+      useFactory: (userRepo: IUserRepository) => {
         return new UpdateUserStatusUseCase(userRepo);
       },
       inject: [TypeOrmUserRepository],
