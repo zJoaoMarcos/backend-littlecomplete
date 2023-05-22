@@ -11,6 +11,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FindAllUsersOptionsDto } from './dto/find-all-users-options.dto';
+import { UpdateStatusDto } from './dto/update-status.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
@@ -48,5 +49,11 @@ export class UsersController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(id, updateUserDto);
+  }
+
+  @Patch('status/:id')
+  updateStatus(@Param('id') id: string, @Body() dto: UpdateStatusDto) {
+    const { status } = dto;
+    return this.usersService.updateStatus(id, status);
   }
 }

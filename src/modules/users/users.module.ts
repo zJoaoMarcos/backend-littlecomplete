@@ -7,6 +7,7 @@ import { EditUserUseCase } from 'src/domain/use-cases/user/edit-user';
 import { FetchAllUsersUseCase } from 'src/domain/use-cases/user/fetch-all-users';
 import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/user/fetch-by-department-id';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
+import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
 import { DepartmentsSchema } from 'src/infra/repository/typeorm/entities/departments.schema';
 import { EquipmentsUserSchema } from 'src/infra/repository/typeorm/entities/equipments-user.schema';
 import { UsersSchema } from 'src/infra/repository/typeorm/entities/users.schema';
@@ -90,6 +91,16 @@ import { UsersService } from './users.service';
         return new EditUserUseCase(userRepo, departmentRepo);
       },
       inject: [TypeOrmUserRepository, TypeOrmDepartmentRepository],
+    },
+    {
+      provide: UpdateUserStatusUseCase,
+      useFactory: (
+        userRepo: IUserRepository,
+        departmentRepo: IDepartmentRepository,
+      ) => {
+        return new UpdateUserStatusUseCase(userRepo);
+      },
+      inject: [TypeOrmUserRepository],
     },
   ],
 })

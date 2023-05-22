@@ -8,6 +8,7 @@ import { EditUserUseCase } from 'src/domain/use-cases/user/edit-user';
 import { FetchAllUsersUseCase } from 'src/domain/use-cases/user/fetch-all-users';
 import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/user/fetch-by-department-id';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
+import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -19,6 +20,7 @@ export class UsersService {
     private findByDepartmentIdUseCase: FetchByDepartmentIdUseCase,
     private findByIdUseCase: FindUserByUserNameUseCase,
     private updateUsecase: EditUserUseCase,
+    private updateUserStatusUsecase: UpdateUserStatusUseCase,
   ) {}
 
   async create({
@@ -97,6 +99,14 @@ export class UsersService {
   async updateUser(id: string, user: UpdateUserDto) {
     try {
       await this.updateUsecase.execute({ user_name: id, ...user });
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
+  }
+
+  async updateStatus(id: string, status: string) {
+    try {
+      await this.updateUserStatusUsecase.execute({ username: id, status });
     } catch (err) {
       throw new NotFoundException(err.message);
     }
