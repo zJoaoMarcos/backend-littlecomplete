@@ -6,6 +6,7 @@ import {
 import { FetchAllUsersAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/fetch-all-users-assignments';
 import { FindAssignmentByEquipmentIdUseCase } from 'src/domain/use-cases/user-assignments/find-assignment-by-equipment-id';
 import { FindAssignmentsByUserNameUseCase } from 'src/domain/use-cases/user-assignments/find-assignments-by-user-name';
+import { RemoveEquipmentAssignmentUseCase } from 'src/domain/use-cases/user-assignments/remove-equipment-assignment';
 import { SaveUserAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/save-user-assignments';
 import { CreateUserAssignmentDto } from './dto/create-user-assignment.dto';
 
@@ -16,6 +17,7 @@ export class UserAssignmentsService {
     private FindByEquipmentIdUseCase: FindAssignmentByEquipmentIdUseCase,
     private FindByUserNameUseCase: FindAssignmentsByUserNameUseCase,
     private SaveUserAssignmentUseCase: SaveUserAssignmentsUseCase,
+    private removeEquipmentAssignmentUseCase: RemoveEquipmentAssignmentUseCase,
   ) {}
 
   async create(createUserAssignmentDto: CreateUserAssignmentDto) {
@@ -55,6 +57,7 @@ export class UserAssignmentsService {
       throw new NotFoundException(err.message);
     }
   }
+
   async findByUserName(id: string) {
     try {
       const { equipments } = await this.FindByUserNameUseCase.execute(id);
@@ -64,6 +67,14 @@ export class UserAssignmentsService {
           return equipment.props;
         }),
       };
+    } catch (err) {
+      throw new NotFoundException(err.message);
+    }
+  }
+
+  async removeEquipmentAssignment(equipmentId: string) {
+    try {
+      return this.removeEquipmentAssignmentUseCase.execute({ equipmentId });
     } catch (err) {
       throw new NotFoundException(err.message);
     }

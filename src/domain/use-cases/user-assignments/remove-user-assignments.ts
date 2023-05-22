@@ -2,7 +2,7 @@ import { IUserAssignmentsRepository } from 'src/domain/repository/user-assignmen
 import { IUserRepository } from 'src/domain/repository/user-repository';
 import { UserNotFoundError } from '../errors/user-not-found';
 
-export class RemoveEquipmentAssignmentUseCase {
+export class RemoveUserAssignmentsUseCase {
   constructor(
     private userAssignmentRepository: IUserAssignmentsRepository,
     private userRepository: IUserRepository,
