@@ -6,11 +6,11 @@ describe('User', () => {
       user_name: 'jhon.doe',
       complete_name: 'Jhon Doe',
       title: 'CTO',
-      department_id: 'TI',
+      department: { id: 2425, name: 'IT' },
       telephone: 3004,
       direct_boss: 'Martin Fowler',
       smtp: 'jhon.doe@email.com',
-      admission_date: '18/02/2000',
+      admission_date: new Date(),
       demission_date: null,
       status: 'active',
     });
@@ -26,11 +26,11 @@ describe('User', () => {
       user_name: 'jhon.doe',
       complete_name: 'Jhon Doe',
       title: 'CTO',
-      department_id: 'TI',
+      department: { id: 42342, name: 'IT' },
       telephone: 3004,
       direct_boss: 'Martin Fowler',
       smtp: 'jhon.doe@email.com',
-      admission_date: '18/02/2000',
+      admission_date: new Date(),
       demission_date: null,
       status: 'active',
     });
@@ -45,11 +45,11 @@ describe('User', () => {
       user_name: 'jhon.doe',
       complete_name: 'Jhon Doe',
       title: 'CTO',
-      department_id: 'TI',
+      department: { id: 42342, name: 'IT' },
       telephone: 3004,
       direct_boss: 'Martin Fowler',
       smtp: 'jhon.doe@email.com',
-      admission_date: '18/02/2000',
+      admission_date: new Date(),
       demission_date: null,
       status: 'active',
     });
@@ -64,17 +64,17 @@ describe('User', () => {
       user_name: 'jhon.doe',
       complete_name: 'Jhon Doe',
       title: 'CTO',
-      department_id: 'TI',
+      department: { id: 42342, name: 'IT' },
       telephone: 3004,
       direct_boss: 'Martin Fowler',
       smtp: 'jhon.doe@email.com',
-      admission_date: '18/02/2000',
+      admission_date: new Date(),
       demission_date: null,
       status: 'active',
     });
 
-    user.department_id = 'BI';
+    user.department_id = 242424;
 
-    expect(user.department_id).toBe('BI');
+    expect(user.department_id).toBe(242424);
   });
 });

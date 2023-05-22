@@ -7,11 +7,11 @@ describe('Equipment', () => {
       type: 'Monitor',
       brand: 'Dell',
       model: 'T31P',
-      supplier: 'TI',
+      supplier: 'Dell',
       status: 'avaliable',
       department: {
         id: 1,
-        name: 'Tecnoliga da Informação',
+        name: 'IT',
       },
       cpu: 'core i7',
       ram: '16 GB',
