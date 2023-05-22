@@ -49,14 +49,17 @@ type FetchByDepartmentIdOutput = {
   equipments: {
     props: {
       id: string;
-      type: string | null;
-      brand: string;
-      model: string;
-      supplier: string;
+      type: string;
+      brand: string | null;
+      model: string | null;
+      supplier: string | null;
       invoice: string | null;
       warranty: string | null;
       purchase_date: Date | null;
-      department: { id: number; name: string };
+      department: {
+        id: number | null;
+        name: string | null;
+      };
       status: string;
       cpu: string | null;
       ram: string | null;
