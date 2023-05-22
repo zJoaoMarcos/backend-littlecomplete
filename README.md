@@ -16,6 +16,8 @@ Lil Complete app.
 - [x] Should be able update Department of User;
 - [ ] Should be able change Equipment of User;
 - [ ] Should be able remove Equipment of User;
+- [ ] Should be able remove assignment of Equipment;
+- [ ] Should be able remove all assignments of User;
 
 ## BRs (Business Rules)
 
