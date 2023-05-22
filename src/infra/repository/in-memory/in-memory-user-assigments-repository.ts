@@ -36,7 +36,37 @@ export class InMemoryUserAssignmentsRepository
     return userAssignments.user;
   }
 
-  findByUserName(id: string): Promise<FindByUserNameOutput> {
-    throw new Error('Method not implemented.');
+  async findByUserName(userName: string): Promise<FindByUserNameOutput> {
+    const assignments = await this.assignments.filter(
+      (item) => item.user.user_name === userName,
+    );
+
+    if (!assignments) {
+      return null;
+    }
+
+    const equipments = assignments.map((item) => {
+      return item.equipment;
+    });
+
+    return {
+      equipments: equipments,
+    };
+  }
+
+  async deleteByEquipmentId(id: string): Promise<void> {
+    const itemIndex = this.assignments.findIndex(
+      (item) => item.equipment.id === id,
+    );
+
+    this.assignments.splice(itemIndex, 1);
+  }
+
+  async deleteManyByUserName(userName: string): Promise<void> {
+    for (let i = this.assignments.length - 1; i >= 0; i--) {
+      if (this.assignments[i].user.user_name === userName) {
+        this.assignments.splice(i, 1);
+      }
+    }
   }
 }

@@ -7,5 +7,4 @@ export class UpdateUserDto {
   smtp: string;
   admission_date: Date | null;
   demission_date: Date | null;
-  status: string | null;
 }

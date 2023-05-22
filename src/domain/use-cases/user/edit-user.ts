@@ -14,7 +14,6 @@ export class EditUserUseCase {
     user_name,
     complete_name,
     department_id,
-    status,
     telephone,
     admission_date,
     demission_date,
@@ -39,7 +38,6 @@ export class EditUserUseCase {
     user.complete_name = complete_name;
     user.department_id = department_id;
     user.title = title;
-    user.status = status;
     user.telephone = telephone;
     user.admission_date = admission_date;
     user.demission_date = demission_date;
@@ -62,7 +60,6 @@ type UpdateUserInput = {
   smtp: string;
   admission_date: Date | null;
   demission_date: Date | null;
-  status: string;
 };
 
 type UpdateUserStatusOutput = {};

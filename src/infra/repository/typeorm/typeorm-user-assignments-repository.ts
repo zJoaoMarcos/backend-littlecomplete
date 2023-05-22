@@ -150,4 +150,20 @@ export class TypeOrmUserAssignmentsRepository
 
     return { equipments };
   }
+
+  async deleteByEquipmentId(id: string): Promise<void> {
+    await this.ormRepo.delete({
+      equipment: {
+        id: id,
+      },
+    });
+  }
+
+  async deleteManyByUserName(userName: string): Promise<void> {
+    await this.ormRepo.delete({
+      user: {
+        username: userName,
+      },
+    });
+  }
 }
