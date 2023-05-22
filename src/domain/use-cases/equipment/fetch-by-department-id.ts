@@ -22,7 +22,7 @@ export class FetchByDepartmentIdUseCase {
     }
 
     const { equipments, totalCount } =
-      await this.equipmentRepository.FindByDepartmentId(department_id, {
+      await this.equipmentRepository.findByDepartmentId(department_id, {
         skip,
         take,
       });

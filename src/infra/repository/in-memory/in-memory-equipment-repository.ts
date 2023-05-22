@@ -43,7 +43,7 @@ export class InMemoryEquipmentRepository implements IEquipmentRepository {
     return Promise.resolve(equipment);
   }
 
-  async FindByDepartmentId(
+  async findByDepartmentId(
     departmentId: number,
     params: PaginationParams,
   ): Promise<FindManyOutput> {

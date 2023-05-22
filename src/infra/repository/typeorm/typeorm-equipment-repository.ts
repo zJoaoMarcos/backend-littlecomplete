@@ -124,7 +124,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
     });
   }
 
-  async FindByDepartmentId(
+  async findByDepartmentId(
     departmentId: number,
     params: PaginationParams,
   ): Promise<FindManyOutput> {
