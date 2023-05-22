@@ -18,6 +18,10 @@ export class RemoveEquipmentAssignmentUseCase {
 
     await this.userAssignmentRepository.deleteByEquipmentId(equipment.id);
 
+    equipment.status = 'avaliable';
+
+    await this.equipmentRepository.save(equipment);
+
     return {};
   }
 }
