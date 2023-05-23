@@ -1,16 +1,13 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { IUserRepository } from '../../../domain/repository/user-repository';
 import { UserNotFoundError } from '../errors/user-not-found';
 
 export class FetchAllUsersUseCase {
   constructor(private userRepository: IUserRepository) {}
 
-  async execute({
-    skip,
-    take,
-  }: FetchAllUsersInput): Promise<FetchAllUsersOutput> {
+  async execute({ params }: FetchAllUsersInput): Promise<FetchAllUsersOutput> {
     const { users, totalCount } = await this.userRepository.findMany({
-      skip,
-      take,
+      ...params,
     });
 
     if (!users) {
@@ -25,8 +22,7 @@ export class FetchAllUsersUseCase {
 }
 
 type FetchAllUsersInput = {
-  skip: number;
-  take: number;
+  params: PaginationParams;
 };
 
 type FetchAllUsersOutput = {

@@ -1,6 +1,6 @@
 import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { User } from 'src/domain/entity/user';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import {
   FindManyOutput,
   IUserRepository,
@@ -33,17 +33,22 @@ export class TypeOrmUserRepository implements IUserRepository {
   }
 
   async findMany(params: PaginationParams): Promise<FindManyOutput> {
-    const { skip, take } = params;
-
     const [result, totalCount] = await this.ormRepo.findAndCount({
-      skip: skip,
-      take: take,
+      skip: params.skip,
+      take: params.take,
       order: {
         username: 'asc',
       },
       relations: {
         department: true,
         directBoss: true,
+      },
+      where: {
+        username: params.id && Like(`%${params.id}%`),
+        status: params.status && Like(`%${params.status}%`),
+        department: {
+          id: params.department_id && params.department_id,
+        },
       },
     });
 
