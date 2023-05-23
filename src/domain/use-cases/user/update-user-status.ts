@@ -1,9 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import { IEquipmentRepository } from 'src/domain/repository/equipment-repository';
+import { IUserAssignmentsRepository } from 'src/domain/repository/user-assignments-repository';
 import { IUserRepository } from 'src/domain/repository/user-repository';
 import { UserNotFoundError } from '../errors/user-not-found';
 
 export class UpdateUserStatusUseCase {
-  constructor(private userRepository: IUserRepository) {}
+  constructor(
+    private userRepository: IUserRepository,
+    private userAssignmentsRepository: IUserAssignmentsRepository,
+    private equipmentsRepository: IEquipmentRepository,
+  ) {}
 
   async execute({
     status,
@@ -15,22 +21,53 @@ export class UpdateUserStatusUseCase {
       throw new UserNotFoundError();
     }
 
-    switch (status) {
-      case 'disabled':
-        user.status = status;
-        break;
-      case 'vacation':
-        user.status = status;
-        break;
-      case 'active':
-        user.status = status;
-        break;
-      default:
-        throw new Error();
+    if (status === 'disabled') {
+      const { equipments } =
+        await this.userAssignmentsRepository.findByUserName(user.user_name);
+
+      if (equipments) {
+        throw new Error(
+          'User cannot be disabled, please remove user assignments',
+        );
+      }
+
+      user.status = status;
+
+      await this.userRepository.save(user);
     }
 
-    await this.userRepository.save(user);
-    return {};
+    if (status === 'pendency') {
+      user.status = status;
+
+      const { equipments } =
+        await this.userAssignmentsRepository.findByUserName(user.user_name);
+
+      if (equipments.length >= 1) {
+        const updateEquipmentsStatus = equipments.map(async (equipment) => {
+          equipment.status = 'pendency';
+          await this.equipmentsRepository.save(equipment);
+        });
+
+        await Promise.all(updateEquipmentsStatus);
+      }
+      await this.userRepository.save(user);
+
+      return {};
+    }
+
+    if (status === 'vacation') {
+      user.status = status;
+      await this.userRepository.save(user);
+      return {};
+    }
+
+    if (status === 'active') {
+      user.status = status;
+      await this.userRepository.save(user);
+      return {};
+    }
+
+    throw new Error('Invalid Status');
   }
 }
 
