@@ -9,6 +9,7 @@ import { FetchAllUsersUseCase } from 'src/domain/use-cases/user/fetch-all-users'
 import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/user/fetch-by-department-id';
 import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
 import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
+import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -49,11 +50,10 @@ export class UsersService {
     }
   }
 
-  async findAll(skip?: number, take?: number) {
+  async findAll(params: FindManyParamsDto) {
     try {
       const { users, totalCount } = await this.findAllUseCase.execute({
-        skip,
-        take,
+        params,
       });
       return {
         totalCount: totalCount,
