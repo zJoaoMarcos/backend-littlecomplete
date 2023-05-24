@@ -19,8 +19,13 @@ export class SaveUserAssignmentsUseCase {
     equipment_id,
   }: SaveUserAssignmentInput): Promise<SaveUserAssignmentsOutput> {
     const user = await this.userRepository.findByUserName(user_id);
+
     if (!user) {
       throw new UserNotFoundError();
+    }
+
+    if (user.status.trim() === ('pendency' || 'disabled')) {
+      throw new Error('User is in shutdown or has a pendency');
     }
 
     const equipment = await this.equipmentRepository.findById(equipment_id);
