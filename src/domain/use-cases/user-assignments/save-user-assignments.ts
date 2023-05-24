@@ -27,7 +27,9 @@ export class SaveUserAssignmentsUseCase {
 
     if (!equipment) {
       throw new EquipmentNotFoundError();
-    } else if (equipment.status.trim() !== 'avaliable') {
+    }
+
+    if (equipment.status.trim() !== 'avaliable') {
       throw new EquipmentIsUnavailableError();
     }
 
