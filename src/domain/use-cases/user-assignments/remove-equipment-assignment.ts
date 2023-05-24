@@ -18,7 +18,7 @@ export class RemoveEquipmentAssignmentUseCase {
 
     await this.userAssignmentRepository.deleteByEquipmentId(equipment.id);
 
-    equipment.status = 'avaliable';
+    equipment.status = 'pendency';
 
     await this.equipmentRepository.save(equipment);
 
