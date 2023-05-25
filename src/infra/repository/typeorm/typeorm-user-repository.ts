@@ -33,6 +33,10 @@ export class TypeOrmUserRepository implements IUserRepository {
   }
 
   async findMany(params: PaginationParams): Promise<FindManyOutput> {
+    const username = params.id ?? '';
+    const status = params.status ?? '';
+    const department_id = params.department_id;
+
     const [result, totalCount] = await this.ormRepo.findAndCount({
       skip: params.skip,
       take: params.take,
@@ -44,10 +48,10 @@ export class TypeOrmUserRepository implements IUserRepository {
         directBoss: true,
       },
       where: {
-        username: params.id && Like(`%${params.id}%`),
-        status: params.status && Like(`%${params.status}%`),
+        username: Like(`%${username}%`),
+        status: Like(`%${status}%`),
         department: {
-          id: params.department_id && params.department_id,
+          id: department_id,
         },
       },
     });
