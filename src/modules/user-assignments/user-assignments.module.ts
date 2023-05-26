@@ -7,6 +7,7 @@ import { FetchAllUsersAssignmentsUseCase } from 'src/domain/use-cases/user-assig
 import { FindAssignmentByEquipmentIdUseCase } from 'src/domain/use-cases/user-assignments/find-assignment-by-equipment-id';
 import { FindAssignmentsByUserNameUseCase } from 'src/domain/use-cases/user-assignments/find-assignments-by-user-name';
 import { RemoveEquipmentAssignmentUseCase } from 'src/domain/use-cases/user-assignments/remove-equipment-assignment';
+import { RemoveUserAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/remove-user-assignments';
 import { SaveUserAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/save-user-assignments';
 import { EquipmentsUserSchema } from 'src/infra/repository/typeorm/entities/equipments-user.schema';
 import { EquipmentsSchema } from 'src/infra/repository/typeorm/entities/equipments.schema';
@@ -106,6 +107,25 @@ import { UserAssignmentsService } from './user-assignments.service';
         );
       },
       inject: [TypeOrmUserAssignmentsRepository, TypeOrmEquipmentRepository],
+    },
+    {
+      provide: RemoveUserAssignmentsUseCase,
+      useFactory: (
+        userAssignmentsRepo: IUserAssignmentsRepository,
+        userRepo: IUserRepository,
+        equipmentRepo: IEquipmentRepository,
+      ) => {
+        return new RemoveUserAssignmentsUseCase(
+          userAssignmentsRepo,
+          userRepo,
+          equipmentRepo,
+        );
+      },
+      inject: [
+        TypeOrmUserAssignmentsRepository,
+        TypeOrmUserRepository,
+        TypeOrmEquipmentRepository,
+      ],
     },
   ],
 })
