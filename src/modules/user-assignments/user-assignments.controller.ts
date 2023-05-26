@@ -34,4 +34,9 @@ export class UserAssignmentsController {
   removeEquipmentAssignment(@Param('id') id: string) {
     return this.userAssignmentsService.removeEquipmentAssignment(id);
   }
+
+  @Delete('all/:id')
+  removeAllEquipmentAssignments(@Param('id') id: string) {
+    return this.userAssignmentsService.removeAllUserAssignments(id);
+  }
 }
