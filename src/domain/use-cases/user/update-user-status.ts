@@ -25,12 +25,12 @@ export class UpdateUserStatusUseCase {
       const { equipments } =
         await this.userAssignmentsRepository.findByUserName(user.user_name);
 
-      if (equipments) {
+      if (equipments.length > 0) {
         throw new Error(
           'User cannot be disabled, please remove user assignments',
         );
       }
-
+      user.demission_date = new Date();
       user.status = status;
 
       await this.userRepository.save(user);
