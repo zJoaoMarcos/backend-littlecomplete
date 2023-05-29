@@ -1,6 +1,6 @@
 import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { Equipment } from 'src/domain/entity/equipment';
-import { Like, Repository } from 'typeorm';
+import { ILike, Like, Repository } from 'typeorm';
 import {
   FindManyOutput,
   IEquipmentRepository,
@@ -36,6 +36,10 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
   }
 
   async findMany(params: PaginationParams): Promise<FindManyOutput> {
+    const equipmentId = params.id ?? '';
+    const status = params.status ?? '';
+    const departmentId = params.department_id;
+
     const [result, totalCount] = await this.ormRepo.findAndCount({
       skip: params.skip,
       take: params.take,
@@ -43,8 +47,8 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         department: true,
       },
       where: {
-        id: params.id && Like(`%${params.id}%`),
-        status: params.status && Like(`%${params.status}%`),
+        id: ILike(equipmentId),
+        status: Like(status),
         department: {
           id: params.department_id && params.department_id,
         },
