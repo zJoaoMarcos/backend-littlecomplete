@@ -4,7 +4,7 @@ import {
   FindManyOutput,
   IDepartmentRepository,
 } from 'src/domain/repository/department-repository';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { DepartmentsSchema } from './entities/departments.schema';
 
 export class TypeOrmDepartmentRepository implements IDepartmentRepository {
@@ -21,16 +21,19 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
   }
 
   async findMany(params: PaginationParams): Promise<FindManyOutput> {
-    const { skip, take } = params;
+    const name = params.id ?? '';
 
     const [result, totalCount] = await this.ormRepo.findAndCount({
-      skip: skip,
-      take: take,
+      skip: params.skip,
+      take: params.take,
       order: {
         name: 'asc',
       },
       relations: {
         responsibleId: true,
+      },
+      where: {
+        name: ILike(`%${name}%`),
       },
     });
 
