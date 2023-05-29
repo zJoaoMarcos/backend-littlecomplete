@@ -1,6 +1,6 @@
 import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { User } from 'src/domain/entity/user';
-import { Like, Repository } from 'typeorm';
+import { ILike, Like, Repository } from 'typeorm';
 import {
   FindManyOutput,
   IUserRepository,
@@ -47,13 +47,22 @@ export class TypeOrmUserRepository implements IUserRepository {
         department: true,
         directBoss: true,
       },
-      where: {
-        username: Like(`%${username}%`),
-        status: Like(`%${status}%`),
-        department: {
-          id: department_id,
+      where: [
+        {
+          completeName: ILike(`%${username}%`),
+          status: Like(`%${status}%`),
+          department: {
+            id: department_id,
+          },
         },
-      },
+        {
+          username: ILike(`%${username}%`),
+          status: Like(`%${status}%`),
+          department: {
+            id: department_id,
+          },
+        },
+      ],
     });
 
     if (!result) {
