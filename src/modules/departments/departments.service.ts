@@ -7,6 +7,7 @@ import { EditDepartmentUseCase } from 'src/domain/use-cases/department/edit-depa
 import { FetchAllDepartmentsUseCase } from 'src/domain/use-cases/department/fetch-all-departments';
 import { FindDepartmentByIdUseCase } from 'src/domain/use-cases/department/find-department-by-id';
 import { CreateDepartmentUseCase } from '../../domain/use-cases/department/create-department';
+import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 
@@ -27,11 +28,10 @@ export class DepartmentsService {
     }
   }
 
-  async findAll(skip?: number, take?: number) {
+  async findAll(params: FindManyParamsDto) {
     try {
       const { departments, totalCount } = await this.findAllUseCase.execute(
-        skip,
-        take,
+        params,
       );
       return {
         totalCount,

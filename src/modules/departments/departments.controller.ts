@@ -25,8 +25,7 @@ export class DepartmentsController {
 
   @Get()
   findAll(@Query() params: FindManyParamsDto) {
-    const { skip, take } = params;
-    return this.departmentsService.findAll(skip, take);
+    return this.departmentsService.findAll(params);
   }
 
   @Get(':id')

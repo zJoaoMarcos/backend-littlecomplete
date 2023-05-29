@@ -1,15 +1,13 @@
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { IDepartmentRepository } from 'src/domain/repository/department-repository';
 import { DepartmentNotFoundError } from '../errors/department-not-found';
 
 export class FetchAllDepartmentsUseCase {
   constructor(private departmentsRepository: IDepartmentRepository) {}
 
-  async execute(
-    skip?: number,
-    take?: number,
-  ): Promise<FetchAllDepartmentOutput> {
+  async execute(params: PaginationParams): Promise<FetchAllDepartmentOutput> {
     const { departments, totalCount } =
-      await this.departmentsRepository.findMany({ skip, take });
+      await this.departmentsRepository.findMany(params);
 
     if (!departments) {
       throw new DepartmentNotFoundError();
