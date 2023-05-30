@@ -47,8 +47,8 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         department: true,
       },
       where: {
-        id: ILike(equipmentId),
-        status: Like(status),
+        id: ILike(`%${equipmentId}%`),
+        status: Like(`%${status}%`),
         department: {
           id: params.department_id && params.department_id,
         },
