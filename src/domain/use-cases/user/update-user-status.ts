@@ -25,33 +25,22 @@ export class UpdateUserStatusUseCase {
       const { equipments } =
         await this.userAssignmentsRepository.findByUserName(user.user_name);
 
-      if (equipments.length > 0) {
-        throw new Error(
-          'User cannot be disabled, please remove user assignments',
-        );
-      }
-      user.demission_date = new Date();
-      user.status = status;
-
-      await this.userRepository.save(user);
-    }
-
-    if (status === 'pendency') {
-      user.status = status;
-
-      const { equipments } =
-        await this.userAssignmentsRepository.findByUserName(user.user_name);
-
       if (equipments.length >= 1) {
+        status = 'pendency';
+
         const updateEquipmentsStatus = equipments.map(async (equipment) => {
           equipment.status = 'pendency';
           await this.equipmentsRepository.save(equipment);
         });
-
         await Promise.all(updateEquipmentsStatus);
-      }
-      await this.userRepository.save(user);
 
+        await this.userRepository.save(user);
+      }
+
+      user.demission_date = new Date();
+      user.status = status;
+
+      await this.userRepository.save(user);
       return {};
     }
 
