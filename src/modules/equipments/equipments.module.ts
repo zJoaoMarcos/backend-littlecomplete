@@ -86,10 +86,7 @@ import { EquipmentsService } from './equipments.service';
     },
     {
       provide: UpdateStatusUseCase,
-      useFactory: (
-        equipmentRepo: IEquipmentRepository,
-        departmentRepo: IDepartmentRepository,
-      ) => {
+      useFactory: (equipmentRepo: IEquipmentRepository) => {
         return new UpdateStatusUseCase(equipmentRepo);
       },
       inject: [TypeOrmEquipmentRepository],
