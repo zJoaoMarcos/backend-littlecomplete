@@ -10,6 +10,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
+import { UpdateEquipmentStatusDto } from './dto/update-equipment-status.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { EquipmentsService } from './equipments.service';
 
@@ -48,5 +49,11 @@ export class EquipmentsController {
     @Body() updateEquipmentDto: UpdateEquipmentDto,
   ) {
     return this.equipmentsService.update(id, updateEquipmentDto);
+  }
+
+  @Patch('status/:id')
+  updateStatus(@Param('id') id: string, @Body() dto: UpdateEquipmentStatusDto) {
+    const { status } = dto;
+    return this.equipmentsService.updateStatus(id, status);
   }
 }
