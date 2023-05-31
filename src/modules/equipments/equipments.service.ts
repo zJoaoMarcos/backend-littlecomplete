@@ -8,6 +8,7 @@ import { EditEquipmentUseCase } from 'src/domain/use-cases/equipment/edit-equipm
 import { FetchAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/fetch-all-equipments';
 import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/equipment/fetch-by-department-id';
 import { FindEquipmentByIdUseCase } from 'src/domain/use-cases/equipment/find-equipment-by-id';
+import { UpdateStatusUseCase } from 'src/domain/use-cases/equipment/update-status';
 import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
@@ -19,7 +20,8 @@ export class EquipmentsService {
     private findAllUseCase: FetchAllEquipmentsUseCase,
     private findByIdUseCase: FindEquipmentByIdUseCase,
     private findByDepartmentIdUseCase: FetchByDepartmentIdUseCase,
-    private updateDepartmentUseCase: EditEquipmentUseCase,
+    private updateDetailsUseCase: EditEquipmentUseCase,
+    private updateStatusUseCase: UpdateStatusUseCase,
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto) {
@@ -83,9 +85,20 @@ export class EquipmentsService {
 
   async update(id: string, updateEquipmentDto: UpdateEquipmentDto) {
     try {
-      return this.updateDepartmentUseCase.execute({
+      return this.updateDetailsUseCase.execute({
         id,
         ...updateEquipmentDto,
+      });
+    } catch (err) {
+      throw new ConflictException(err.message);
+    }
+  }
+
+  async updateStatus(id: string, status: string) {
+    try {
+      return this.updateStatusUseCase.execute({
+        equipment_id: id,
+        status,
       });
     } catch (err) {
       throw new ConflictException(err.message);
