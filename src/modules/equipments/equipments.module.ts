@@ -55,7 +55,6 @@ import { EquipmentsService } from './equipments.service';
       },
       inject: [TypeOrmEquipmentRepository],
     },
-
     {
       provide: FindEquipmentByIdUseCase,
       useFactory: (equipmentRepo: IEquipmentRepository) => {
@@ -63,7 +62,6 @@ import { EquipmentsService } from './equipments.service';
       },
       inject: [TypeOrmEquipmentRepository],
     },
-
     {
       provide: EditEquipmentUseCase,
       useFactory: (

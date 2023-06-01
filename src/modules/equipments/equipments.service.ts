@@ -49,9 +49,7 @@ export class EquipmentsService {
   async findById(id: string) {
     try {
       const { equipment } = await this.findByIdUseCase.execute(id);
-      return {
-        equipment: equipment.props,
-      };
+      return equipment.props;
     } catch (err) {
       throw new NotFoundException(err.message);
     }
