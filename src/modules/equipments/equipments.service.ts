@@ -1,14 +1,14 @@
+import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/create-equipment';
+import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/edit-equipment';
+import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/equipment/fetch-all-equipments';
+import { FetchByDepartmentIdUseCase } from '@/domain/inventory/use-cases/equipment/fetch-by-department-id';
+import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/equipment/find-equipment-by-id';
+import { UpdateStatusUseCase } from '@/domain/inventory/use-cases/equipment/update-status';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { CreateEquipmentUseCase } from 'src/domain/use-cases/equipment/create-equipment';
-import { EditEquipmentUseCase } from 'src/domain/use-cases/equipment/edit-equipment';
-import { FetchAllEquipmentsUseCase } from 'src/domain/use-cases/equipment/fetch-all-equipments';
-import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/equipment/fetch-by-department-id';
-import { FindEquipmentByIdUseCase } from 'src/domain/use-cases/equipment/find-equipment-by-id';
-import { UpdateStatusUseCase } from 'src/domain/use-cases/equipment/update-status';
 import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';

@@ -1,12 +1,12 @@
+import { CreateDepartmentUseCase } from '@/domain/employees/use-cases/department/create-department';
+import { EditDepartmentUseCase } from '@/domain/employees/use-cases/department/edit-department';
+import { FetchAllDepartmentsUseCase } from '@/domain/employees/use-cases/department/fetch-all-departments';
+import { FindDepartmentByIdUseCase } from '@/domain/employees/use-cases/department/find-department-by-id';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { EditDepartmentUseCase } from 'src/domain/use-cases/department/edit-department';
-import { FetchAllDepartmentsUseCase } from 'src/domain/use-cases/department/fetch-all-departments';
-import { FindDepartmentByIdUseCase } from 'src/domain/use-cases/department/find-department-by-id';
-import { CreateDepartmentUseCase } from '../../domain/use-cases/department/create-department';
 import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';

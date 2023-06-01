@@ -1,11 +1,11 @@
-import { Repository } from 'typeorm';
-import { Equipment } from '../../../domain/entity/equipment';
-import { User } from '../../../domain/entity/user';
-import { UserAssignments } from '../../../domain/entity/user-assignments';
+import { User } from '@/domain/employees/entity/user';
+import { Equipment } from '@/domain/inventory/entity/equipment';
+import { UserAssignments } from '@/domain/inventory/entity/user-assignments';
 import {
   FindByUserNameOutput,
   IUserAssignmentsRepository,
-} from '../../../domain/repository/user-assignments-repository';
+} from '@/domain/inventory/repository/user-assignments.repository';
+import { Repository } from 'typeorm';
 import { EquipmentsUserSchema } from './entities/equipments-user.schema';
 
 export class TypeOrmUserAssignmentsRepository

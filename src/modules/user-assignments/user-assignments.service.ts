@@ -1,14 +1,14 @@
+import { FetchAllUsersAssignmentsUseCase } from '@/domain/inventory/use-cases/user-assignments/fetch-all-users-assignments';
+import { FindAssignmentByEquipmentIdUseCase } from '@/domain/inventory/use-cases/user-assignments/find-assignment-by-equipment-id';
+import { FindAssignmentsByUserNameUseCase } from '@/domain/inventory/use-cases/user-assignments/find-assignments-by-user-name';
+import { RemoveEquipmentAssignmentUseCase } from '@/domain/inventory/use-cases/user-assignments/remove-equipment-assignment';
+import { RemoveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/user-assignments/remove-user-assignments';
+import { SaveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/user-assignments/save-user-assignments';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { FetchAllUsersAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/fetch-all-users-assignments';
-import { FindAssignmentByEquipmentIdUseCase } from 'src/domain/use-cases/user-assignments/find-assignment-by-equipment-id';
-import { FindAssignmentsByUserNameUseCase } from 'src/domain/use-cases/user-assignments/find-assignments-by-user-name';
-import { RemoveEquipmentAssignmentUseCase } from 'src/domain/use-cases/user-assignments/remove-equipment-assignment';
-import { RemoveUserAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/remove-user-assignments';
-import { SaveUserAssignmentsUseCase } from 'src/domain/use-cases/user-assignments/save-user-assignments';
 import { CreateUserAssignmentDto } from './dto/create-user-assignment.dto';
 
 @Injectable()

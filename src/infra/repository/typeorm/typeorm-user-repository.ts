@@ -1,10 +1,10 @@
-import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { User } from 'src/domain/entity/user';
-import { ILike, Like, Repository } from 'typeorm';
+import { User } from '@/domain/employees/entity/user';
 import {
   FindManyOutput,
   IUserRepository,
-} from '../../../domain/repository/user-repository';
+} from '@/domain/employees/repository/user.repository';
+import { PaginationParams } from 'src/core/repositories/pagination-params';
+import { ILike, Like, Repository } from 'typeorm';
 import { UsersSchema } from './entities/users.schema';
 
 export class TypeOrmUserRepository implements IUserRepository {

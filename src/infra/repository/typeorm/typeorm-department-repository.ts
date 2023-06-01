@@ -1,9 +1,9 @@
-import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { Department } from 'src/domain/entity/department';
+import { Department } from '@/domain/employees/entity/department';
 import {
   FindManyOutput,
   IDepartmentRepository,
-} from 'src/domain/repository/department-repository';
+} from '@/domain/employees/repository/department.repository';
+import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { ILike, Repository } from 'typeorm';
 import { DepartmentsSchema } from './entities/departments.schema';
 

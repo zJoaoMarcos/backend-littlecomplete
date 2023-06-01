@@ -1,9 +1,9 @@
-import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { Department } from '../../../domain/entity/department';
+import { PaginationParams } from '@/core/repositories/pagination-params';
+import { Department } from '@/domain/employees/entity/department';
 import {
   FindManyOutput,
   IDepartmentRepository,
-} from '../../../domain/repository/department-repository';
+} from '@/domain/employees/repository/department.repository';
 
 export class InMemoryDepartmentRepository implements IDepartmentRepository {
   departments: Department[] = [];

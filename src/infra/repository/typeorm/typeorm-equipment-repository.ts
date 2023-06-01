@@ -1,10 +1,10 @@
-import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { Equipment } from 'src/domain/entity/equipment';
-import { ILike, Like, Repository } from 'typeorm';
+import { Equipment } from '@/domain/inventory/entity/equipment';
 import {
   FindManyOutput,
   IEquipmentRepository,
-} from '../../../domain/repository/equipment-repository';
+} from '@/domain/inventory/repository/equipment.repository';
+import { PaginationParams } from 'src/core/repositories/pagination-params';
+import { ILike, Like, Repository } from 'typeorm';
 import { EquipmentsSchema } from './entities/equipments.schema';
 
 export class TypeOrmEquipmentRepository implements IEquipmentRepository {
