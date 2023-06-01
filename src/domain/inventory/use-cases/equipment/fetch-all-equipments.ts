@@ -31,27 +31,35 @@ type FetchAllEquipmentsOutput = {
   equipments: {
     props: {
       id: string;
-      type: string;
+      status: string;
+      currentUser: string | null;
+      patrimony: string | null;
+      type: string | null;
       brand: string | null;
       model: string | null;
-      supplier: string | null;
-      invoice: string | null;
-      warranty: string | null;
-      purchase_date: Date | null;
+      serviceTag: string | null;
+      purchase: {
+        invoice: string | null;
+        supplier: string | null;
+        purchaseDate: Date | null;
+        warranty: string | null;
+      };
       department: {
         id: number | null;
         name: string | null;
       };
-      status: string;
-      cpu: string | null;
-      ram: string | null;
-      slots: number | null;
-      storage0_type: string | null;
-      storage0_syze: number | null;
-      storage1_type: string | null;
-      storage1_syze: number | null;
-      video: string | null;
-      service_tag: string | null;
+      config: {
+        cpu: string | null;
+        ram: string | null;
+        video: string | null;
+        storage: {
+          slots: number | null;
+          storage0Type: string | null;
+          storage0Syze: number | null;
+          storage1Type: string | null;
+          storage1Syze: number | null;
+        };
+      };
     };
   }[];
 };

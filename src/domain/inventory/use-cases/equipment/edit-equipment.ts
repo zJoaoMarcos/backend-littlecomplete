@@ -13,22 +13,24 @@ export class EditEquipmentUseCase {
   async execute({
     id,
     brand,
+    type,
+    patrimony,
     model,
-    department_id,
+    departmentId,
     status,
     supplier,
     invoice,
     warranty,
-    purchase_date,
+    purchaseDate,
     cpu,
     ram,
     slots,
-    storage0_type,
-    storage0_syze,
-    storage1_type,
-    storage1_syze,
+    storage0Type,
+    storage0Syze,
+    storage1Type,
+    storage1Syze,
     video,
-    service_tag,
+    serviceTag,
   }: UpdateEquipmentInput): Promise<UpdateUserStatusOutput> {
     const equipment = await this.equipmentRepository.findById(id);
 
@@ -37,7 +39,7 @@ export class EditEquipmentUseCase {
     }
 
     const departmentExists = await this.departmentRepository.findById(
-      department_id,
+      departmentId,
     );
 
     if (!departmentExists) {
@@ -45,21 +47,23 @@ export class EditEquipmentUseCase {
     }
 
     equipment.brand = brand;
+    equipment.type = type;
+    equipment.patrimony = patrimony;
     equipment.model = model;
     equipment.supplier = supplier;
     equipment.invoice = invoice;
     equipment.warranty = warranty;
-    equipment.purchase_date = purchase_date;
-    equipment.department_id = department_id;
+    equipment.purchaseDate = purchaseDate;
+    equipment.departmentId = departmentId;
     equipment.status = status;
     equipment.cpu = cpu;
     equipment.ram = ram;
     equipment.slots = slots;
-    equipment.service_tag = service_tag;
-    equipment.storage0_syze = storage0_syze;
-    equipment.storage0_type = storage0_type;
-    equipment.storage1_syze = storage1_syze;
-    equipment.storage1_type = storage1_type;
+    equipment.serviceTag = serviceTag;
+    equipment.storage0Syze = storage0Syze;
+    equipment.storage0Type = storage0Type;
+    equipment.storage1Syze = storage1Syze;
+    equipment.storage1Type = storage1Type;
     equipment.video = video;
 
     await this.equipmentRepository.save(equipment);
@@ -70,23 +74,25 @@ export class EditEquipmentUseCase {
 
 type UpdateEquipmentInput = {
   id: string;
-  brand: string;
-  model: string;
-  supplier: string;
+  type: string | null;
+  brand: string | null;
+  model: string | null;
+  patrimony: string | null;
+  supplier: string | null;
   invoice: string | null;
   warranty: string | null;
-  purchase_date: Date | null;
-  department_id: number;
+  purchaseDate: Date | null;
+  departmentId: number;
   status: string;
   cpu: string | null;
   ram: string | null;
   slots: number | null;
-  storage0_type: string | null;
-  storage0_syze: number | null;
-  storage1_type: string | null;
-  storage1_syze: number | null;
+  storage0Type: string | null;
+  storage0Syze: number | null;
+  storage1Type: string | null;
+  storage1Syze: number | null;
   video: string | null;
-  service_tag: string | null;
+  serviceTag: string | null;
 };
 
 type UpdateUserStatusOutput = {};

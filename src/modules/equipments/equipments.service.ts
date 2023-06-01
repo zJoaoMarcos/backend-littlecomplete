@@ -1,7 +1,6 @@
 import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/create-equipment';
 import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/edit-equipment';
 import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/equipment/fetch-all-equipments';
-import { FetchByDepartmentIdUseCase } from '@/domain/inventory/use-cases/equipment/fetch-by-department-id';
 import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/equipment/find-equipment-by-id';
 import { UpdateStatusUseCase } from '@/domain/inventory/use-cases/equipment/update-status';
 import { Injectable } from '@nestjs/common';
@@ -19,7 +18,6 @@ export class EquipmentsService {
     private createUseCase: CreateEquipmentUseCase,
     private findAllUseCase: FetchAllEquipmentsUseCase,
     private findByIdUseCase: FindEquipmentByIdUseCase,
-    private findByDepartmentIdUseCase: FetchByDepartmentIdUseCase,
     private updateDetailsUseCase: EditEquipmentUseCase,
     private updateStatusUseCase: UpdateStatusUseCase,
   ) {}
@@ -53,30 +51,6 @@ export class EquipmentsService {
       const { equipment } = await this.findByIdUseCase.execute(id);
       return {
         equipment: equipment.props,
-      };
-    } catch (err) {
-      throw new NotFoundException(err.message);
-    }
-  }
-
-  async findByDepartmentId(
-    department_id: number,
-    skip?: number,
-    take?: number,
-  ) {
-    try {
-      const { equipments, totalCount } =
-        await this.findByDepartmentIdUseCase.execute({
-          department_id,
-          skip,
-          take,
-        });
-
-      return {
-        totalCount,
-        equipments: equipments.map((equipment) => {
-          return equipment.props;
-        }),
       };
     } catch (err) {
       throw new NotFoundException(err.message);

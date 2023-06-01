@@ -14,36 +14,27 @@ import { UpdateEquipmentStatusDto } from './dto/update-equipment-status.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { EquipmentsService } from './equipments.service';
 
-@ApiTags('Equipments')
-@Controller('equipments')
+@ApiTags('Inventory')
+@Controller('inventory')
 export class EquipmentsController {
   constructor(private readonly equipmentsService: EquipmentsService) {}
 
-  @Post()
+  @Post('equipments')
   create(@Body() createEquipmentDto: CreateEquipmentDto) {
     return this.equipmentsService.create(createEquipmentDto);
   }
 
-  @Get()
+  @Get('equipments')
   findAll(@Query() params: FindManyParamsDto) {
     return this.equipmentsService.findAll(params);
   }
 
-  @Get(':id')
+  @Get('equipment/:id')
   findOne(@Param('id') id: string) {
     return this.equipmentsService.findById(id);
   }
 
-  @Get('department/:id')
-  findMany(
-    @Param('id') id: number,
-    @Query() findManyParams: FindManyParamsDto,
-  ) {
-    const { skip, take } = findManyParams;
-    return this.equipmentsService.findByDepartmentId(id, skip, take);
-  }
-
-  @Patch(':id')
+  @Patch('equipment/:id')
   update(
     @Param('id') id: string,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
@@ -51,7 +42,7 @@ export class EquipmentsController {
     return this.equipmentsService.update(id, updateEquipmentDto);
   }
 
-  @Patch('status/:id')
+  @Patch('equipment/status/:id')
   updateStatus(@Param('id') id: string, @Body() dto: UpdateEquipmentStatusDto) {
     const { status } = dto;
     return this.equipmentsService.updateStatus(id, status);

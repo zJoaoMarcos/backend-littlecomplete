@@ -48,7 +48,7 @@ export class InMemoryEquipmentRepository implements IEquipmentRepository {
     params: PaginationParams,
   ): Promise<FindManyOutput> {
     const equipments = this.equipments.filter(
-      (equipment) => equipment.department_id === departmentId,
+      (equipment) => equipment.departmentId === departmentId,
     );
     const totalCount = equipments.length;
 

@@ -1,37 +1,42 @@
 /* eslint-disable @typescript-eslint/adjacent-overload-signatures */
 import { Entity } from '@/core/entities/entity';
-import { getTypeOfEquipment } from '@/domain/utils/get-type-of-equipment';
-import { Optional } from 'src/core/types/optional';
 
 interface EquipmentProps {
   id: string;
+  status: string;
+  currentUser: string | null;
+  patrimony: string | null;
   type: string | null;
   brand: string | null;
   model: string | null;
-  supplier: string | null;
-  invoice: string | null;
-  warranty: string | null;
-  purchase_date: Date | null;
+  serviceTag: string | null;
+  purchase: {
+    invoice: string | null;
+    supplier: string | null;
+    purchaseDate: Date | null;
+    warranty: string | null;
+  };
   department: {
     id: number | null;
     name: string | null;
   };
-  status: string;
-  cpu: string | null;
-  ram: string | null;
-  slots: number | null;
-  storage0_type: string | null;
-  storage0_syze: number | null;
-  storage1_type: string | null;
-  storage1_syze: number | null;
-  video: string | null;
-  service_tag: string | null;
+  config: {
+    cpu: string | null;
+    ram: string | null;
+    video: string | null;
+    storage: {
+      slots: number | null;
+      storage0Type: string | null;
+      storage0Syze: number | null;
+      storage1Type: string | null;
+      storage1Syze: number | null;
+    };
+  };
 }
 
 export class Equipment extends Entity<EquipmentProps> {
-  static create(props: Optional<EquipmentProps, 'type'>) {
+  static create(props: EquipmentProps) {
     const equipment = new Equipment({
-      type: getTypeOfEquipment(props.id),
       ...props,
     });
 
@@ -46,6 +51,14 @@ export class Equipment extends Entity<EquipmentProps> {
     return this.props.type;
   }
 
+  get currentUser() {
+    return this.props.currentUser;
+  }
+
+  get patrimony() {
+    return this.props.patrimony;
+  }
+
   get brand() {
     return this.props.brand;
   }
@@ -55,26 +68,26 @@ export class Equipment extends Entity<EquipmentProps> {
   }
 
   get supplier() {
-    return this.props.supplier;
+    return this.props.purchase.supplier;
   }
 
   get invoice() {
-    return this.props.supplier;
+    return this.props.purchase.supplier;
   }
 
   get warranty() {
-    return this.props.warranty;
+    return this.props.purchase.warranty;
   }
 
-  get purchase_date() {
-    return this.props.purchase_date;
+  get purchaseDate() {
+    return this.props.purchase.purchaseDate;
   }
 
-  get department_id() {
+  get departmentId() {
     return this.props.department.id;
   }
 
-  get department_name() {
+  get departmentName() {
     return this.props.department.name;
   }
 
@@ -83,49 +96,51 @@ export class Equipment extends Entity<EquipmentProps> {
   }
 
   get cpu() {
-    return this.props.cpu;
+    return this.props.config.cpu;
   }
 
   get ram() {
-    return this.props.ram;
+    return this.props.config.ram;
   }
 
   get slots() {
-    return this.props.slots;
+    return this.props.config.storage.slots;
   }
 
-  get storage0_type() {
-    return this.props.storage0_type;
+  get storage0Type() {
+    return this.props.config.storage.storage0Type;
   }
 
-  get storage0_syze() {
-    return this.props.storage0_syze;
+  get storage0Syze() {
+    return this.props.config.storage.storage0Syze;
   }
 
-  get storage1_type() {
-    return this.props.storage1_type;
+  get storage1Type() {
+    return this.props.config.storage.storage1Type;
   }
 
-  get storage1_syze() {
-    return this.props.storage1_syze;
+  get storage1Syze() {
+    return this.props.config.storage.storage1Syze;
   }
 
   get video() {
-    return this.props.video;
+    return this.props.config.video;
   }
 
-  get service_tag() {
-    return this.props.service_tag;
+  get serviceTag() {
+    return this.props.serviceTag;
   }
 
   set id(id: string) {
     this.props.id = id;
   }
 
-  set type(id: string) {
-    const type = getTypeOfEquipment(id);
-
+  set type(type: string) {
     this.props.type = type;
+  }
+
+  set patrimony(patrimony: string) {
+    this.props.patrimony = patrimony;
   }
 
   set brand(brand: string) {
@@ -137,26 +152,26 @@ export class Equipment extends Entity<EquipmentProps> {
   }
 
   set supplier(supplier: string) {
-    this.props.supplier = supplier;
+    this.props.purchase.supplier = supplier;
   }
 
   set invoice(invoice: string) {
-    this.props.invoice = invoice;
+    this.props.purchase.invoice = invoice;
   }
 
   set warranty(warranty: string) {
-    this.props.warranty = warranty;
+    this.props.purchase.warranty = warranty;
   }
 
-  set purchase_date(purchase_date: Date) {
-    this.props.purchase_date = purchase_date;
+  set purchaseDate(purchaseDate: Date) {
+    this.props.purchase.purchaseDate = purchaseDate;
   }
 
-  set department_id(id: number) {
+  set departmentId(id: number) {
     this.props.department.id = id;
   }
 
-  set department_name(name: string) {
+  set departmentName(name: string) {
     this.props.department.name = name;
   }
 
@@ -165,38 +180,38 @@ export class Equipment extends Entity<EquipmentProps> {
   }
 
   set cpu(cpu: string) {
-    this.props.cpu = cpu;
+    this.props.config.cpu = cpu;
   }
 
   set ram(ram: string) {
-    this.props.ram = ram;
+    this.props.config.ram = ram;
   }
 
   set slots(slots: number) {
-    this.props.slots = slots;
+    this.props.config.storage.slots = slots;
   }
 
-  set storage0_type(storage0_type: string) {
-    this.props.storage0_type = storage0_type;
+  set storage0Type(storage0Type: string) {
+    this.props.config.storage.storage0Type = storage0Type;
   }
 
-  set storage0_syze(storage0_syze: number) {
-    this.props.storage0_syze = storage0_syze;
+  set storage0Syze(storage0Syze: number) {
+    this.props.config.storage.storage0Syze = storage0Syze;
   }
 
-  set storage1_type(storage1_type: string) {
-    this.props.storage1_type = storage1_type;
+  set storage1Type(storage1Type: string) {
+    this.props.config.storage.storage1Type = storage1Type;
   }
 
-  set storage1_syze(storage1_syze: number) {
-    this.props.storage1_syze = storage1_syze;
+  set storage1Syze(storage1Syze: number) {
+    this.props.config.storage.storage1Syze = storage1Syze;
   }
 
   set video(video: string) {
-    this.props.video = video;
+    this.props.config.video = video;
   }
 
-  set service_tag(service_tag: string) {
-    this.props.service_tag = service_tag;
+  set serviceTag(serviceTag: string) {
+    this.props.serviceTag = serviceTag;
   }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { DepartmentNotFoundError } from '@/domain/errors/department-not-found';
 import { EquipmentAlreadyExistsError } from '@/domain/errors/equipment-already-exits-error';
@@ -14,20 +15,23 @@ export class CreateEquipmentUseCase {
     id,
     brand,
     model,
-    department_id,
+    type,
+    currentUser,
+    departmentId,
+    patrimony,
     supplier,
     invoice,
     warranty,
-    purchase_date,
+    purchaseDate,
     cpu,
     ram,
     slots,
-    storage0_type,
-    storage0_syze,
-    storage1_type,
-    storage1_syze,
+    storage0Type,
+    storage0Syze,
+    storage1Type,
+    storage1Syze,
     video,
-    service_tag,
+    serviceTag,
   }: CreateEquipmentInput): Promise<CreateEquipmentOutput> {
     const equipmentAlreadyExists = await this.equipmentRepository.findById(id);
 
@@ -36,7 +40,7 @@ export class CreateEquipmentUseCase {
     }
 
     const departmentExists = await this.departmentRepository.findById(
-      department_id,
+      departmentId,
     );
 
     if (!departmentExists) {
@@ -49,24 +53,33 @@ export class CreateEquipmentUseCase {
       id,
       brand,
       model,
+      status: 'available',
+      type,
+      patrimony,
+      currentUser,
+      serviceTag,
       department: {
-        id: department_id,
+        id: departmentId,
         name: departmentName,
       },
-      status: 'available',
-      supplier,
-      invoice,
-      warranty,
-      purchase_date,
-      cpu,
-      ram,
-      slots,
-      storage0_type,
-      storage0_syze,
-      storage1_type,
-      storage1_syze,
-      video,
-      service_tag,
+      purchase: {
+        purchaseDate,
+        warranty,
+        supplier,
+        invoice,
+      },
+      config: {
+        cpu,
+        ram,
+        video,
+        storage: {
+          slots,
+          storage0Type,
+          storage0Syze,
+          storage1Type,
+          storage1Syze,
+        },
+      },
     });
 
     await this.equipmentRepository.create(equipment);
@@ -79,46 +92,25 @@ export class CreateEquipmentUseCase {
 
 type CreateEquipmentInput = {
   id: string;
-  brand: string;
-  model: string;
-  supplier: string;
+  brand: string | null;
+  patrimony: string;
+  type: string;
+  model: string | null;
+  supplier: string | null;
   invoice: string | null;
   warranty: string | null;
-  purchase_date: Date | null;
-  department_id: number;
+  purchaseDate: Date | null;
+  departmentId: number | null;
+  currentUser: string | null;
   cpu: string | null;
   ram: string | null;
   slots: number | null;
-  storage0_type: string | null;
-  storage0_syze: number | null;
-  storage1_type: string | null;
-  storage1_syze: number | null;
+  storage0Type: string | null;
+  storage0Syze: number | null;
+  storage1Type: string | null;
+  storage1Syze: number | null;
   video: string | null;
-  service_tag: string | null;
+  serviceTag: string | null;
 };
 
-type CreateEquipmentOutput = {
-  equipment: {
-    props: {
-      id: string;
-      type: string | null;
-      brand: string;
-      model: string;
-      supplier: string;
-      invoice: string | null;
-      warranty: string | null;
-      purchase_date: Date | null;
-      department: { id: number; name: string };
-      status: string;
-      cpu: string | null;
-      ram: string | null;
-      slots: number | null;
-      storage0_type: string | null;
-      storage0_syze: number | null;
-      storage1_type: string | null;
-      storage1_syze: number | null;
-      video: string | null;
-      service_tag: string | null;
-    };
-  };
-};
+type CreateEquipmentOutput = {};

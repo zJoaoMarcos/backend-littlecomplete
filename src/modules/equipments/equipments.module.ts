@@ -3,7 +3,6 @@ import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.re
 import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/create-equipment';
 import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/edit-equipment';
 import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/equipment/fetch-all-equipments';
-import { FetchByDepartmentIdUseCase } from '@/domain/inventory/use-cases/equipment/fetch-by-department-id';
 import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/equipment/find-equipment-by-id';
 import { UpdateStatusUseCase } from '@/domain/inventory/use-cases/equipment/update-status';
 import { DepartmentsSchema } from '@/infra/repository/typeorm/entities/departments.schema';
@@ -64,16 +63,7 @@ import { EquipmentsService } from './equipments.service';
       },
       inject: [TypeOrmEquipmentRepository],
     },
-    {
-      provide: FetchByDepartmentIdUseCase,
-      useFactory: (
-        equipmentRepo: IEquipmentRepository,
-        departmentRepo: IDepartmentRepository,
-      ) => {
-        return new FetchByDepartmentIdUseCase(equipmentRepo, departmentRepo);
-      },
-      inject: [TypeOrmEquipmentRepository, TypeOrmDepartmentRepository],
-    },
+
     {
       provide: EditEquipmentUseCase,
       useFactory: (

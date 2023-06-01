@@ -63,6 +63,12 @@ export class EquipmentsSchema {
   @Column('character', { name: 'service_tag', nullable: true, length: 50 })
   serviceTag: string | null;
 
+  @Column('character', { name: 'patrimony', nullable: true, length: 50 })
+  patrimony: string | null;
+
+  @Column('character', { name: 'type', nullable: true, length: 30 })
+  type: string | null;
+
   @ManyToOne(() => DepartmentsSchema, (departments) => departments.equipments)
   @JoinColumn([{ name: 'department_id', referencedColumnName: 'id' }])
   department: DepartmentsSchema;

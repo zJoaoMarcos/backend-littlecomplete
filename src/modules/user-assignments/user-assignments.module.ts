@@ -1,7 +1,6 @@
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
-import { FetchAllUsersAssignmentsUseCase } from '@/domain/inventory/use-cases/user-assignments/fetch-all-users-assignments';
 import { FindAssignmentByEquipmentIdUseCase } from '@/domain/inventory/use-cases/user-assignments/find-assignment-by-equipment-id';
 import { FindAssignmentsByUserNameUseCase } from '@/domain/inventory/use-cases/user-assignments/find-assignments-by-user-name';
 import { RemoveEquipmentAssignmentUseCase } from '@/domain/inventory/use-cases/user-assignments/remove-equipment-assignment';
@@ -73,13 +72,6 @@ import { UserAssignmentsService } from './user-assignments.service';
         TypeOrmUserRepository,
         TypeOrmEquipmentRepository,
       ],
-    },
-    {
-      provide: FetchAllUsersAssignmentsUseCase,
-      useFactory: (userAssignmentsRepo: IUserAssignmentsRepository) => {
-        return new FetchAllUsersAssignmentsUseCase(userAssignmentsRepo);
-      },
-      inject: [TypeOrmUserAssignmentsRepository],
     },
     {
       provide: FindAssignmentByEquipmentIdUseCase,
