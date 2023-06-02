@@ -55,7 +55,7 @@ export class UsersSchema {
   equipmentsUsers: EquipmentsUserSchema[];
 
   @ManyToOne(() => DepartmentsSchema, (departments) => departments.users)
-  @JoinColumn([{ name: 'departmentId', referencedColumnName: 'id' }])
+  @JoinColumn([{ name: 'department_id', referencedColumnName: 'id' }])
   department: DepartmentsSchema;
 
   @ManyToOne(() => UsersSchema, (users) => users.users)

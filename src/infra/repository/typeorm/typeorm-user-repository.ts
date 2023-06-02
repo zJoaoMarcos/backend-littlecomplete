@@ -4,7 +4,7 @@ import {
   IUserRepository,
 } from '@/domain/employees/repository/user.repository';
 import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { ILike, Like, Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { UsersSchema } from './entities/users.schema';
 
 export class TypeOrmUserRepository implements IUserRepository {
@@ -50,14 +50,14 @@ export class TypeOrmUserRepository implements IUserRepository {
       where: [
         {
           completeName: ILike(`%${username}%`),
-          status: Like(`%${status}%`),
+          status: ILike(`%${status}%`),
           department: {
             id: department_id,
           },
         },
         {
           username: ILike(`%${username}%`),
-          status: Like(`%${status}%`),
+          status: ILike(`%${status}%`),
           department: {
             id: department_id,
           },
