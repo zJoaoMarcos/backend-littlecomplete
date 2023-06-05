@@ -1,9 +1,9 @@
-import { PaginationParams } from 'src/core/repositories/pagination-params';
+import { PaginationParams } from '@/core/repositories/pagination-params';
+import { User } from '@/domain/employees/entity/user';
 import {
   FindManyOutput,
   IUserRepository,
-} from 'src/domain/repository/user-repository';
-import { User } from '../../../domain/entity/user';
+} from '@/domain/employees/repository/user.repository';
 
 export class InMemoryUserRepository implements IUserRepository {
   users: User[] = [];

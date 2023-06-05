@@ -1,9 +1,9 @@
-import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { Equipment } from '../../../domain/entity/equipment';
+import { PaginationParams } from '@/core/repositories/pagination-params';
+import { Equipment } from '@/domain/inventory/entity/equipment';
 import {
   FindManyOutput,
   IEquipmentRepository,
-} from '../../../domain/repository/equipment-repository';
+} from '@/domain/inventory/repository/equipment.repository';
 
 export class InMemoryEquipmentRepository implements IEquipmentRepository {
   equipments: Equipment[] = [];
@@ -48,7 +48,7 @@ export class InMemoryEquipmentRepository implements IEquipmentRepository {
     params: PaginationParams,
   ): Promise<FindManyOutput> {
     const equipments = this.equipments.filter(
-      (equipment) => equipment.department_id === departmentId,
+      (equipment) => equipment.departmentId === departmentId,
     );
     const totalCount = equipments.length;
 

@@ -1,10 +1,10 @@
-import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { Equipment } from 'src/domain/entity/equipment';
-import { ILike, Like, Repository } from 'typeorm';
+import { Equipment } from '@/domain/inventory/entity/equipment';
 import {
   FindManyOutput,
   IEquipmentRepository,
-} from '../../../domain/repository/equipment-repository';
+} from '@/domain/inventory/repository/equipment.repository';
+import { PaginationParams } from 'src/core/repositories/pagination-params';
+import { ILike, Like, Repository } from 'typeorm';
 import { EquipmentsSchema } from './entities/equipments.schema';
 
 export class TypeOrmEquipmentRepository implements IEquipmentRepository {
@@ -18,19 +18,19 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       supplier: equipment.supplier,
       invoice: equipment.invoice,
       warranty: equipment.warranty,
-      purchaseDate: equipment.purchase_date,
+      purchaseDate: equipment.purchaseDate,
       status: equipment.status,
       cpu: equipment.cpu,
       ram: equipment.ram,
       slots: equipment.slots,
-      storage0Type: equipment.storage0_type,
-      storage0Syze: equipment.storage0_syze,
-      storage1Type: equipment.storage1_type,
-      storage1Syze: equipment.storage1_syze,
+      storage0Type: equipment.storage0Type,
+      storage0Syze: equipment.storage0Syze,
+      storage1Type: equipment.storage1Type,
+      storage1Syze: equipment.storage1Syze,
       video: equipment.video,
-      serviceTag: equipment.service_tag,
+      serviceTag: equipment.serviceTag,
       department: {
-        id: equipment.department_id,
+        id: equipment.departmentId,
       },
     });
   }
@@ -38,7 +38,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
   async findMany(params: PaginationParams): Promise<FindManyOutput> {
     const equipmentId = params.id ?? '';
     const status = params.status ?? '';
-    const departmentId = params.department_id;
+    const type = params.type ?? '';
 
     const [result, totalCount] = await this.ormRepo.findAndCount({
       skip: params.skip,
@@ -52,6 +52,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         department: {
           id: params.department_id && params.department_id,
         },
+        type: ILike(`%${type}%`),
       },
     });
 
@@ -62,26 +63,35 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
     const equipments = result.map((equipment) => {
       return Equipment.create({
         id: equipment.id,
+        type: equipment.type,
+        status: equipment.status,
+        serviceTag: equipment.serviceTag,
+        patrimony: equipment.patrimony,
         brand: equipment.brand,
         model: equipment.model,
-        supplier: equipment.supplier,
-        invoice: equipment.invoice,
-        warranty: equipment.warranty,
-        purchase_date: equipment.purchaseDate,
+        purchase: {
+          supplier: equipment.supplier,
+          invoice: equipment.invoice,
+          warranty: equipment.warranty,
+          purchaseDate: equipment.purchaseDate,
+        },
+        config: {
+          cpu: equipment.cpu,
+          ram: equipment.ram,
+          video: equipment.video,
+          storage: {
+            slots: equipment.slots,
+            storage0Type: equipment.storage0Type,
+            storage0Syze: equipment.storage0Syze,
+            storage1Type: equipment.storage1Type,
+            storage1Syze: equipment.storage1Syze,
+          },
+        },
         department: {
           id: equipment.department ? equipment.department.id : null,
           name: equipment.department ? equipment.department.name : null,
         },
-        status: equipment.status,
-        cpu: equipment.cpu,
-        ram: equipment.ram,
-        slots: equipment.slots,
-        storage0_type: equipment.storage0Type,
-        storage0_syze: equipment.storage0Syze,
-        storage1_type: equipment.storage1Type,
-        storage1_syze: equipment.storage1Syze,
-        video: equipment.video,
-        service_tag: equipment.serviceTag,
+        currentUser: null,
       });
     });
 
@@ -105,26 +115,35 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
 
     return Equipment.create({
       id: equipment.id,
+      type: equipment.type,
+      status: equipment.status,
+      serviceTag: equipment.serviceTag,
+      patrimony: equipment.patrimony,
       brand: equipment.brand,
       model: equipment.model,
-      supplier: equipment.supplier,
-      invoice: equipment.invoice,
-      warranty: equipment.warranty,
-      purchase_date: equipment.purchaseDate,
+      purchase: {
+        supplier: equipment.supplier,
+        invoice: equipment.invoice,
+        warranty: equipment.warranty,
+        purchaseDate: equipment.purchaseDate,
+      },
+      config: {
+        cpu: equipment.cpu,
+        ram: equipment.ram,
+        video: equipment.video,
+        storage: {
+          slots: equipment.slots,
+          storage0Type: equipment.storage0Type,
+          storage0Syze: equipment.storage0Syze,
+          storage1Type: equipment.storage1Type,
+          storage1Syze: equipment.storage1Syze,
+        },
+      },
       department: {
         id: equipment.department ? equipment.department.id : null,
         name: equipment.department ? equipment.department.name : null,
       },
-      status: equipment.status,
-      cpu: equipment.cpu,
-      ram: equipment.ram,
-      slots: equipment.slots,
-      storage0_type: equipment.storage0Type,
-      storage0_syze: equipment.storage0Syze,
-      storage1_type: equipment.storage1Type,
-      storage1_syze: equipment.storage1Syze,
-      video: equipment.video,
-      service_tag: equipment.serviceTag,
+      currentUser: null,
     });
   }
 
@@ -146,26 +165,35 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
     const equipments = result.map((equipment) => {
       return Equipment.create({
         id: equipment.id,
+        type: equipment.type,
+        status: equipment.status,
+        serviceTag: equipment.serviceTag,
+        patrimony: equipment.patrimony,
         brand: equipment.brand,
         model: equipment.model,
-        supplier: equipment.supplier,
-        invoice: equipment.invoice,
-        warranty: equipment.warranty,
-        purchase_date: equipment.purchaseDate,
-        department: {
-          id: equipment.department.id,
-          name: equipment.department.name,
+        purchase: {
+          supplier: equipment.supplier,
+          invoice: equipment.invoice,
+          warranty: equipment.warranty,
+          purchaseDate: equipment.purchaseDate,
         },
-        status: equipment.status,
-        cpu: equipment.cpu,
-        ram: equipment.ram,
-        slots: equipment.slots,
-        storage0_type: equipment.storage0Type,
-        storage0_syze: equipment.storage0Syze,
-        storage1_type: equipment.storage1Type,
-        storage1_syze: equipment.storage1Syze,
-        video: equipment.video,
-        service_tag: equipment.serviceTag,
+        config: {
+          cpu: equipment.cpu,
+          ram: equipment.ram,
+          video: equipment.video,
+          storage: {
+            slots: equipment.slots,
+            storage0Type: equipment.storage0Type,
+            storage0Syze: equipment.storage0Syze,
+            storage1Type: equipment.storage1Type,
+            storage1Syze: equipment.storage1Syze,
+          },
+        },
+        department: {
+          id: equipment.department ? equipment.department.id : null,
+          name: equipment.department ? equipment.department.name : null,
+        },
+        currentUser: null,
       });
     });
 
@@ -184,19 +212,19 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         supplier: equipment.supplier,
         invoice: equipment.invoice,
         warranty: equipment.warranty,
-        purchaseDate: equipment.purchase_date,
+        purchaseDate: equipment.purchaseDate,
         status: equipment.status,
         cpu: equipment.cpu,
         ram: equipment.ram,
         slots: equipment.slots,
-        storage0Type: equipment.storage0_type,
-        storage0Syze: equipment.storage0_syze,
-        storage1Type: equipment.storage1_type,
-        storage1Syze: equipment.storage1_syze,
+        storage0Type: equipment.storage0Type,
+        storage0Syze: equipment.storage0Syze,
+        storage1Type: equipment.storage1Type,
+        storage1Syze: equipment.storage1Syze,
         video: equipment.video,
-        serviceTag: equipment.service_tag,
+        serviceTag: equipment.serviceTag,
         department: {
-          id: equipment.department_id,
+          id: equipment.departmentId,
         },
       },
     );

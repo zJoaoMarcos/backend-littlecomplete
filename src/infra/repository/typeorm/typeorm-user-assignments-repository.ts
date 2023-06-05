@@ -1,11 +1,11 @@
-import { Repository } from 'typeorm';
-import { Equipment } from '../../../domain/entity/equipment';
-import { User } from '../../../domain/entity/user';
-import { UserAssignments } from '../../../domain/entity/user-assignments';
+import { User } from '@/domain/employees/entity/user';
+import { Equipment } from '@/domain/inventory/entity/equipment';
+import { UserAssignments } from '@/domain/inventory/entity/user-assignments';
 import {
   FindByUserNameOutput,
   IUserAssignmentsRepository,
-} from '../../../domain/repository/user-assignments-repository';
+} from '@/domain/inventory/repository/user-assignments.repository';
+import { Repository } from 'typeorm';
 import { EquipmentsUserSchema } from './entities/equipments-user.schema';
 
 export class TypeOrmUserAssignmentsRepository
@@ -55,26 +55,39 @@ export class TypeOrmUserAssignmentsRepository
         }),
         equipment: Equipment.create({
           id: assignments.equipment.id,
+          type: assignments.equipment.type,
+          status: assignments.equipment.status,
+          serviceTag: assignments.equipment.serviceTag,
+          patrimony: assignments.equipment.patrimony,
           brand: assignments.equipment.brand,
           model: assignments.equipment.model,
-          supplier: assignments.equipment.supplier,
-          invoice: assignments.equipment.invoice,
-          warranty: assignments.equipment.warranty,
-          purchase_date: assignments.equipment.purchaseDate,
-          department: {
-            id: assignments.user.department.id,
-            name: assignments.user.department.name,
+          purchase: {
+            supplier: assignments.equipment.supplier,
+            invoice: assignments.equipment.invoice,
+            warranty: assignments.equipment.warranty,
+            purchaseDate: assignments.equipment.purchaseDate,
           },
-          status: assignments.equipment.status,
-          cpu: assignments.equipment.cpu,
-          ram: assignments.equipment.ram,
-          slots: assignments.equipment.slots,
-          storage0_type: assignments.equipment.storage0Type,
-          storage0_syze: assignments.equipment.storage0Syze,
-          storage1_type: assignments.equipment.storage1Type,
-          storage1_syze: assignments.equipment.storage1Syze,
-          video: assignments.equipment.video,
-          service_tag: assignments.equipment.serviceTag,
+          config: {
+            cpu: assignments.equipment.cpu,
+            ram: assignments.equipment.ram,
+            video: assignments.equipment.video,
+            storage: {
+              slots: assignments.equipment.slots,
+              storage0Type: assignments.equipment.storage0Type,
+              storage0Syze: assignments.equipment.storage0Syze,
+              storage1Type: assignments.equipment.storage1Type,
+              storage1Syze: assignments.equipment.storage1Syze,
+            },
+          },
+          department: {
+            id: assignments.equipment.department
+              ? assignments.equipment.department.id
+              : null,
+            name: assignments.equipment.department
+              ? assignments.equipment.department.name
+              : null,
+          },
+          currentUser: null,
         }),
       });
     });
@@ -125,26 +138,39 @@ export class TypeOrmUserAssignmentsRepository
     const equipments = assignments.map((assignments) => {
       return Equipment.create({
         id: assignments.equipment.id,
+        type: assignments.equipment.type,
+        status: assignments.equipment.status,
+        serviceTag: assignments.equipment.serviceTag,
+        patrimony: assignments.equipment.patrimony,
         brand: assignments.equipment.brand,
         model: assignments.equipment.model,
-        supplier: assignments.equipment.supplier,
-        invoice: assignments.equipment.invoice,
-        warranty: assignments.equipment.warranty,
-        purchase_date: assignments.equipment.purchaseDate,
-        department: {
-          id: assignments.user.department.id,
-          name: assignments.user.department.name,
+        purchase: {
+          supplier: assignments.equipment.supplier,
+          invoice: assignments.equipment.invoice,
+          warranty: assignments.equipment.warranty,
+          purchaseDate: assignments.equipment.purchaseDate,
         },
-        status: assignments.equipment.status,
-        cpu: assignments.equipment.cpu,
-        ram: assignments.equipment.ram,
-        slots: assignments.equipment.slots,
-        storage0_type: assignments.equipment.storage0Type,
-        storage0_syze: assignments.equipment.storage0Syze,
-        storage1_type: assignments.equipment.storage1Type,
-        storage1_syze: assignments.equipment.storage1Syze,
-        video: assignments.equipment.video,
-        service_tag: assignments.equipment.serviceTag,
+        config: {
+          cpu: assignments.equipment.cpu,
+          ram: assignments.equipment.ram,
+          video: assignments.equipment.video,
+          storage: {
+            slots: assignments.equipment.slots,
+            storage0Type: assignments.equipment.storage0Type,
+            storage0Syze: assignments.equipment.storage0Syze,
+            storage1Type: assignments.equipment.storage1Type,
+            storage1Syze: assignments.equipment.storage1Syze,
+          },
+        },
+        department: {
+          id: assignments.equipment.department
+            ? assignments.equipment.department.id
+            : null,
+          name: assignments.equipment.department
+            ? assignments.equipment.department.name
+            : null,
+        },
+        currentUser: null,
       });
     });
 

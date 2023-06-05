@@ -15,11 +15,6 @@ export class UserAssignmentsController {
     return this.userAssignmentsService.create(createUserAssignmentDto);
   }
 
-  @Get()
-  findAll() {
-    return this.userAssignmentsService.findAll();
-  }
-
   @Get('equipment/:id')
   findByEquipmentId(@Param('id') id: string) {
     return this.userAssignmentsService.findByEquipmentId(id);

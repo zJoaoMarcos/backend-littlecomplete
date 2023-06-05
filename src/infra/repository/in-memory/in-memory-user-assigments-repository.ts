@@ -1,9 +1,9 @@
-import { User } from '../../../domain/entity/user';
-import { UserAssignments } from '../../../domain/entity/user-assignments';
+import { User } from '@/domain/employees/entity/user';
+import { UserAssignments } from '@/domain/inventory/entity/user-assignments';
 import {
   FindByUserNameOutput,
   IUserAssignmentsRepository,
-} from '../../../domain/repository/user-assignments-repository';
+} from '@/domain/inventory/repository/user-assignments.repository';
 
 export class InMemoryUserAssignmentsRepository
   implements IUserAssignmentsRepository

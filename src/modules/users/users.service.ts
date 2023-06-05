@@ -1,14 +1,14 @@
+import { CreateUserUseCase } from '@/domain/employees/use-cases/user/create-user';
+import { EditUserUseCase } from '@/domain/employees/use-cases/user/edit-user';
+import { FetchAllUsersUseCase } from '@/domain/employees/use-cases/user/fetch-all-users';
+import { FetchByDepartmentIdUseCase } from '@/domain/employees/use-cases/user/fetch-by-department-id';
+import { FindUserByUserNameUseCase } from '@/domain/employees/use-cases/user/find-user-by-user-name';
+import { UpdateUserStatusUseCase } from '@/domain/employees/use-cases/user/update-user-status';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { CreateUserUseCase } from 'src/domain/use-cases/user/create-user';
-import { EditUserUseCase } from 'src/domain/use-cases/user/edit-user';
-import { FetchAllUsersUseCase } from 'src/domain/use-cases/user/fetch-all-users';
-import { FetchByDepartmentIdUseCase } from 'src/domain/use-cases/user/fetch-by-department-id';
-import { FindUserByUserNameUseCase } from 'src/domain/use-cases/user/find-user-by-user-name';
-import { UpdateUserStatusUseCase } from 'src/domain/use-cases/user/update-user-status';
 import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
