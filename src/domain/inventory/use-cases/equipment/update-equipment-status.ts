@@ -1,7 +1,7 @@
 import { EquipmentNotFoundError } from '@/domain/errors/equipment-not-found-error';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 
-export class UpdateStatusUseCase {
+export class UpdateEquipmentsStatusUseCase {
   constructor(private equipmentRepository: IEquipmentRepository) {}
 
   async execute({

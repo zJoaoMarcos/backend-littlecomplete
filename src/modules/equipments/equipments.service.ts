@@ -2,7 +2,7 @@ import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/c
 import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/edit-equipment';
 import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/equipment/fetch-all-equipments';
 import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/equipment/find-equipment-by-id';
-import { UpdateStatusUseCase } from '@/domain/inventory/use-cases/equipment/update-status';
+import { UpdateEquipmentsStatusUseCase } from '@/domain/inventory/use-cases/equipment/update-equipment-status';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
@@ -19,7 +19,7 @@ export class EquipmentsService {
     private findAllUseCase: FetchAllEquipmentsUseCase,
     private findByIdUseCase: FindEquipmentByIdUseCase,
     private updateDetailsUseCase: EditEquipmentUseCase,
-    private updateStatusUseCase: UpdateStatusUseCase,
+    private updateStatusUseCase: UpdateEquipmentsStatusUseCase,
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto) {
