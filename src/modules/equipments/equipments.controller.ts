@@ -19,7 +19,7 @@ import { EquipmentsService } from './equipments.service';
 export class EquipmentsController {
   constructor(private readonly equipmentsService: EquipmentsService) {}
 
-  @Post('equipments')
+  @Post('equipment')
   create(@Body() createEquipmentDto: CreateEquipmentDto) {
     return this.equipmentsService.create(createEquipmentDto);
   }
