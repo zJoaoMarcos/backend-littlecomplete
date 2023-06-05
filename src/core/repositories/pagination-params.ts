@@ -4,4 +4,5 @@ export interface PaginationParams {
   id?: string;
   status?: string;
   department_id?: number;
+  type?: string;
 }

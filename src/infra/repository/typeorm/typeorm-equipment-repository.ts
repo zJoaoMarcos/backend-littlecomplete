@@ -38,6 +38,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
   async findMany(params: PaginationParams): Promise<FindManyOutput> {
     const equipmentId = params.id ?? '';
     const status = params.status ?? '';
+    const type = params.type ?? '';
 
     const [result, totalCount] = await this.ormRepo.findAndCount({
       skip: params.skip,
@@ -51,6 +52,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         department: {
           id: params.department_id && params.department_id,
         },
+        type: ILike(`%${type}%`),
       },
     });
 
