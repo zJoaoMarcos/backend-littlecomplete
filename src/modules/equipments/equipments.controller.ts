@@ -26,7 +26,6 @@ export class EquipmentsController {
 
   @Get('equipments')
   findAll(@Query() params: FindManyParamsDto) {
-    console.log(params);
     return this.equipmentsService.findAll(params);
   }
 
