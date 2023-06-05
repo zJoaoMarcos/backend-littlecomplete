@@ -43,6 +43,12 @@ export class SaveUserAssignmentsUseCase {
       equipment,
     });
 
+    const isTheSameDepartment = user.department_id === equipment.departmentId;
+
+    if (!isTheSameDepartment) {
+      equipment.status = 'loan';
+    }
+
     await this.userAssignmentsRepository.save(userAssignments);
 
     equipment.status = 'in use';
