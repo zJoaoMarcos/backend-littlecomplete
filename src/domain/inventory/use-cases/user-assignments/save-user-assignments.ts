@@ -46,7 +46,7 @@ export class SaveUserAssignmentsUseCase {
     const isTheSameDepartment = user.department_id === equipment.departmentId;
 
     if (!isTheSameDepartment) {
-      equipment.status = 'loan';
+      equipment.status = 'borrowed';
     }
 
     await this.userAssignmentsRepository.save(userAssignments);
