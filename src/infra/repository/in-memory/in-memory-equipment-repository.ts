@@ -21,18 +21,6 @@ export class InMemoryEquipmentRepository implements IEquipmentRepository {
     };
   }
 
-  async findAvaliable(params: PaginationParams): Promise<FindManyOutput> {
-    const equipments = this.equipments.filter(
-      (equipment) => equipment.status === 'stock',
-    );
-    const totalCount = equipments.length;
-
-    return {
-      equipments,
-      totalCount,
-    };
-  }
-
   async findById(id: string): Promise<Equipment> {
     const equipment = this.equipments.find((equipment) => equipment.id === id);
 
