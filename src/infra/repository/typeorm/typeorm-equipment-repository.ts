@@ -4,7 +4,7 @@ import {
   IEquipmentRepository,
 } from '@/domain/inventory/repository/equipment.repository';
 import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { ILike, Like, Repository } from 'typeorm';
+import { Equal, ILike, Repository } from 'typeorm';
 import { EquipmentsSchema } from './entities/equipments.schema';
 
 export class TypeOrmEquipmentRepository implements IEquipmentRepository {
@@ -48,13 +48,14 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       },
       where: {
         id: ILike(`%${equipmentId}%`),
-        status: Like(`%${status}%`),
+        status: Equal(`${status}`),
         department: {
           id: params.department_id && params.department_id,
         },
         type: ILike(`%${type}%`),
       },
     });
+    console.log(result);
 
     if (!result) {
       return null;
