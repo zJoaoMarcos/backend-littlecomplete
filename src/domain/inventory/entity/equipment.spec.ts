@@ -8,7 +8,7 @@ describe('Equipment', () => {
       brand: 'Dell',
       model: 'T31P',
       supplier: 'Dell',
-      status: 'avaliable',
+      status: 'available',
       department: {
         id: 1,
         name: 'IT',

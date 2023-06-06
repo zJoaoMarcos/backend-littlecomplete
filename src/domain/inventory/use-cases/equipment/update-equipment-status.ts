@@ -14,7 +14,7 @@ export class UpdateEquipmentsStatusUseCase {
       throw new EquipmentNotFoundError();
     }
 
-    if (status === 'avaliable') {
+    if (status === 'available') {
       equipment.status = status;
 
       await this.equipmentRepository.save(equipment);
