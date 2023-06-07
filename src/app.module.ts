@@ -9,6 +9,7 @@ import { DepartmentsModule } from './modules/departments/departments.module';
 import { EquipmentsModule } from './modules/equipments/equipments.module';
 import { UserAssignmentsModule } from './modules/user-assignments/user-assignments.module';
 import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { UsersModule } from './modules/users/users.module';
     EquipmentsModule,
     UsersModule,
     UserAssignmentsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
