@@ -25,10 +25,6 @@ export class Transaction extends Entity<TransactionProps> {
     return this.props.id;
   }
 
-  set id(id: string) {
-    this.props.id = id;
-  }
-
   get type() {
     return this.props.type;
   }
