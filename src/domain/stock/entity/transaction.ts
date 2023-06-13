@@ -2,12 +2,13 @@ import { Entity } from '@/core/entities/entity';
 
 interface TransactionProps {
   id: string;
-  type: string;
   itemId: string;
+  type: string;
   amount: number;
   price: number;
-  requester: string;
-  supplier: string;
+  requester: string | null;
+  supplier: string | null;
+  nf: string | null;
   createdBy: string;
   createdAt: Date;
 }
