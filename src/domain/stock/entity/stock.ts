@@ -1,9 +1,8 @@
 import { Entity } from '@/core/entities/entity';
-import { Item } from './item';
 
 interface StockProps {
   id: string;
-  item: Item;
+  itemType: string;
   amount: number;
   amountMin: number;
 }
@@ -25,12 +24,12 @@ export class Stock extends Entity<StockProps> {
     this.props.id = id;
   }
 
-  get item() {
-    return this.props.item;
+  get itemType() {
+    return this.props.itemType;
   }
 
-  set item(item: Item) {
-    this.props.item = item;
+  set itemType(itemType: string) {
+    this.props.itemType = itemType;
   }
 
   get amount() {
