@@ -4,7 +4,7 @@ import { IItemRepository } from '../repository/item.respository';
 import { ITransactionRepository } from '../repository/transaction.repository';
 import { ItemNotFoundError } from './errors/item-not-found.error';
 
-interface RegisterNewItemEntryRequest {
+interface RegisterNewItemEntryTransactionRequest {
   itemId: string;
   price: number;
   amount: number;
@@ -13,11 +13,11 @@ interface RegisterNewItemEntryRequest {
   createdBy: string;
 }
 
-interface RegisterNewItemEntryResponse {
+interface RegisterNewItemEntryTransactionResponse {
   transaction: Transaction;
 }
 
-export class RegisterNewItemEntryUseCase {
+export class RegisterNewItemEntryTransactionUseCase {
   constructor(
     private transactionRepository: ITransactionRepository,
     private ItemRepository: IItemRepository,
@@ -30,7 +30,7 @@ export class RegisterNewItemEntryUseCase {
     supplier,
     nf,
     createdBy,
-  }: RegisterNewItemEntryRequest): Promise<RegisterNewItemEntryResponse> {
+  }: RegisterNewItemEntryTransactionRequest): Promise<RegisterNewItemEntryTransactionResponse> {
     const item = await this.ItemRepository.findById(itemId);
 
     if (!item) {

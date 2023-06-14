@@ -3,7 +3,7 @@ import { Transaction } from '../entity/transaction';
 import { IItemRepository } from '../repository/item.respository';
 import { ITransactionRepository } from '../repository/transaction.repository';
 
-interface RegisterItemRetirementRequest {
+interface RegisterItemRetirementTransactionRequest {
   itemId: string;
   price: number;
   amount: number;
@@ -13,11 +13,11 @@ interface RegisterItemRetirementRequest {
   createdBy: string;
 }
 
-interface RegisterItemRetirementResponse {
+interface RegisterItemRetirementTransactionResponse {
   transaction: Transaction;
 }
 
-export class RegisterItemRetirementUseCase {
+export class RegisterItemRetirementTransactionUseCase {
   constructor(
     private transactionRepository: ITransactionRepository,
     private itemRepository: IItemRepository,
@@ -28,7 +28,7 @@ export class RegisterItemRetirementUseCase {
     amount,
     requester,
     createdBy,
-  }: RegisterItemRetirementRequest): Promise<RegisterItemRetirementResponse> {
+  }: RegisterItemRetirementTransactionRequest): Promise<RegisterItemRetirementTransactionResponse> {
     const item = await this.itemRepository.findById(itemId);
 
     if (!item) {
