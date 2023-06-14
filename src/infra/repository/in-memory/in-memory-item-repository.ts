@@ -1,9 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
 import { Item } from '@/domain/stock/entity/item';
-import {
-  FindManyItemResponse,
-  IItemRepository,
-} from '@/domain/stock/repository/item.respository';
+import { IItemRepository } from '@/domain/stock/repository/item.respository';
 
 export class InMemoryItemRepository implements IItemRepository {
   items: Item[] = [];
@@ -32,7 +29,7 @@ export class InMemoryItemRepository implements IItemRepository {
 
   async findMany(
     params: PaginationParams,
-  ): Promise<FindManyItemResponse | null> {
+  ): Promise<{ items: Item[]; totalCount: number } | null> {
     const items = this.items;
     const totalCount = this.items.length;
 
@@ -54,5 +51,19 @@ export class InMemoryItemRepository implements IItemRepository {
     }
 
     return item;
+  }
+
+  async findByType(
+    type: string,
+  ): Promise<{ items: Item[]; totalCount: number } | null> {
+    const itemsByType = this.items.filter((item) => item.type === type);
+
+    if (!itemsByType) {
+      return null;
+    }
+
+    const totalCount = itemsByType.length;
+
+    return { items: itemsByType, totalCount };
   }
 }
