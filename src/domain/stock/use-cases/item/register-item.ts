@@ -1,12 +1,14 @@
 import { randomUUID } from 'node:crypto';
-import { Item } from '../entity/item';
-import { IItemRepository } from '../repository/item.respository';
+import { Item } from '../../entity/item';
+import { IItemRepository } from '../../repository/item.respository';
 
 interface RegisterItemRequest {
   name: string;
+  brand: string;
+  model: string;
+  type: string;
   category: string;
-  description: string;
-  amountMin: number;
+  createdBy: string;
 }
 
 interface RegisterItemResponse {
@@ -18,9 +20,11 @@ export class RegisterItemUseCase {
 
   async execute({
     name,
+    brand,
+    model,
+    type,
     category,
-    description,
-    amountMin,
+    createdBy,
   }: RegisterItemRequest): Promise<RegisterItemResponse> {
     const itemWithSameName = await this.itemRepository.findByName(name);
 
@@ -31,12 +35,14 @@ export class RegisterItemUseCase {
     const item = new Item({
       id: randomUUID(),
       name,
-      description,
+      brand,
+      model,
+      type,
       category,
       amount: 0,
-      amountMin,
       updateAt: new Date(),
       createdAt: new Date(),
+      createdBy,
     });
 
     await this.itemRepository.create(item);
