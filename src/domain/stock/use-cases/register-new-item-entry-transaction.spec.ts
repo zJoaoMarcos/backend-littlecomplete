@@ -1,6 +1,7 @@
 import { InMemoryItemRepository } from '@/infra/repository/in-memory/in-memory-item-repository';
 import { InMemoryTransactionRepository } from '@/infra/repository/in-memory/in-memory-transaction-repository';
 import { randomUUID } from 'crypto';
+import { ItemNotFoundError } from './errors/item-not-found.error';
 import { MakeItem } from './factories/make-register-item';
 import { RegisterNewItemEntryTransactionUseCase } from './register-new-item-entry-transaction';
 
@@ -8,7 +9,7 @@ let transactionsRepository: InMemoryTransactionRepository;
 let itemsRepository: InMemoryItemRepository;
 let sut: RegisterNewItemEntryTransactionUseCase;
 
-describe('Register New Item Use Case', () => {
+describe('Register New Item Entry Transaction Use Case', () => {
   beforeEach(() => {
     transactionsRepository = new InMemoryTransactionRepository();
     itemsRepository = new InMemoryItemRepository();
@@ -45,6 +46,6 @@ describe('Register New Item Use Case', () => {
         nf: 'generic-nf',
         supplier: 'generic-supplier',
       }),
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(ItemNotFoundError);
   });
 });

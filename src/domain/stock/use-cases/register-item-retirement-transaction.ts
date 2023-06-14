@@ -2,14 +2,13 @@ import { randomUUID } from 'crypto';
 import { Transaction } from '../entity/transaction';
 import { IItemRepository } from '../repository/item.respository';
 import { ITransactionRepository } from '../repository/transaction.repository';
+import { ItemNotFoundError } from './errors/item-not-found.error';
+import { RequestedQuantityUnavailableError } from './errors/requested-quantity-unavailable.error';
 
 interface RegisterItemRetirementTransactionRequest {
   itemId: string;
-  price: number;
   amount: number;
   requester: string;
-  supplier: string;
-  nf: string;
   createdBy: string;
 }
 
@@ -32,16 +31,16 @@ export class RegisterItemRetirementTransactionUseCase {
     const item = await this.itemRepository.findById(itemId);
 
     if (!item) {
-      throw new Error('Item not Found');
+      throw new ItemNotFoundError();
     }
 
     const currentAmount = item.amount;
 
     if (amount > currentAmount) {
-      throw new Error('Requested quantity unavailable');
+      throw new RequestedQuantityUnavailableError();
     }
 
-    item.amount = amount - currentAmount;
+    item.amount = currentAmount - amount;
 
     await this.itemRepository.save(item);
 
