@@ -1,13 +1,13 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
-import { Item } from '../../entity/item';
-import { IItemRepository } from '../../repository/item.respository';
+import { Item } from '../entity/item';
+import { IItemRepository } from '../repository/item.respository';
 
 interface FetchAllItemsRequest {
   params: PaginationParams;
 }
 
 interface FetchAllItemsResponse {
-  items: Item;
+  items: Item[];
   totalCount: number;
 }
 

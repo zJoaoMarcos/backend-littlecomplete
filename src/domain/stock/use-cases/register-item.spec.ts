@@ -1,5 +1,5 @@
 import { InMemoryItemRepository } from '@/infra/repository/in-memory/in-memory-item-repository';
-import { MakeItem } from '../factories/make-register-item';
+import { MakeItem } from './factories/make-register-item';
 import { RegisterItemUseCase } from './register-item';
 
 let itemsRepository: InMemoryItemRepository;

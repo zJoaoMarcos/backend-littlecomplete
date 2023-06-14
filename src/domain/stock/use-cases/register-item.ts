@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
-import { Item } from '../../entity/item';
-import { IItemRepository } from '../../repository/item.respository';
-import { ItemWithSameNameAlreadyExistsError } from '../errors/Item-with-same-name-already-exists.error';
+import { Item } from '../entity/item';
+import { IItemRepository } from '../repository/item.respository';
+import { ItemWithSameNameAlreadyExistsError } from './errors/item-with-same-name-already-exists.error';
 
 interface RegisterItemRequest {
   name: string;
