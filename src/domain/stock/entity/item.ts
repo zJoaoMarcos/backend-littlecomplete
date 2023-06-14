@@ -8,7 +8,7 @@ export interface ItemProps {
   type: string;
   category: string;
   amount: number;
-  updateAt: Date;
+  updatedAt: Date;
   createdAt: Date;
   createdBy: string;
 }
@@ -76,5 +76,29 @@ export class Item extends Entity<ItemProps> {
 
   set amount(amount: number) {
     this.props.amount = amount;
+  }
+
+  get updatedAt() {
+    return this.props.updatedAt;
+  }
+
+  set updatedAt(updatedAt: Date) {
+    this.props.updatedAt = updatedAt;
+  }
+
+  get createdAt() {
+    return this.props.createdAt;
+  }
+
+  set createdAt(createdAt: Date) {
+    this.props.createdAt = createdAt;
+  }
+
+  get createdBy() {
+    return this.props.createdBy;
+  }
+
+  set createdBy(createdBy: string) {
+    this.props.createdBy = createdBy;
   }
 }

@@ -41,7 +41,7 @@ export class RegisterItemUseCase {
       type,
       category,
       amount: 0,
-      updateAt: new Date(),
+      updatedAt: new Date(),
       createdAt: new Date(),
       createdBy,
     });
