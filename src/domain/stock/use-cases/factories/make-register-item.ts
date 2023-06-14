@@ -6,13 +6,15 @@ import { Item, ItemProps } from '../../entity/item';
 export function MakeItem(override: Partial<ItemProps> = {}) {
   const register = Item.create({
     id: randomUUID(),
-    name: faker.word.words(1),
-    category: faker.word.words(1),
-    description: faker.lorem.sentence(),
-    amountMin: faker.number.int(),
-    amount: 0,
-    createdAt: faker.date.past(),
+    name: faker.commerce.productName(),
+    model: faker.commerce.productDescription(),
+    type: faker.commerce.productMaterial(),
+    category: faker.commerce.productAdjective(),
+    amount: faker.number.int(),
+    brand: faker.commerce.productName(),
     updateAt: faker.date.recent(),
+    createdAt: faker.date.past(),
+    createdBy: faker.internet.email(),
     ...override,
   });
 
