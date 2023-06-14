@@ -2,7 +2,7 @@ import { InMemoryItemRepository } from '@/infra/repository/in-memory/in-memory-i
 import { InMemoryTransactionRepository } from '@/infra/repository/in-memory/in-memory-transaction-repository';
 import { randomUUID } from 'crypto';
 import { MakeItem } from './factories/make-register-item';
-import { RegisterNewItemEntryUseCase } from './register-new-item-entry';
+import { RegisterNewItemEntryUseCase } from './register-new-item-entry-transaction';
 
 let transactionsRepository: InMemoryTransactionRepository;
 let itemsRepository: InMemoryItemRepository;

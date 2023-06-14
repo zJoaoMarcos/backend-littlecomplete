@@ -1,7 +1,7 @@
 import { randomUUID } from 'crypto';
-import { Transaction } from '../../entity/transaction';
-import { IItemRepository } from '../../repository/item.respository';
-import { ITransactionRepository } from '../../repository/transaction.repository';
+import { Transaction } from '../entity/transaction';
+import { IItemRepository } from '../repository/item.respository';
+import { ITransactionRepository } from '../repository/transaction.repository';
 
 interface RegisterItemRetirementRequest {
   itemId: string;
