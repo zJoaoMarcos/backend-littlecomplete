@@ -12,7 +12,7 @@ export function MakeItem(override: Partial<ItemProps> = {}) {
     category: faker.commerce.productAdjective(),
     amount: faker.number.int(),
     brand: faker.commerce.productName(),
-    updateAt: faker.date.recent(),
+    updatedAt: faker.date.recent(),
     createdAt: faker.date.past(),
     createdBy: faker.internet.email(),
     ...override,

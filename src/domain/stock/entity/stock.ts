@@ -1,6 +1,6 @@
 import { Entity } from '@/core/entities/entity';
 
-interface StockProps {
+export interface StockProps {
   id: string;
   itemType: string;
   amount: number;
