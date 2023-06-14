@@ -1,6 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
-import { Stock } from '../../entity/stock';
-import { IStockRepository } from '../../repository/stock.repository';
+import { Stock } from '../entity/stock';
+import { IStockRepository } from '../repository/stock.repository';
 
 interface FetchAvailableItemsRequest {
   params: PaginationParams;
@@ -14,10 +14,8 @@ interface FetchAvailableItemsResponse {
 export class FetchAvailableItemsUseCase {
   constructor(private stockRepository: IStockRepository) {}
 
-  async execute({
-    params,
-  }: FetchAvailableItemsRequest): Promise<FetchAvailableItemsResponse> {
-    const { items, totalCount } = await this.stockRepository.findMany(params);
+  async execute(): Promise<FetchAvailableItemsResponse> {
+    const { items, totalCount } = await this.stockRepository.findMany();
 
     if (!items) {
       throw new Error('Item not found');

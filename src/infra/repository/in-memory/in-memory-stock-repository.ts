@@ -5,7 +5,7 @@ export class InMemoryStockRepository implements IStockRepository {
   items: Stock[] = [];
 
   async findMany(): Promise<{ items: Stock[]; totalCount: number } | null> {
-    const items = this.items.filter((item) => item.amount >= item.amountMin);
+    const items = this.items.filter((item) => item.amount > 0);
 
     if (!items) {
       return null;

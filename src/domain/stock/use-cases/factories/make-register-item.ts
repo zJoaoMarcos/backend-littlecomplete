@@ -10,7 +10,7 @@ export function MakeItem(override: Partial<ItemProps> = {}) {
     model: faker.commerce.productDescription(),
     type: faker.commerce.productMaterial(),
     category: faker.commerce.productAdjective(),
-    amount: faker.number.int(),
+    amount: faker.number.int({ max: 100 }),
     brand: faker.commerce.productName(),
     updatedAt: faker.date.recent(),
     createdAt: faker.date.past(),
