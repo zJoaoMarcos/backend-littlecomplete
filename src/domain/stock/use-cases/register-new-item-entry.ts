@@ -2,12 +2,12 @@ import { randomUUID } from 'crypto';
 import { Transaction } from '../entity/transaction';
 import { IItemRepository } from '../repository/item.respository';
 import { ITransactionRepository } from '../repository/transaction.repository';
+import { ItemNotFoundError } from './errors/item-not-found.error';
 
 interface RegisterNewItemEntryRequest {
   itemId: string;
   price: number;
   amount: number;
-  requester: string;
   supplier: string;
   nf: string;
   createdBy: string;
@@ -34,7 +34,7 @@ export class RegisterNewItemEntryUseCase {
     const item = await this.ItemRepository.findById(itemId);
 
     if (!item) {
-      throw new Error('Item not Found');
+      throw new ItemNotFoundError();
     }
 
     const updatedAmount = item.amount + amount;
