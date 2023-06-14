@@ -5,28 +5,39 @@ import { IStockRepository } from '@/domain/stock/repository/stock.repository';
 export class InMemoryStockRepository implements IStockRepository {
   items: Stock[] = [];
 
-  findMany(
+  async findMany(
     params: PaginationParams,
-  ): Promise<{ items: Stock[]; totalCount: number }> {
-    const items = this.items;
-    const totalCount = items.length;
+  ): Promise<{ items: Stock[]; totalCount: number } | null> {
+    const items = this.items.map((item) => {
+      if (item.amount >= item.amountMin) {
+        return item;
+      }
+    });
 
-    return {
-      items,
-      totalCount,
-    };
+    if (!items) {
+      return null;
+    }
+
+    const totalCount = this.items.length;
+
+    return { items, totalCount };
   }
 
-  findLessThanMinAmount(
+  async findLessThanMinAmount(
     params: PaginationParams,
   ): Promise<{ items: Stock[]; totalCount: number }> {
-    const stock = this.items.map((item) => {
+    const items = this.items.map((item) => {
       if (item.amount <= item.amountMin) {
         return item;
       }
     });
-    const totalCount = stock.length;
 
-    return { items: stock, totalCount };
+    if (!items) {
+      return null;
+    }
+
+    const totalCount = this.items.length;
+
+    return { items, totalCount };
   }
 }
