@@ -1,14 +1,14 @@
 import { InMemoryStockRepository } from '@/infra/repository/in-memory/in-memory-stock-repository';
 import { MakeStock } from './factories/make-stock';
-import { FetchAvailableItemsUseCase } from './fetch-available-items';
+import { FetchStockListUseCase } from './fetch-stock-list';
 
 let stockRepository: InMemoryStockRepository;
-let sut: FetchAvailableItemsUseCase;
+let sut: FetchStockListUseCase;
 
 describe('Fetch Available Items Use Case', () => {
   beforeEach(() => {
     stockRepository = new InMemoryStockRepository();
-    sut = new FetchAvailableItemsUseCase(stockRepository);
+    sut = new FetchStockListUseCase(stockRepository);
   });
 
   it('should be able list all  items groub by type', async () => {

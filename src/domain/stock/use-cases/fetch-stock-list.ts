@@ -2,19 +2,19 @@ import { PaginationParams } from '@/core/repositories/pagination-params';
 import { Stock } from '../entity/stock';
 import { IStockRepository } from '../repository/stock.repository';
 
-interface FetchAvailableItemsRequest {
+interface FetchStockListRequest {
   params: PaginationParams;
 }
 
-interface FetchAvailableItemsResponse {
+interface FetchStockListResponse {
   items: Stock[];
   totalCount: number;
 }
 
-export class FetchAvailableItemsUseCase {
+export class FetchStockListUseCase {
   constructor(private stockRepository: IStockRepository) {}
 
-  async execute(): Promise<FetchAvailableItemsResponse> {
+  async execute(): Promise<FetchStockListResponse> {
     const { items, totalCount } = await this.stockRepository.findMany();
 
     if (!items) {
