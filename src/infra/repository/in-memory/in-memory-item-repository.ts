@@ -10,9 +10,7 @@ export class InMemoryItemRepository implements IItemRepository {
   }
 
   async findByName(name: string): Promise<Item | null> {
-    const item = this.items.find((item) => {
-      return (item.name = name);
-    });
+    const item = this.items.find((item) => item.name === name);
 
     if (!item) {
       return null;
