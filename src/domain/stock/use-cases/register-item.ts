@@ -3,7 +3,6 @@ import { Item } from '../entity/item';
 import { IItemRepository } from '../repository/item.respository';
 
 interface RegisterItemRequest {
-  name: string;
   brand: string;
   model: string;
   type: string;
@@ -19,7 +18,6 @@ export class RegisterItemUseCase {
   constructor(private itemRepository: IItemRepository) {}
 
   async execute({
-    name,
     brand,
     model,
     type,
