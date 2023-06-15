@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import { EditItemUseCase } from '@/domain/stock/use-cases/edit-item';
 import { FetchAllItemsUseCase } from '@/domain/stock/use-cases/fetch-all-items';
 import { FetchStockListUseCase } from '@/domain/stock/use-cases/fetch-stock-list';
 import { RegisterItemUseCase } from '@/domain/stock/use-cases/register-item';
 import { RegisterItemRetirementTransactionUseCase } from '@/domain/stock/use-cases/register-item-retirement-transaction';
 import { RegisterNewItemEntryTransactionUseCase } from '@/domain/stock/use-cases/register-new-item-entry-transaction';
+import { EditItemDto } from './dto/edit-item.dto';
 import { RegisterItemEntryTransactionDto } from './dto/register-item-entry-transaction.dto';
 import { RegisterItemRetirementTransactionDto } from './dto/register-item-retirement-transaction.dto';
 import { RegisterItemDto } from './dto/register-item.dto';
@@ -14,6 +16,7 @@ import { RegisterItemDto } from './dto/register-item.dto';
 export class StockService {
   constructor(
     private registerItemUseCase: RegisterItemUseCase,
+    private editItemUseCase: EditItemUseCase,
     private fetchAllItemsUseCase: FetchAllItemsUseCase,
     private fetchStockListUseCase: FetchStockListUseCase,
     private registerItemRetirementTransactionUseCase: RegisterItemRetirementTransactionUseCase,
@@ -41,6 +44,22 @@ export class StockService {
       return item.props;
     } catch (err) {
       throw new Error(err.message);
+    }
+  }
+
+  async editItem(id: string, { brand, category, model, type }: EditItemDto) {
+    try {
+      const { item } = await this.editItemUseCase.execute({
+        id,
+        brand,
+        category,
+        model,
+        type,
+      });
+
+      return item.props;
+    } catch (error) {
+      console.log(error); //TODO: add error handling
     }
   }
 

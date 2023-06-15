@@ -1,7 +1,16 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import { EditItemDto } from './dto/edit-item.dto';
 import { RegisterItemEntryTransactionDto } from './dto/register-item-entry-transaction.dto';
 import { RegisterItemRetirementTransactionDto } from './dto/register-item-retirement-transaction.dto';
 import { RegisterItemDto } from './dto/register-item.dto';
@@ -13,26 +22,28 @@ export class StockController {
   constructor(private readonly stockService: StockService) {}
 
   // Stock
-
   @Get()
   fetchStockList(@Query() params: PaginationParams) {
     return this.stockService.fetchStockList(params);
   }
 
   // Items
+  @Get('/items')
+  fetchAllItems(@Query() params: PaginationParams) {
+    return this.stockService.fetchAllItems(params);
+  }
 
   @Post('/items')
   register(@Body() dto: RegisterItemDto) {
     return this.stockService.registerItem({ ...dto });
   }
 
-  @Get('/items')
-  fetchAllItems(@Query() params: PaginationParams) {
-    return this.stockService.fetchAllItems(params);
+  @Patch('/items/:id')
+  editItem(@Param() id: string, @Body() dto: EditItemDto) {
+    return this.stockService.editItem(id, { ...dto });
   }
 
   // Stock Transactions
-
   @Post('items/:id/transaction/entry')
   registerItemEntryTransaction(
     @Param() id: string,

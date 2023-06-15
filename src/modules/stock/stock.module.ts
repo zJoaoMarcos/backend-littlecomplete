@@ -5,6 +5,7 @@ import { DataSource } from 'typeorm';
 import { IItemRepository } from '@/domain/stock/repository/item.respository';
 import { IStockRepository } from '@/domain/stock/repository/stock.repository';
 import { ITransactionRepository } from '@/domain/stock/repository/transaction.repository';
+import { EditItemUseCase } from '@/domain/stock/use-cases/edit-item';
 import { FetchAllItemsUseCase } from '@/domain/stock/use-cases/fetch-all-items';
 import { FetchStockListUseCase } from '@/domain/stock/use-cases/fetch-stock-list';
 import { RegisterItemUseCase } from '@/domain/stock/use-cases/register-item';
@@ -80,6 +81,13 @@ import { StockService } from './stock.service';
       provide: FetchAllItemsUseCase,
       useFactory: (itemRepo: IItemRepository) => {
         return new FetchAllItemsUseCase(itemRepo);
+      },
+      inject: [TypeOrmItemRepository],
+    },
+    {
+      provide: EditItemUseCase,
+      useFactory: (itemRepo: IItemRepository) => {
+        return new EditItemUseCase(itemRepo);
       },
       inject: [TypeOrmItemRepository],
     },
