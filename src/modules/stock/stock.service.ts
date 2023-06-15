@@ -4,6 +4,7 @@ import { PaginationParams } from '@/core/repositories/pagination-params';
 import { EditItemUseCase } from '@/domain/stock/use-cases/edit-item';
 import { FetchAllItemsUseCase } from '@/domain/stock/use-cases/fetch-all-items';
 import { FetchStockListUseCase } from '@/domain/stock/use-cases/fetch-stock-list';
+import { FetchStockListBellowMinAmountUseCase } from '@/domain/stock/use-cases/fetch-stock-list-bellow-min-amount';
 import { RegisterItemUseCase } from '@/domain/stock/use-cases/register-item';
 import { RegisterItemRetirementTransactionUseCase } from '@/domain/stock/use-cases/register-item-retirement-transaction';
 import { RegisterNewItemEntryTransactionUseCase } from '@/domain/stock/use-cases/register-new-item-entry-transaction';
@@ -19,6 +20,7 @@ export class StockService {
     private editItemUseCase: EditItemUseCase,
     private fetchAllItemsUseCase: FetchAllItemsUseCase,
     private fetchStockListUseCase: FetchStockListUseCase,
+    private fetchStockListBellowMinAmountUseCase: FetchStockListBellowMinAmountUseCase,
     private registerItemRetirementTransactionUseCase: RegisterItemRetirementTransactionUseCase,
     private registerNewItemEntryTransactionUseCase: RegisterNewItemEntryTransactionUseCase,
   ) {}
@@ -93,7 +95,23 @@ export class StockService {
         totalCount,
       };
     } catch (error) {
-      console.log(error);
+      console.log(error); //TODO: add error handling
+    }
+  }
+
+  async fetchStockShoppingList(params: PaginationParams) {
+    try {
+      const { items, totalCount } =
+        await this.fetchStockListBellowMinAmountUseCase.execute();
+
+      return {
+        items: items.map((item) => {
+          return item.props;
+        }),
+        totalCount,
+      };
+    } catch (error) {
+      console.log(error); //TODO: add error handling
     }
   }
 

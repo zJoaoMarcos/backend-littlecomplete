@@ -1,14 +1,14 @@
 import { InMemoryStockRepository } from '@/infra/repository/in-memory/in-memory-stock-repository';
 import { MakeStock } from './factories/make-stock';
-import { FetchItemsBellowMinimumAmount } from './fetch-items-bellow-minimum-amount';
+import { FetchStockListBellowMinAmountUseCase } from './fetch-stock-list-bellow-min-amount';
 
 let stockRepository: InMemoryStockRepository;
-let sut: FetchItemsBellowMinimumAmount;
+let sut: FetchStockListBellowMinAmountUseCase;
 
 describe('Fetch Items Bellow Minimum Amount Use Case', () => {
   beforeEach(() => {
     stockRepository = new InMemoryStockRepository();
-    sut = new FetchItemsBellowMinimumAmount(stockRepository);
+    sut = new FetchStockListBellowMinAmountUseCase(stockRepository);
   });
 
   it('Should be able list all items with amount less than amount min', async () => {
