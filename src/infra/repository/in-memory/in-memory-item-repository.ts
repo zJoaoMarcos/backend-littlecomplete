@@ -9,16 +9,6 @@ export class InMemoryItemRepository implements IItemRepository {
     this.items.push(item);
   }
 
-  async findByName(name: string): Promise<Item | null> {
-    const item = this.items.find((item) => item.name === name);
-
-    if (!item) {
-      return null;
-    }
-
-    return item;
-  }
-
   async save(item: Item): Promise<void> {
     const itemIndex = this.items.findIndex((item) => item.id === item.id);
 

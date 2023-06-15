@@ -11,5 +11,4 @@ export interface IItemRepository {
   findByType(
     type: string,
   ): Promise<{ items: Item[]; totalCount: number } | null>;
-  findByName(name: string): Promise<Item | null>;
 }
