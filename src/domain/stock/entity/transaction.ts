@@ -1,6 +1,6 @@
 import { Entity } from '@/core/entities/entity';
 
-interface TransactionProps {
+export interface TransactionProps {
   id: string;
   itemId: string;
   type: string;
