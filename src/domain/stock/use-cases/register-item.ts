@@ -1,7 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { Item } from '../entity/item';
 import { IItemRepository } from '../repository/item.respository';
-import { ItemWithSameNameAlreadyExistsError } from './errors/item-with-same-name-already-exists.error';
 
 interface RegisterItemRequest {
   name: string;
@@ -27,15 +26,8 @@ export class RegisterItemUseCase {
     category,
     createdBy,
   }: RegisterItemRequest): Promise<RegisterItemResponse> {
-    const itemWithSameName = await this.itemRepository.findByName(name);
-
-    if (itemWithSameName) {
-      throw new ItemWithSameNameAlreadyExistsError();
-    }
-
     const item = new Item({
       id: randomUUID(),
-      name,
       brand,
       model,
       type,

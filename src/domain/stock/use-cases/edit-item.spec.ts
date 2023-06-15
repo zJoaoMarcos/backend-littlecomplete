@@ -10,20 +10,15 @@ describe('Edit Item Use Case', () => {
   sut = new EditItemUseCase(itemsRepository);
 
   it('Should be able edit props of item ', async () => {
-    itemsRepository.items.push(
-      MakeItem({ id: 'generic-id', name: 'generic-name' }),
-    );
+    itemsRepository.items.push(MakeItem({ id: 'generic-id' }));
 
     const { item } = await sut.execute({
       id: 'generic-id',
-      name: 'generic-name',
       brand: 'edited-brand',
       category: 'generic-category',
       model: 'generic-model',
       type: 'generic-type',
     });
-
-    console.log(item);
 
     expect(item).toBeTruthy();
   });

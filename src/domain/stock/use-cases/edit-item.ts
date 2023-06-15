@@ -4,7 +4,6 @@ import { ItemNotFoundError } from './errors/item-not-found.error';
 
 interface EditItemRequest {
   id: string;
-  name: string;
   brand: string;
   model: string;
   type: string;
@@ -20,7 +19,6 @@ export class EditItemUseCase {
 
   async execute({
     id,
-    name,
     brand,
     category,
     model,
@@ -32,7 +30,6 @@ export class EditItemUseCase {
       throw new ItemNotFoundError();
     }
 
-    item.name = name;
     item.brand = brand;
     item.category = category;
     item.model = model;

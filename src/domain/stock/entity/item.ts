@@ -2,7 +2,6 @@ import { Entity } from '@/core/entities/entity';
 
 export interface ItemProps {
   id: string;
-  name: string;
   brand: string;
   model: string;
   type: string;
@@ -28,14 +27,6 @@ export class Item extends Entity<ItemProps> {
 
   set id(id: string) {
     this.props.id = id;
-  }
-
-  get name() {
-    return this.props.name;
-  }
-
-  set name(name: string) {
-    this.props.name = name;
   }
 
   get brand() {

@@ -21,8 +21,6 @@ describe('Fetch Available Items Use Case', () => {
 
     const { items } = await sut.execute();
 
-    console.log(items);
-
     expect(items[0].amount).toBeGreaterThanOrEqual(items[0].amountMin);
   });
 });
