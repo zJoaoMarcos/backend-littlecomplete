@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { User } from '@/domain/employees/entity/user';
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
@@ -20,7 +19,6 @@ export class CreateUserUseCase {
     telephone,
     direct_boss,
     smtp,
-    admission_date,
   }: CreateUserInput): Promise<CreateUserOutput> {
     const departmentExists = await this.departmentRepository.findById(
       department_id,
@@ -55,14 +53,14 @@ export class CreateUserUseCase {
       telephone,
       direct_boss,
       smtp,
-      admission_date: admission_date ? admission_date : new Date(),
+      admission_date: new Date(),
       demission_date: null,
       status: 'active',
     });
 
     await this.userRepository.create(user);
 
-    return {};
+    return { user };
   }
 }
 
@@ -74,7 +72,8 @@ type CreateUserInput = {
   telephone: number | null;
   direct_boss: string;
   smtp: string;
-  admission_date: Date | null;
 };
 
-type CreateUserOutput = {};
+type CreateUserOutput = {
+  user: User;
+};
