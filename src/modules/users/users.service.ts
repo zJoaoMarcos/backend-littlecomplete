@@ -32,7 +32,6 @@ export class UsersService {
     smtp,
     direct_boss,
     telephone,
-    admission_date,
   }: CreateUserDto) {
     try {
       return this.createUseCase.execute({
@@ -43,7 +42,6 @@ export class UsersService {
         smtp,
         direct_boss,
         telephone,
-        admission_date,
       });
     } catch (err) {
       throw new ConflictException(err.message);
