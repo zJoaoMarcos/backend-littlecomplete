@@ -1,10 +1,10 @@
 import { User } from '@/domain/employees/entity/user';
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
-import { UserNameAlreadyExistsError } from '@/domain/errors/user-name-already-exits-error';
 import { DepartmentNotFoundError } from './errors/department-not-found-error';
 import { DirectBossNotFoundError } from './errors/direct-boss-not-found-error';
 import { EmailAlreadyExistsError } from './errors/email-already-exists-error';
+import { UserNameAlreadyExistsError } from './errors/user-name-already-exits-error';
 
 export class CreateUserUseCase {
   constructor(

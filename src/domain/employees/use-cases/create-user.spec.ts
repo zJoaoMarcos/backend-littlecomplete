@@ -1,9 +1,9 @@
-import { UserNameAlreadyExistsError } from '@/domain/errors/user-name-already-exits-error';
 import { InMemoryDepartmentRepository } from '@/infra/repository/in-memory/in-memory-department-repository';
 import { InMemoryUserRepository } from '@/infra/repository/in-memory/in-memory-user-repository';
 import { CreateUserUseCase } from './create-user';
 import { DepartmentNotFoundError } from './errors/department-not-found-error';
 import { DirectBossNotFoundError } from './errors/direct-boss-not-found-error';
+import { UserNameAlreadyExistsError } from './errors/user-name-already-exits-error';
 import { makeCreateDepartment } from './factories/make-create-department';
 import { makeCreateUser } from './factories/make-create-user';
 
