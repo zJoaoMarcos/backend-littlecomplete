@@ -5,6 +5,7 @@ import { EditItemUseCase } from '@/domain/stock/use-cases/edit-item';
 import { FetchAllItemsUseCase } from '@/domain/stock/use-cases/fetch-all-items';
 import { FetchStockListUseCase } from '@/domain/stock/use-cases/fetch-stock-list';
 import { FetchStockListBellowMinAmountUseCase } from '@/domain/stock/use-cases/fetch-stock-list-bellow-min-amount';
+import { FindItemByIdUseCase } from '@/domain/stock/use-cases/find-item-by-id';
 import { RegisterItemUseCase } from '@/domain/stock/use-cases/register-item';
 import { RegisterItemRetirementTransactionUseCase } from '@/domain/stock/use-cases/register-item-retirement-transaction';
 import { RegisterNewItemEntryTransactionUseCase } from '@/domain/stock/use-cases/register-new-item-entry-transaction';
@@ -19,6 +20,7 @@ export class StockService {
     private registerItemUseCase: RegisterItemUseCase,
     private editItemUseCase: EditItemUseCase,
     private fetchAllItemsUseCase: FetchAllItemsUseCase,
+    private findItemByIdUseCase: FindItemByIdUseCase,
     private fetchStockListUseCase: FetchStockListUseCase,
     private fetchStockListBellowMinAmountUseCase: FetchStockListBellowMinAmountUseCase,
     private registerItemRetirementTransactionUseCase: RegisterItemRetirementTransactionUseCase,
@@ -77,6 +79,16 @@ export class StockService {
         }),
         totalCount,
       };
+    } catch (error) {
+      console.log(error); //TODO: add error handling
+    }
+  }
+
+  async findItemById(id: string) {
+    try {
+      const { item } = await this.findItemByIdUseCase.execute({ id });
+
+      return item.props;
     } catch (error) {
       console.log(error); //TODO: add error handling
     }
