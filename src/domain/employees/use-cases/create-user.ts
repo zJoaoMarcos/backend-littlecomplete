@@ -1,9 +1,10 @@
 import { User } from '@/domain/employees/entity/user';
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
-import { DepartmentNotFoundError } from '@/domain/errors/department-not-found';
-import { EmailAlreadyExistsError } from '@/domain/errors/email-already-exists-error';
 import { UserNameAlreadyExistsError } from '@/domain/errors/user-name-already-exits-error';
+import { DepartmentNotFoundError } from './errors/department-not-found-error';
+import { DirectBossNotFoundError } from './errors/direct-boss-not-found-error';
+import { EmailAlreadyExistsError } from './errors/email-already-exists-error';
 
 export class CreateUserUseCase {
   constructor(
@@ -30,16 +31,26 @@ export class CreateUserUseCase {
 
     const departmentName = departmentExists.name;
 
-    const userNameTwice = await this.userRepository.findByUserName(user_name);
+    const userAlreadyExists = await this.userRepository.findByUserName(
+      user_name,
+    );
 
-    if (userNameTwice) {
+    if (userAlreadyExists) {
       throw new UserNameAlreadyExistsError();
     }
 
-    const emailTwice = await this.userRepository.findByEmail(smtp);
+    const emailAlreadyExists = await this.userRepository.findByEmail(smtp);
 
-    if (emailTwice) {
+    if (emailAlreadyExists) {
       throw new EmailAlreadyExistsError();
+    }
+
+    const directBossExists = await this.userRepository.findByUserName(
+      direct_boss,
+    );
+
+    if (!directBossExists) {
+      throw new DirectBossNotFoundError();
     }
 
     const user = User.create({

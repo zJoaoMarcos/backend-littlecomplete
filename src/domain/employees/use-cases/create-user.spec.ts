@@ -1,10 +1,11 @@
-import { DepartmentNotFoundError } from '@/domain/errors/department-not-found';
 import { UserNameAlreadyExistsError } from '@/domain/errors/user-name-already-exits-error';
 import { InMemoryDepartmentRepository } from '@/infra/repository/in-memory/in-memory-department-repository';
 import { InMemoryUserRepository } from '@/infra/repository/in-memory/in-memory-user-repository';
-import { makeCreateDepartment } from '../factories/make-create-department';
-import { makeCreateUser } from '../factories/make-create-user';
 import { CreateUserUseCase } from './create-user';
+import { DepartmentNotFoundError } from './errors/department-not-found-error';
+import { DirectBossNotFoundError } from './errors/direct-boss-not-found-error';
+import { makeCreateDepartment } from './factories/make-create-department';
+import { makeCreateUser } from './factories/make-create-user';
 
 let usersRepository: InMemoryUserRepository;
 let departmentsRepository: InMemoryDepartmentRepository;
@@ -19,6 +20,7 @@ describe('Create User Use Case', () => {
 
   it('should be able create a new user', async () => {
     departmentsRepository.departments.push(makeCreateDepartment({ id: 2 }));
+    usersRepository.users.push(makeCreateUser({ user_name: 'jhon.smith' }));
 
     const { user } = await sut.execute({
       user_name: 'jhon.doe',
@@ -26,7 +28,7 @@ describe('Create User Use Case', () => {
       title: 'CTO',
       department_id: 2,
       telephone: null,
-      direct_boss: 'Martin Fowler',
+      direct_boss: 'jhon.smith',
       smtp: 'jhon.doe@email.com',
     });
 
@@ -35,6 +37,7 @@ describe('Create User Use Case', () => {
 
   it('should not be able create a new User with department not registered', async () => {
     departmentsRepository.departments.push(makeCreateDepartment({ id: 2 }));
+    usersRepository.users.push(makeCreateUser({ user_name: 'jhon.smith' }));
 
     await expect(() =>
       sut.execute({
@@ -43,7 +46,7 @@ describe('Create User Use Case', () => {
         title: 'CTO',
         department_id: 1,
         telephone: null,
-        direct_boss: 'Martin Fowler',
+        direct_boss: 'jhon.smith',
         smtp: 'jhon.doe@email.com',
       }),
     ).rejects.toBeInstanceOf(DepartmentNotFoundError);
@@ -51,7 +54,7 @@ describe('Create User Use Case', () => {
 
   it('should not be able create a new User with duplicate user_name', async () => {
     departmentsRepository.departments.push(makeCreateDepartment({ id: 2 }));
-
+    usersRepository.users.push(makeCreateUser({ user_name: 'jhon.smith' }));
     usersRepository.users.push(makeCreateUser({ user_name: 'jhon.doe' }));
 
     await expect(() =>
@@ -67,5 +70,20 @@ describe('Create User Use Case', () => {
     ).rejects.toBeInstanceOf(UserNameAlreadyExistsError);
   });
 
-  /* TODO: it('Should not be able create User with direct boss not registered', async () => {}); */
+  it('Should not be able create User with direct boss not registered', async () => {
+    departmentsRepository.departments.push(makeCreateDepartment({ id: 2 }));
+    usersRepository.users.push(makeCreateUser({ user_name: 'jhon.smith' }));
+
+    await expect(() =>
+      sut.execute({
+        user_name: 'jhon.doe',
+        complete_name: 'Jhon Doe',
+        title: 'CTO',
+        department_id: 2,
+        telephone: null,
+        direct_boss: 'Martin Fowler',
+        smtp: 'jhon.doe@email.com',
+      }),
+    ).rejects.toBeInstanceOf(DirectBossNotFoundError);
+  });
 });
