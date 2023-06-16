@@ -8,6 +8,8 @@ import { ITransactionRepository } from '@/domain/stock/repository/transaction.re
 import { EditItemUseCase } from '@/domain/stock/use-cases/edit-item';
 import { FetchAllItemsUseCase } from '@/domain/stock/use-cases/fetch-all-items';
 import { FetchStockListUseCase } from '@/domain/stock/use-cases/fetch-stock-list';
+import { FetchStockListBellowMinAmountUseCase } from '@/domain/stock/use-cases/fetch-stock-list-bellow-min-amount';
+import { FindItemByIdUseCase } from '@/domain/stock/use-cases/find-item-by-id';
 import { RegisterItemUseCase } from '@/domain/stock/use-cases/register-item';
 import { RegisterItemRetirementTransactionUseCase } from '@/domain/stock/use-cases/register-item-retirement-transaction';
 import { RegisterNewItemEntryTransactionUseCase } from '@/domain/stock/use-cases/register-new-item-entry-transaction';
@@ -67,6 +69,13 @@ import { StockService } from './stock.service';
       },
       inject: [TypeOrmStockRepository],
     },
+    {
+      provide: FetchStockListBellowMinAmountUseCase,
+      useFactory: (stockRepo: IStockRepository) => {
+        return new FetchStockListBellowMinAmountUseCase(stockRepo);
+      },
+      inject: [TypeOrmStockRepository],
+    },
 
     // Item
 
@@ -81,6 +90,13 @@ import { StockService } from './stock.service';
       provide: FetchAllItemsUseCase,
       useFactory: (itemRepo: IItemRepository) => {
         return new FetchAllItemsUseCase(itemRepo);
+      },
+      inject: [TypeOrmItemRepository],
+    },
+    {
+      provide: FindItemByIdUseCase,
+      useFactory: (itemRepo: IItemRepository) => {
+        return new FindItemByIdUseCase(itemRepo);
       },
       inject: [TypeOrmItemRepository],
     },
