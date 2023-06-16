@@ -27,10 +27,20 @@ export class StockController {
     return this.stockService.fetchStockList(params);
   }
 
-  // Items
+  @Get('/shopping')
+  fetchStockShoppingList(@Query() params: PaginationParams) {
+    return this.stockService.fetchStockShoppingList(params);
+  }
+
+  // Item
   @Get('/items')
   fetchAllItems(@Query() params: PaginationParams) {
     return this.stockService.fetchAllItems(params);
+  }
+
+  @Get('/items/:id')
+  findItemById(@Param() id: string) {
+    return this.stockService.findItemById(id);
   }
 
   @Post('/items')
