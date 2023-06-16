@@ -1,8 +1,19 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
-import { UserNotFoundError } from '@/domain/errors/user-not-found';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
+import { User } from '../entity/user';
+import { InvalidStatusRequestError } from './errors/invalid-status-request-error';
+import { StatusChangeNotAllowedError } from './errors/status-change-not-allowed-error';
+import { UserNotFoundError } from './errors/user-not-found';
+
+interface UpdateStatusRequest {
+  username: string;
+  status: string;
+}
+
+interface UpdateStatusResponse {
+  user: User;
+}
 
 export class UpdateUserStatusUseCase {
   constructor(
@@ -14,21 +25,20 @@ export class UpdateUserStatusUseCase {
   async execute({
     status,
     username,
-  }: UpdateStatusInput): Promise<UpdateStatusOutput> {
+  }: UpdateStatusRequest): Promise<UpdateStatusResponse> {
     const user = await this.userRepository.findByUserName(username);
 
     if (!user) {
       throw new UserNotFoundError();
     }
 
+    // disabled
     if (status === 'disabled') {
       const { equipments } =
         await this.userAssignmentsRepository.findByUserName(user.user_name);
 
       if (equipments.length > 0) {
-        throw new Error(
-          'User cannot be disabled, please remove user assignments',
-        );
+        throw new StatusChangeNotAllowedError();
       }
       user.demission_date = new Date();
       user.status = status;
@@ -36,6 +46,7 @@ export class UpdateUserStatusUseCase {
       await this.userRepository.save(user);
     }
 
+    // pendency
     if (status === 'pendency') {
       user.status = status;
 
@@ -47,33 +58,38 @@ export class UpdateUserStatusUseCase {
           equipment.status = 'pendency';
           await this.equipmentsRepository.save(equipment);
         });
-
         await Promise.all(updateEquipmentsStatus);
       }
+
       await this.userRepository.save(user);
 
-      return {};
+      return { user };
     }
 
+    // vacation
     if (status === 'vacation') {
       user.status = status;
       await this.userRepository.save(user);
-      return {};
+      return { user };
     }
 
+    // active
     if (status === 'active') {
+      if (user.status === 'disable') {
+        user.admission_date = new Date();
+        user.demission_date = null;
+        user.status = status;
+
+        await this.userRepository.save(user);
+
+        return { user };
+      }
+
       user.status = status;
-      await this.userRepository.save(user);
-      return {};
+
+      return { user };
     }
 
-    throw new Error('Invalid Status');
+    throw new InvalidStatusRequestError();
   }
 }
-
-type UpdateStatusInput = {
-  username: string;
-  status: string;
-};
-
-type UpdateStatusOutput = {};
