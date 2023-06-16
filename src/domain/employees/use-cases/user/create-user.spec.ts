@@ -66,4 +66,6 @@ describe('Create User Use Case', () => {
       }),
     ).rejects.toBeInstanceOf(UserNameAlreadyExistsError);
   });
+
+  /* TODO: it('Should not be able create User with direct boss not registered', async () => {}); */
 });
