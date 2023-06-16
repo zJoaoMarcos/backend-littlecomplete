@@ -2,7 +2,7 @@ import { Entity } from '@/core/entities/entity';
 import { User } from '@/domain/employees/entity/user';
 import { Equipment } from './equipment';
 
-interface UserAssignmentsProps {
+export interface UserAssignmentsProps {
   user: User;
   equipment: Equipment;
 }
