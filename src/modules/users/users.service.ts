@@ -1,9 +1,9 @@
-import { CreateUserUseCase } from '@/domain/employees/use-cases/user/create-user';
-import { EditUserUseCase } from '@/domain/employees/use-cases/user/edit-user';
-import { FetchAllUsersUseCase } from '@/domain/employees/use-cases/user/fetch-all-users';
-import { FetchByDepartmentIdUseCase } from '@/domain/employees/use-cases/user/fetch-by-department-id';
-import { FindUserByUserNameUseCase } from '@/domain/employees/use-cases/user/find-user-by-user-name';
-import { UpdateUserStatusUseCase } from '@/domain/employees/use-cases/user/update-user-status';
+import { CreateUserUseCase } from '@/domain/employees/use-cases/create-user';
+import { EditUserUseCase } from '@/domain/employees/use-cases/edit-user';
+import { FetchAllUsersUseCase } from '@/domain/employees/use-cases/fetch-all-users';
+import { FetchByDepartmentIdUseCase } from '@/domain/employees/use-cases/fetch-by-department-id';
+import { FindUserByUserNameUseCase } from '@/domain/employees/use-cases/find-user-by-user-name';
+import { UpdateUserStatusUseCase } from '@/domain/employees/use-cases/update-user-status';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
@@ -66,7 +66,9 @@ export class UsersService {
 
   async findByUserName(userName: string) {
     try {
-      const { user, equipments } = await this.findByIdUseCase.execute(userName);
+      const { user, equipments } = await this.findByIdUseCase.execute({
+        userName,
+      });
 
       return {
         user: user.props,

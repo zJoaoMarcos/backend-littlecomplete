@@ -1,5 +1,5 @@
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
-import { DepartmentNotFoundError } from '@/domain/errors/department-not-found';
+import { DepartmentNotFoundError } from './errors/department-not-found-error';
 
 export class FindDepartmentByIdUseCase {
   constructor(private departmentsRepository: IDepartmentRepository) {}

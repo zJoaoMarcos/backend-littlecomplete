@@ -1,9 +1,11 @@
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
-import { CreateDepartmentUseCase } from '@/domain/employees/use-cases/department/create-department';
-import { EditDepartmentUseCase } from '@/domain/employees/use-cases/department/edit-department';
-import { FetchAllDepartmentsUseCase } from '@/domain/employees/use-cases/department/fetch-all-departments';
-import { FindDepartmentByIdUseCase } from '@/domain/employees/use-cases/department/find-department-by-id';
-import { FindDepartmentByNameUseCase } from '@/domain/employees/use-cases/department/find-department-by-name';
+
+import { IUserRepository } from '@/domain/employees/repository/user.repository';
+import { CreateDepartmentUseCase } from '@/domain/employees/use-cases/create-department';
+import { EditDepartmentUseCase } from '@/domain/employees/use-cases/edit-department';
+import { FetchAllDepartmentsUseCase } from '@/domain/employees/use-cases/fetch-all-departments';
+import { FindDepartmentByIdUseCase } from '@/domain/employees/use-cases/find-department-by-id';
+import { FindDepartmentByNameUseCase } from '@/domain/employees/use-cases/find-department-by-name';
 import { InMemoryDepartmentRepository } from '@/infra/repository/in-memory/in-memory-department-repository';
 import { DepartmentsSchema } from '@/infra/repository/typeorm/entities/departments.schema';
 import { TypeOrmDepartmentRepository } from '@/infra/repository/typeorm/typeorm-department-repository';
@@ -33,8 +35,11 @@ import { DepartmentsService } from './departments.service';
     },
     {
       provide: CreateDepartmentUseCase,
-      useFactory: (departmentRepo: IDepartmentRepository) => {
-        return new CreateDepartmentUseCase(departmentRepo);
+      useFactory: (
+        departmentRepo: IDepartmentRepository,
+        userRepo: IUserRepository,
+      ) => {
+        return new CreateDepartmentUseCase(departmentRepo, userRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },
@@ -61,8 +66,11 @@ import { DepartmentsService } from './departments.service';
     },
     {
       provide: EditDepartmentUseCase,
-      useFactory: (departmentRepo: IDepartmentRepository) => {
-        return new EditDepartmentUseCase(departmentRepo);
+      useFactory: (
+        departmentRepo: IDepartmentRepository,
+        userRepo: IUserRepository,
+      ) => {
+        return new EditDepartmentUseCase(departmentRepo, userRepo);
       },
       inject: [TypeOrmDepartmentRepository],
     },

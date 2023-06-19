@@ -1,7 +1,7 @@
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
-import { DepartmentNotFoundError } from '@/domain/errors/department-not-found';
-import { UserNotFoundError } from '@/domain/errors/user-not-found';
+import { DepartmentNotFoundError } from './errors/department-not-found-error';
+import { UserNotFoundError } from './errors/user-not-found';
 
 export class FetchByDepartmentIdUseCase {
   constructor(

@@ -1,7 +1,11 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { EquipmentNotFoundError } from '@/domain/errors/equipment-not-found-error';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
+import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
+
+interface RemoveEquipmentAssignmentRequest {
+  equipmentId: string;
+}
+type RemoveEquipmentAssignmentResponse = void;
 
 export class RemoveEquipmentAssignmentUseCase {
   constructor(
@@ -9,7 +13,9 @@ export class RemoveEquipmentAssignmentUseCase {
     private equipmentRepository: IEquipmentRepository,
   ) {}
 
-  async execute({ equipmentId }: Request): Promise<Response> {
+  async execute({
+    equipmentId,
+  }: RemoveEquipmentAssignmentRequest): Promise<RemoveEquipmentAssignmentResponse> {
     const equipment = await this.equipmentRepository.findById(equipmentId);
 
     if (!equipment) {
@@ -22,12 +28,6 @@ export class RemoveEquipmentAssignmentUseCase {
 
     await this.equipmentRepository.save(equipment);
 
-    return {};
+    return;
   }
 }
-
-type Request = {
-  equipmentId: string;
-};
-
-type Response = {};

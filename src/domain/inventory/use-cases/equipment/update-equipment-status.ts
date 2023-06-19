@@ -1,5 +1,5 @@
-import { EquipmentNotFoundError } from '@/domain/errors/equipment-not-found-error';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
+import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
 export class UpdateEquipmentsStatusUseCase {
   constructor(private equipmentRepository: IEquipmentRepository) {}

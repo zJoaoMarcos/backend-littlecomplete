@@ -1,7 +1,7 @@
-import { CreateDepartmentUseCase } from '@/domain/employees/use-cases/department/create-department';
-import { EditDepartmentUseCase } from '@/domain/employees/use-cases/department/edit-department';
-import { FetchAllDepartmentsUseCase } from '@/domain/employees/use-cases/department/fetch-all-departments';
-import { FindDepartmentByIdUseCase } from '@/domain/employees/use-cases/department/find-department-by-id';
+import { CreateDepartmentUseCase } from '@/domain/employees/use-cases/create-department';
+import { EditDepartmentUseCase } from '@/domain/employees/use-cases/edit-department';
+import { FetchAllDepartmentsUseCase } from '@/domain/employees/use-cases/fetch-all-departments';
+import { FindDepartmentByIdUseCase } from '@/domain/employees/use-cases/find-department-by-id';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
@@ -22,7 +22,10 @@ export class DepartmentsService {
 
   async create(createDepartmentDto: CreateDepartmentDto) {
     try {
-      return this.createUseCase.execute(createDepartmentDto);
+      const { department } = await this.createUseCase.execute(
+        createDepartmentDto,
+      );
+      return department.props;
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -30,9 +33,9 @@ export class DepartmentsService {
 
   async findAll(params: FindManyParamsDto) {
     try {
-      const { departments, totalCount } = await this.findAllUseCase.execute(
+      const { departments, totalCount } = await this.findAllUseCase.execute({
         params,
-      );
+      });
       return {
         totalCount,
         departments: departments.map((department) => {
@@ -57,10 +60,12 @@ export class DepartmentsService {
 
   async update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
     try {
-      return this.updateCostCenterUseCase.execute({
+      const { department } = await this.updateCostCenterUseCase.execute({
         id,
         ...updateDepartmentDto,
       });
+
+      return department.props;
     } catch (err) {
       throw new ConflictException(err.message);
     }

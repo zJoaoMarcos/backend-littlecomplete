@@ -22,7 +22,11 @@ export class UserAssignmentsService {
 
   async create(createUserAssignmentDto: CreateUserAssignmentDto) {
     try {
-      return this.SaveUserAssignmentUseCase.execute(createUserAssignmentDto);
+      const { userAssignments } = await this.SaveUserAssignmentUseCase.execute(
+        createUserAssignmentDto,
+      );
+
+      return userAssignments.props;
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -30,7 +34,7 @@ export class UserAssignmentsService {
 
   async findByEquipmentId(id: string) {
     try {
-      const { user } = await this.FindByEquipmentIdUseCase.execute(id);
+      const { user } = await this.FindByEquipmentIdUseCase.execute({ id });
 
       return {
         user: user.props,
@@ -42,7 +46,9 @@ export class UserAssignmentsService {
 
   async findByUserName(id: string) {
     try {
-      const { equipments } = await this.FindByUserNameUseCase.execute(id);
+      const { equipments } = await this.FindByUserNameUseCase.execute({
+        userName: id,
+      });
 
       return {
         equipments: equipments.map((equipment) => {
