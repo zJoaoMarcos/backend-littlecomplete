@@ -1,6 +1,6 @@
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
-import { Equipment } from '../../entity/equipment';
-import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
+import { Equipment } from '../entity/equipment';
+import { EquipmentNotFoundError } from './errors/equipment-not-found-error';
 
 interface FindEquipmentByIdRequest {
   id: string;

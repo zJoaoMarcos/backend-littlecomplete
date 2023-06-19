@@ -2,9 +2,9 @@ import { makeCreateUser } from '@/domain/employees/use-cases/factories/make-crea
 import { InMemoryEquipmentRepository } from '@/infra/repository/in-memory/in-memory-equipment-repository';
 import { InMemoryUserAssignmentsRepository } from '@/infra/repository/in-memory/in-memory-user-assigments-repository';
 import { InMemoryUserRepository } from '@/infra/repository/in-memory/in-memory-user-repository';
-import { AssignmentNotAllowedError } from '../errors/assignment-not-allowed-error';
-import { EquipmentIsUnavailableError } from '../errors/equipment-is-unavailable-error';
-import { makeCreateEquipment } from '../factories/make-create-equipment';
+import { AssignmentNotAllowedError } from './errors/assignment-not-allowed-error';
+import { EquipmentIsUnavailableError } from './errors/equipment-is-unavailable-error';
+import { makeCreateEquipment } from './factories/make-create-equipment';
 import { SaveUserAssignmentsUseCase } from './save-user-assignments';
 
 let equipmentsPerUserRepository: InMemoryUserAssignmentsRepository;

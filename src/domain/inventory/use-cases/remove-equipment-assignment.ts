@@ -1,6 +1,6 @@
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
-import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
+import { EquipmentNotFoundError } from './errors/equipment-not-found-error';
 
 interface RemoveEquipmentAssignmentRequest {
   equipmentId: string;

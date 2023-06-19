@@ -3,9 +3,9 @@ import { makeCreateDepartment } from '@/domain/employees/use-cases/factories/mak
 import { InMemoryDepartmentRepository } from '@/infra/repository/in-memory/in-memory-department-repository';
 import { InMemoryEquipmentRepository } from '@/infra/repository/in-memory/in-memory-equipment-repository';
 import { faker } from '@faker-js/faker';
-import { EquipmentAlreadyExistsError } from '../errors/equipment-already-exits-error';
-import { makeCreateEquipment } from '../factories/make-create-equipment';
 import { CreateEquipmentUseCase } from './create-equipment';
+import { EquipmentAlreadyExistsError } from './errors/equipment-already-exits-error';
+import { makeCreateEquipment } from './factories/make-create-equipment';
 
 let equipmentsRepository: InMemoryEquipmentRepository;
 let departmentsRepository: InMemoryDepartmentRepository;
@@ -84,11 +84,9 @@ describe('Create Equipment Use Case', () => {
   });
 
   it('Should not be able create Equipment with id twice', async () => {
-    await departmentsRepository.departments.push(
-      makeCreateDepartment({ id: 2 }),
-    );
+    departmentsRepository.departments.push(makeCreateDepartment({ id: 2 }));
 
-    await equipmentsRepository.equipments.push(
+    equipmentsRepository.equipments.push(
       makeCreateEquipment({
         id: 'id-twice',
       }),

@@ -2,7 +2,7 @@
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { DepartmentNotFoundError } from '@/domain/employees/use-cases/errors/department-not-found-error';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
-import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
+import { EquipmentNotFoundError } from './errors/equipment-not-found-error';
 
 export class EditEquipmentUseCase {
   constructor(

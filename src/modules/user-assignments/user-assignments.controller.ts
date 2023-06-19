@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserAssignmentDto } from './dto/create-user-assignment.dto';
 import { UserAssignmentsService } from './user-assignments.service';
@@ -13,16 +13,6 @@ export class UserAssignmentsController {
   @Post()
   create(@Body() createUserAssignmentDto: CreateUserAssignmentDto) {
     return this.userAssignmentsService.create(createUserAssignmentDto);
-  }
-
-  @Get('equipment/:id')
-  findByEquipmentId(@Param('id') id: string) {
-    return this.userAssignmentsService.findByEquipmentId(id);
-  }
-
-  @Get('user/:id')
-  findByUserName(@Param('id') id: string) {
-    return this.userAssignmentsService.findByUserName(id);
   }
 
   @Delete(':id')

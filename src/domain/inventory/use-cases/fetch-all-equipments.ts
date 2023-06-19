@@ -1,6 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
-import { Equipment } from '../../entity/equipment';
+import { Equipment } from '../entity/equipment';
 
 type FetchAllEquipmentsRequest = {
   params: PaginationParams;

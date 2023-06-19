@@ -1,11 +1,9 @@
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
-import { FindAssignmentByEquipmentIdUseCase } from '@/domain/inventory/use-cases/user-assignments/find-assignment-by-equipment-id';
-import { FindAssignmentsByUserNameUseCase } from '@/domain/inventory/use-cases/user-assignments/find-assignments-by-user-name';
-import { RemoveEquipmentAssignmentUseCase } from '@/domain/inventory/use-cases/user-assignments/remove-equipment-assignment';
-import { RemoveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/user-assignments/remove-user-assignments';
-import { SaveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/user-assignments/save-user-assignments';
+import { RemoveEquipmentAssignmentUseCase } from '@/domain/inventory/use-cases/remove-equipment-assignment';
+import { RemoveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/remove-user-assignments';
+import { SaveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/save-user-assignments';
 import { EquipmentsUserSchema } from '@/infra/repository/typeorm/entities/equipments-user.schema';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
@@ -73,20 +71,7 @@ import { UserAssignmentsService } from './user-assignments.service';
         TypeOrmEquipmentRepository,
       ],
     },
-    {
-      provide: FindAssignmentByEquipmentIdUseCase,
-      useFactory: (userAssignmentsRepo: IUserAssignmentsRepository) => {
-        return new FindAssignmentByEquipmentIdUseCase(userAssignmentsRepo);
-      },
-      inject: [TypeOrmUserAssignmentsRepository],
-    },
-    {
-      provide: FindAssignmentsByUserNameUseCase,
-      useFactory: (userAssignmentsRepo: IUserAssignmentsRepository) => {
-        return new FindAssignmentsByUserNameUseCase(userAssignmentsRepo);
-      },
-      inject: [TypeOrmUserAssignmentsRepository],
-    },
+
     {
       provide: RemoveEquipmentAssignmentUseCase,
       useFactory: (

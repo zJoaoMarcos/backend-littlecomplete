@@ -1,8 +1,8 @@
-import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/create-equipment';
-import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/edit-equipment';
-import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/equipment/fetch-all-equipments';
-import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/equipment/find-equipment-by-id';
-import { UpdateEquipmentsStatusUseCase } from '@/domain/inventory/use-cases/equipment/update-equipment-status';
+import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/create-equipment';
+import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/edit-equipment';
+import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/fetch-all-equipments';
+import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/find-equipment-by-id';
+import { UpdateEquipmentsStatusUseCase } from '@/domain/inventory/use-cases/update-equipment-status';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
