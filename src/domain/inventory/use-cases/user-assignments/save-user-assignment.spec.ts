@@ -1,75 +1,70 @@
-import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
-import { InMemoryEquipmentRepository } from '../../../infra/repository/in-memory/in-memory-equipment-repository';
-import { InMemoryUserAssignmentsRepository } from '../../../infra/repository/in-memory/in-memory-user-assigments-repository';
-import { InMemoryUserRepository } from '../../../infra/repository/in-memory/in-memory-user-repository';
-import { CreateDepartmentUseCase } from '../department/create-department';
-import { CreateEquipmentUseCase } from '../equipment/create-equipment';
-import { CreateUserUseCase } from '../user/create-user';
+import { makeCreateUser } from '@/domain/employees/use-cases/factories/make-create-user';
+import { InMemoryEquipmentRepository } from '@/infra/repository/in-memory/in-memory-equipment-repository';
+import { InMemoryUserAssignmentsRepository } from '@/infra/repository/in-memory/in-memory-user-assigments-repository';
+import { InMemoryUserRepository } from '@/infra/repository/in-memory/in-memory-user-repository';
+import { AssignmentNotAllowedError } from '../errors/assignment-not-allowed-error';
+import { EquipmentIsUnavailableError } from '../errors/equipment-is-unavailable-error';
+import { makeCreateEquipment } from '../factories/make-create-equipment';
 import { SaveUserAssignmentsUseCase } from './save-user-assignments';
 
 let equipmentsPerUserRepository: InMemoryUserAssignmentsRepository;
-let departmentsRepository: InMemoryDepartmentRepository;
 let equipmentsRepository: InMemoryEquipmentRepository;
-let userRepository: InMemoryUserRepository;
-let createUser: CreateUserUseCase;
-let createDepartment: CreateDepartmentUseCase;
-let createEquipment: CreateEquipmentUseCase;
+let usersRepository: InMemoryUserRepository;
 let sut: SaveUserAssignmentsUseCase;
 
 describe('Save User Assignment Use Case', () => {
   beforeEach(() => {
     equipmentsPerUserRepository = new InMemoryUserAssignmentsRepository();
     equipmentsRepository = new InMemoryEquipmentRepository();
-    departmentsRepository = new InMemoryDepartmentRepository();
-    userRepository = new InMemoryUserRepository();
-    createDepartment = new CreateDepartmentUseCase(departmentsRepository);
-    createUser = new CreateUserUseCase(userRepository, departmentsRepository);
-    createEquipment = new CreateEquipmentUseCase(
-      equipmentsRepository,
-      departmentsRepository,
-    );
+    usersRepository = new InMemoryUserRepository();
     sut = new SaveUserAssignmentsUseCase(
       equipmentsPerUserRepository,
-      userRepository,
+      usersRepository,
       equipmentsRepository,
     );
   });
 
-  it('Should be able to Save Equipment Per Use', async () => {
-    await createDepartment.execute({
-      name: 'IOT',
-      cost_center: 2420424,
-      is_board: false,
-      board: 'Tecnologia da Informação',
+  it('should be able to Save Equipment Per Use', async () => {
+    usersRepository.users.push(makeCreateUser({ user_name: 'jhon.doe' }));
+    equipmentsRepository.equipments.push(
+      makeCreateEquipment({ id: 'generic-equipment', status: 'available' }),
+    );
+
+    const { userAssignments } = await sut.execute({
+      user_id: 'jhon.doe',
+      equipment_id: 'generic-equipment',
     });
 
-    const { user } = await createUser.execute({
-      user_name: 'jhon_doe',
-      complete_name: 'Jhon Doe',
-      title: 'CTO',
-      telephone: 5432,
-      department_id: 'IOT',
-      smtp: 'jhon_doe@email.com',
-      direct_boss: 'Uncle Bob',
-      admission_date: '08/03/2019',
-      demission_date: null,
-      status: 'active',
-    });
+    await expect(userAssignments.user.user_name).toEqual('jhon.doe');
+  });
 
-    const { equipment } = await createEquipment.execute({
-      id: '01-005-00434',
-      brand: 'Dell',
-      model: 'T31P',
-      department: 'IOT',
-      status: 'activate',
-      ram: '16GB',
-      slots: 2,
-      storage0_syze: 240,
-      storage0_type: 'SSD',
-    });
+  it('should not able assign equipment with status different from available', async () => {
+    usersRepository.users.push(makeCreateUser({ user_name: 'jhon.doe' }));
+    equipmentsRepository.equipments.push(
+      makeCreateEquipment({ id: 'generic-equipment', status: 'pendency' }),
+    );
 
-    const { userAssignments } = await sut.execute(user.user_name, equipment.id);
+    await expect(() =>
+      sut.execute({
+        user_id: 'jhon.doe',
+        equipment_id: 'generic-equipment',
+      }),
+    ).rejects.toBeInstanceOf(EquipmentIsUnavailableError);
+  });
 
-    await expect(userAssignments.user.user_name).toEqual('jhon_doe');
+  it('should not be able assign equiopment to user with status equal pendency or disabled', async () => {
+    usersRepository.users.push(
+      makeCreateUser({ user_name: 'jhon.doe', status: 'disabled' }),
+    );
+    equipmentsRepository.equipments.push(
+      makeCreateEquipment({ id: 'generic-equipment', status: 'available' }),
+    );
+
+    await expect(() =>
+      sut.execute({
+        user_id: 'jhon.doe',
+        equipment_id: 'generic-equipment',
+      }),
+    ).rejects.toBeInstanceOf(AssignmentNotAllowedError);
   });
 });

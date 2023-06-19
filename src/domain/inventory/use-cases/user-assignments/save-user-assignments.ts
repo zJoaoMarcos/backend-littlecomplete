@@ -1,11 +1,20 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
-import { EquipmentIsUnavailableError } from '@/domain/errors/equipment-is-unavailable-error';
+import { UserNotFoundError } from '@/domain/employees/use-cases/errors/user-not-found';
 import { EquipmentNotFoundError } from '@/domain/errors/equipment-not-found-error';
-import { UserNotFoundError } from '@/domain/errors/user-not-found';
 import { UserAssignments } from '@/domain/inventory/entity/user-assignments';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
+import { EquipmentIsUnavailableError } from '@/domain/inventory/use-cases/errors/equipment-is-unavailable-error';
+import { AssignmentNotAllowedError } from '../errors/assignment-not-allowed-error';
+
+interface SaveUserAssignmentRequest {
+  user_id: string;
+  equipment_id: string;
+}
+
+interface SaveUserAssignmentsResponse {
+  userAssignments: UserAssignments;
+}
 
 export class SaveUserAssignmentsUseCase {
   constructor(
@@ -17,15 +26,18 @@ export class SaveUserAssignmentsUseCase {
   async execute({
     user_id,
     equipment_id,
-  }: SaveUserAssignmentInput): Promise<SaveUserAssignmentsOutput> {
+  }: SaveUserAssignmentRequest): Promise<SaveUserAssignmentsResponse> {
     const user = await this.userRepository.findByUserName(user_id);
 
     if (!user) {
       throw new UserNotFoundError();
     }
 
-    if (user.status.trim() === ('pendency' || 'disabled')) {
-      throw new Error('User is in shutdown or has a pendency');
+    const notAllowedStatus = ['pendency', 'disabled'];
+    const userStatusIsNotAllowed = notAllowedStatus.includes(user.status);
+
+    if (userStatusIsNotAllowed) {
+      throw new AssignmentNotAllowedError();
     }
 
     const equipment = await this.equipmentRepository.findById(equipment_id);
@@ -55,13 +67,8 @@ export class SaveUserAssignmentsUseCase {
 
     await this.equipmentRepository.save(equipment);
 
-    return {};
+    return {
+      userAssignments,
+    };
   }
 }
-
-type SaveUserAssignmentInput = {
-  user_id: string;
-  equipment_id: string;
-};
-
-type SaveUserAssignmentsOutput = {};
