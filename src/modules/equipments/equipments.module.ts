@@ -1,3 +1,7 @@
+import { Module } from '@nestjs/common';
+import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
@@ -13,13 +17,11 @@ import { UpdateEquipmentsStatusUseCase } from '@/domain/inventory/use-cases/upda
 import { DepartmentsSchema } from '@/infra/repository/typeorm/entities/departments.schema';
 import { EquipmentsUserSchema } from '@/infra/repository/typeorm/entities/equipments-user.schema';
 import { EquipmentsSchema } from '@/infra/repository/typeorm/entities/equipments.schema';
+import { UsersSchema } from '@/infra/repository/typeorm/entities/users.schema';
 import { TypeOrmDepartmentRepository } from '@/infra/repository/typeorm/typeorm-department-repository';
 import { TypeOrmEquipmentRepository } from '@/infra/repository/typeorm/typeorm-equipment-repository';
 import { TypeOrmUserAssignmentsRepository } from '@/infra/repository/typeorm/typeorm-user-assignments-repository';
 import { TypeOrmUserRepository } from '@/infra/repository/typeorm/typeorm-user-repository';
-import { Module } from '@nestjs/common';
-import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import { EquipmentsAssignmentsService } from './equipments-assignments.service';
 import { EquipmentsController } from './equipments.controller';
 import { EquipmentsService } from './equipments.service';
@@ -56,6 +58,13 @@ import { EquipmentsService } from './equipments.service';
         return new TypeOrmUserAssignmentsRepository(
           dataSource.getRepository(EquipmentsUserSchema),
         );
+      },
+      inject: [getDataSourceToken()],
+    },
+    {
+      provide: TypeOrmUserRepository,
+      useFactory: (dataSource: DataSource) => {
+        return new TypeOrmUserRepository(dataSource.getRepository(UsersSchema));
       },
       inject: [getDataSourceToken()],
     },

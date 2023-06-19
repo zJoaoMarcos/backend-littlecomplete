@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/pagination-params';
 import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/create-equipment';
 import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/edit-equipment';
 import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/fetch-all-equipments';
@@ -8,7 +9,6 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 
@@ -30,7 +30,7 @@ export class EquipmentsService {
     }
   }
 
-  async findAll(params: FindManyParamsDto) {
+  async findAll(params: PaginationParams) {
     try {
       const { equipments, totalCount } = await this.findAllUseCase.execute({
         params,

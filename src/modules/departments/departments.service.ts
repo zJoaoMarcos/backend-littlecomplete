@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/pagination-params';
 import { CreateDepartmentUseCase } from '@/domain/employees/use-cases/create-department';
 import { EditDepartmentUseCase } from '@/domain/employees/use-cases/edit-department';
 import { FetchAllDepartmentsUseCase } from '@/domain/employees/use-cases/fetch-all-departments';
@@ -7,7 +8,6 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 
@@ -31,7 +31,7 @@ export class DepartmentsService {
     }
   }
 
-  async findAll(params: FindManyParamsDto) {
+  async findAll(params: PaginationParams) {
     try {
       const { departments, totalCount } = await this.findAllUseCase.execute({
         params,

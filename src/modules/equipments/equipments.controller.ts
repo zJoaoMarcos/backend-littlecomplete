@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { FindManyParamsDto } from '../shared/find-many-params.dto';
+import { PaginationParams } from '@/core/repositories/pagination-params';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { CreateUserAssignmentDto } from './dto/create-user-assignment.dto';
 import { UpdateEquipmentStatusDto } from './dto/update-equipment-status.dto';
@@ -32,7 +32,7 @@ export class EquipmentsController {
   }
 
   @Get()
-  findAll(@Query() params: FindManyParamsDto) {
+  findAll(@Query() params: PaginationParams) {
     return this.equipmentsService.findAll(params);
   }
 

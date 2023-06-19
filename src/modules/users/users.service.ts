@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/pagination-params';
 import { CreateUserUseCase } from '@/domain/employees/use-cases/create-user';
 import { EditUserUseCase } from '@/domain/employees/use-cases/edit-user';
 import { FetchAllUsersUseCase } from '@/domain/employees/use-cases/fetch-all-users';
@@ -9,7 +10,6 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -48,7 +48,7 @@ export class UsersService {
     }
   }
 
-  async findAll(params: FindManyParamsDto) {
+  async findAll(params: PaginationParams) {
     try {
       const { users, totalCount } = await this.findAllUseCase.execute({
         params,

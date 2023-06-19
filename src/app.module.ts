@@ -11,7 +11,6 @@ import { UsersSchema } from './infra/repository/typeorm/entities/users.schema';
 import { DepartmentsModule } from './modules/departments/departments.module';
 import { EquipmentsModule } from './modules/equipments/equipments.module';
 import { StockModule } from './modules/stock/stock.module';
-import { UserAssignmentsModule } from './modules/user-assignments/user-assignments.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -38,7 +37,6 @@ import { UsersModule } from './modules/users/users.module';
     DepartmentsModule,
     EquipmentsModule,
     UsersModule,
-    UserAssignmentsModule,
   ],
   controllers: [],
   providers: [],
