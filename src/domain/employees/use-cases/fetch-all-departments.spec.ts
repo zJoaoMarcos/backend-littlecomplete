@@ -1,37 +1,30 @@
 import { InMemoryDepartmentRepository } from '../../../infra/repository/in-memory/in-memory-department-repository';
+import { Department } from '../entity/department';
 import { CreateDepartmentUseCase } from './create-department';
-import { FindAllDepartmentsUseCase } from './find-all-departments';
+import { makeCreateDepartment } from './factories/make-create-department';
+import { FetchAllDepartmentsUseCase } from './fetch-all-departments';
 
 let departmentsRepository: InMemoryDepartmentRepository;
 let createDepartment: CreateDepartmentUseCase;
-let sut: FindAllDepartmentsUseCase;
+let sut: FetchAllDepartmentsUseCase;
 
 describe('Find All Departments Use Case', () => {
   beforeEach(() => {
     departmentsRepository = new InMemoryDepartmentRepository();
-    createDepartment = new CreateDepartmentUseCase(departmentsRepository);
-    sut = new FindAllDepartmentsUseCase(departmentsRepository);
+    sut = new FetchAllDepartmentsUseCase(departmentsRepository);
   });
   it('should be able to find all departments', async () => {
-    await createDepartment.execute({
-      name: 'IOT',
-      cost_center: 2420424,
-      is_board: false,
-      board: 'Tecnologia da Informação',
-    });
-    await createDepartment.execute({
-      name: 'SI',
-      cost_center: 2420,
-      is_board: false,
-      board: 'Tecnologia da Informação',
-    });
-    await createDepartment.execute({
-      name: 'Tecnologia da Informação',
-      cost_center: 2420424,
-      is_board: true,
-      board: 'Tecnologia da Informação',
+    departmentsRepository.departments.push(
+      makeCreateDepartment(),
+      makeCreateDepartment(),
+      makeCreateDepartment(),
+    );
+
+    const { departments, totalCount } = await sut.execute({
+      params: {},
     });
 
-    expect(() => sut.execute()).resolves;
+    expect(departments[0]).toBeInstanceOf(Department);
+    expect(totalCount).toEqual(3);
   });
 });
