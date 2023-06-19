@@ -2,19 +2,24 @@ import { IUserRepository } from '@/domain/employees/repository/user.repository';
 import { UserNotFoundError } from '@/domain/employees/use-cases/errors/user-not-found';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
+import { Equipment } from '../entity/equipment';
 
-interface RemoveUserAssignmentsUseCaseRequest {
+interface RemoveAllUserAssignmentsRequest {
   username: string;
 }
 
-export class RemoveUserAssignmentsUseCase {
+interface RemoveAllUserAssignmentsResponse {
+  equipments: Equipment[];
+}
+
+export class RemoveAllUserAssignmentsUseCase {
   constructor(
     private userAssignmentRepository: IUserAssignmentsRepository,
     private userRepository: IUserRepository,
     private equipmentsRepository: IEquipmentRepository,
   ) {}
 
-  async execute({ username }: RemoveUserAssignmentsUseCaseRequest) {
+  async execute({ username }: RemoveAllUserAssignmentsRequest) {
     const user = await this.userRepository.findByUserName(username);
     if (!user) {
       throw new UserNotFoundError();
@@ -35,6 +40,11 @@ export class RemoveUserAssignmentsUseCase {
 
     await this.userAssignmentRepository.deleteManyByUserName(user.user_name);
 
-    return {};
+    const { equipments: userEquipments } =
+      await this.userAssignmentRepository.findByUserName(username);
+
+    return {
+      userEquipments,
+    };
   }
 }
