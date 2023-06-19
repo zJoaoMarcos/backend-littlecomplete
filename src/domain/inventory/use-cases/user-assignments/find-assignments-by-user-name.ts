@@ -1,10 +1,21 @@
-import { EquipmentNotFoundError } from '@/domain/errors/equipment-not-found-error';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
+import { Equipment } from '../../entity/equipment';
+import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
+
+interface FindAssignmentsByUserNameResponse {
+  equipments: Equipment[];
+}
+
+interface FindAssignmentsByUserNameRequest {
+  userName: string;
+}
 
 export class FindAssignmentsByUserNameUseCase {
   constructor(private userAssignmentsRepository: IUserAssignmentsRepository) {}
 
-  async execute(userName: string): Promise<FindAssignmentsByUserNameOutput> {
+  async execute({
+    userName,
+  }: FindAssignmentsByUserNameRequest): Promise<FindAssignmentsByUserNameResponse> {
     const { equipments } = await this.userAssignmentsRepository.findByUserName(
       userName,
     );
@@ -18,40 +29,3 @@ export class FindAssignmentsByUserNameUseCase {
     };
   }
 }
-
-type FindAssignmentsByUserNameOutput = {
-  equipments: {
-    props: {
-      id: string;
-      status: string;
-      currentUser: string | null;
-      patrimony: string | null;
-      type: string | null;
-      brand: string | null;
-      model: string | null;
-      serviceTag: string | null;
-      purchase: {
-        invoice: string | null;
-        supplier: string | null;
-        purchaseDate: Date | null;
-        warranty: string | null;
-      };
-      department: {
-        id: number | null;
-        name: string | null;
-      };
-      config: {
-        cpu: string | null;
-        ram: string | null;
-        video: string | null;
-        storage: {
-          slots: number | null;
-          storage0Type: string | null;
-          storage0Syze: number | null;
-          storage1Type: string | null;
-          storage1Syze: number | null;
-        };
-      };
-    };
-  }[];
-};
