@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -8,33 +9,39 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+
 import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
+import { CreateUserAssignmentDto } from './dto/create-user-assignment.dto';
 import { UpdateEquipmentStatusDto } from './dto/update-equipment-status.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
+import { EquipmentsAssignmentsService } from './equipments-assignments.service';
 import { EquipmentsService } from './equipments.service';
 
 @ApiTags('Inventory')
-@Controller('inventory')
+@Controller('equipments')
 export class EquipmentsController {
-  constructor(private readonly equipmentsService: EquipmentsService) {}
+  constructor(
+    private readonly equipmentsService: EquipmentsService,
+    private readonly equipmentAssignmentsService: EquipmentsAssignmentsService,
+  ) {}
 
-  @Post('equipment')
+  @Post()
   create(@Body() createEquipmentDto: CreateEquipmentDto) {
     return this.equipmentsService.create(createEquipmentDto);
   }
 
-  @Get('equipments')
+  @Get()
   findAll(@Query() params: FindManyParamsDto) {
     return this.equipmentsService.findAll(params);
   }
 
-  @Get('equipment/:id')
+  @Get(':id')
   findOne(@Param('id') id: string) {
     return this.equipmentsService.findById(id);
   }
 
-  @Patch('equipment/:id')
+  @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
@@ -42,9 +49,26 @@ export class EquipmentsController {
     return this.equipmentsService.update(id, updateEquipmentDto);
   }
 
-  @Patch('equipment/status/:id')
+  @Patch('status/:id')
   updateStatus(@Param('id') id: string, @Body() dto: UpdateEquipmentStatusDto) {
     const { status } = dto;
     return this.equipmentsService.updateStatus(id, status);
+  }
+
+  // assign equipments
+
+  @Post('/assign')
+  saveAssignment(@Body() createUserAssignmentDto: CreateUserAssignmentDto) {
+    return this.equipmentAssignmentsService.create(createUserAssignmentDto);
+  }
+
+  @Delete('assign/:id')
+  removeEquipmentAssignment(@Param('id') id: string) {
+    return this.equipmentAssignmentsService.removeEquipmentAssignment(id);
+  }
+
+  @Delete('all-assignments/:id')
+  removeAllEquipmentAssignments(@Param('id') id: string) {
+    return this.equipmentAssignmentsService.removeAllUserAssignments(id);
   }
 }

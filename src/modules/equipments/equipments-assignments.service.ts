@@ -9,7 +9,7 @@ import {
 import { CreateUserAssignmentDto } from './dto/create-user-assignment.dto';
 
 @Injectable()
-export class UserAssignmentsService {
+export class EquipmentsAssignmentsService {
   constructor(
     private SaveUserAssignmentUseCase: SaveUserAssignmentsUseCase,
     private removeEquipmentAssignmentUseCase: RemoveEquipmentAssignmentUseCase,
