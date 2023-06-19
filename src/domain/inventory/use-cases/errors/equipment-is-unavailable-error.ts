@@ -1,7 +1,5 @@
-import { HttpException } from '@nestjs/common';
-
-export class EquipmentIsUnavailableError extends HttpException {
+export class EquipmentIsUnavailableError extends Error {
   constructor() {
-    super('Equipment is unavailable', 404);
+    super('Equipment is unavailable');
   }
 }
