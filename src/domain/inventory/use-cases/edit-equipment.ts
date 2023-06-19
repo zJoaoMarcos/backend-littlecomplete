@@ -1,8 +1,35 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { DepartmentNotFoundError } from '@/domain/employees/use-cases/errors/department-not-found-error';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
+import { Equipment } from '../entity/equipment';
 import { EquipmentNotFoundError } from './errors/equipment-not-found-error';
+
+interface UpdateEquipmentRequest {
+  id: string;
+  type: string | null;
+  brand: string | null;
+  model: string | null;
+  patrimony: string | null;
+  supplier: string | null;
+  invoice: string | null;
+  warranty: string | null;
+  purchaseDate: Date | null;
+  departmentId: number;
+  status: string;
+  cpu: string | null;
+  ram: string | null;
+  slots: number | null;
+  storage0Type: string | null;
+  storage0Syze: number | null;
+  storage1Type: string | null;
+  storage1Syze: number | null;
+  video: string | null;
+  serviceTag: string | null;
+}
+
+interface UpdateUserStatusResponse {
+  equipment: Equipment;
+}
 
 export class EditEquipmentUseCase {
   constructor(
@@ -31,19 +58,23 @@ export class EditEquipmentUseCase {
     storage1Syze,
     video,
     serviceTag,
-  }: UpdateEquipmentInput): Promise<UpdateUserStatusOutput> {
+  }: UpdateEquipmentRequest): Promise<UpdateUserStatusResponse> {
     const equipment = await this.equipmentRepository.findById(id);
 
     if (!equipment) {
       throw new EquipmentNotFoundError();
     }
 
-    const departmentExists = await this.departmentRepository.findById(
-      departmentId,
-    );
+    if (departmentId !== equipment.departmentId) {
+      const departmentExists = await this.departmentRepository.findById(
+        departmentId,
+      );
 
-    if (!departmentExists) {
-      return new DepartmentNotFoundError();
+      if (!departmentExists) {
+        throw new DepartmentNotFoundError();
+      }
+
+      equipment.departmentId = departmentId;
     }
 
     equipment.brand = brand;
@@ -54,7 +85,6 @@ export class EditEquipmentUseCase {
     equipment.invoice = invoice;
     equipment.warranty = warranty;
     equipment.purchaseDate = purchaseDate;
-    equipment.departmentId = departmentId;
     equipment.status = status;
     equipment.cpu = cpu;
     equipment.ram = ram;
@@ -68,31 +98,8 @@ export class EditEquipmentUseCase {
 
     await this.equipmentRepository.save(equipment);
 
-    return {};
+    return {
+      equipment,
+    };
   }
 }
-
-type UpdateEquipmentInput = {
-  id: string;
-  type: string | null;
-  brand: string | null;
-  model: string | null;
-  patrimony: string | null;
-  supplier: string | null;
-  invoice: string | null;
-  warranty: string | null;
-  purchaseDate: Date | null;
-  departmentId: number;
-  status: string;
-  cpu: string | null;
-  ram: string | null;
-  slots: number | null;
-  storage0Type: string | null;
-  storage0Syze: number | null;
-  storage1Type: string | null;
-  storage1Syze: number | null;
-  video: string | null;
-  serviceTag: string | null;
-};
-
-type UpdateUserStatusOutput = {};
