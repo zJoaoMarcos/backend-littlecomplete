@@ -1,9 +1,9 @@
 import { DepartmentNotFoundError } from '@/domain/employees/use-cases/errors/department-not-found-error';
 import { makeCreateDepartment } from '@/domain/employees/use-cases/factories/make-create-department';
-import { EquipmentAlreadyExistsError } from '@/domain/errors/equipment-already-exits-error';
 import { InMemoryDepartmentRepository } from '@/infra/repository/in-memory/in-memory-department-repository';
 import { InMemoryEquipmentRepository } from '@/infra/repository/in-memory/in-memory-equipment-repository';
 import { faker } from '@faker-js/faker';
+import { EquipmentAlreadyExistsError } from '../errors/equipment-already-exits-error';
 import { makeCreateEquipment } from '../factories/make-create-equipment';
 import { CreateEquipmentUseCase } from './create-equipment';
 
