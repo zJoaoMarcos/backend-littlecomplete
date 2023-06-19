@@ -1,11 +1,11 @@
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
 import { UserNotFoundError } from '@/domain/employees/use-cases/errors/user-not-found';
-import { EquipmentNotFoundError } from '@/domain/errors/equipment-not-found-error';
 import { UserAssignments } from '@/domain/inventory/entity/user-assignments';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
 import { EquipmentIsUnavailableError } from '@/domain/inventory/use-cases/errors/equipment-is-unavailable-error';
 import { AssignmentNotAllowedError } from '../errors/assignment-not-allowed-error';
+import { EquipmentNotFoundError } from '../errors/equipment-not-found-error';
 
 interface SaveUserAssignmentRequest {
   user_id: string;
