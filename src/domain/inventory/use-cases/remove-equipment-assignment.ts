@@ -1,11 +1,14 @@
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
+import { Equipment } from '../entity/equipment';
 import { EquipmentNotFoundError } from './errors/equipment-not-found-error';
 
 interface RemoveEquipmentAssignmentRequest {
   equipmentId: string;
 }
-type RemoveEquipmentAssignmentResponse = void;
+interface RemoveEquipmentAssignmentResponse {
+  equipment: Equipment;
+}
 
 export class RemoveEquipmentAssignmentUseCase {
   constructor(
@@ -28,6 +31,6 @@ export class RemoveEquipmentAssignmentUseCase {
 
     await this.equipmentRepository.save(equipment);
 
-    return;
+    return { equipment };
   }
 }
