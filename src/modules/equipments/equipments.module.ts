@@ -10,10 +10,10 @@ import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/create-equi
 import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/edit-equipment';
 import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/fetch-all-equipments';
 import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/find-equipment-by-id';
+import { RemoveAllUserAssignmentsUseCase } from '@/domain/inventory/use-cases/remove-all-user-assignments';
 import { RemoveEquipmentAssignmentUseCase } from '@/domain/inventory/use-cases/remove-equipment-assignment';
-import { RemoveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/remove-user-assignments';
 import { SaveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/save-user-assignments';
-import { UpdateEquipmentsStatusUseCase } from '@/domain/inventory/use-cases/update-equipment-status';
+import { UpdateEquipmentStatusUseCase } from '@/domain/inventory/use-cases/update-equipment-status';
 import { DepartmentsSchema } from '@/infra/repository/typeorm/entities/departments.schema';
 import { EquipmentsUserSchema } from '@/infra/repository/typeorm/entities/equipments-user.schema';
 import { EquipmentsSchema } from '@/infra/repository/typeorm/entities/equipments.schema';
@@ -109,9 +109,9 @@ import { EquipmentsService } from './equipments.service';
     },
 
     {
-      provide: UpdateEquipmentsStatusUseCase,
+      provide: UpdateEquipmentStatusUseCase,
       useFactory: (equipmentRepo: IEquipmentRepository) => {
-        return new UpdateEquipmentsStatusUseCase(equipmentRepo);
+        return new UpdateEquipmentStatusUseCase(equipmentRepo);
       },
       inject: [TypeOrmEquipmentRepository],
     },
@@ -152,13 +152,13 @@ import { EquipmentsService } from './equipments.service';
     },
 
     {
-      provide: RemoveUserAssignmentsUseCase,
+      provide: RemoveAllUserAssignmentsUseCase,
       useFactory: (
         userAssignmentsRepo: IUserAssignmentsRepository,
         userRepo: IUserRepository,
         equipmentRepo: IEquipmentRepository,
       ) => {
-        return new RemoveUserAssignmentsUseCase(
+        return new RemoveAllUserAssignmentsUseCase(
           userAssignmentsRepo,
           userRepo,
           equipmentRepo,

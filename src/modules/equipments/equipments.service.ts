@@ -3,7 +3,7 @@ import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/create-equi
 import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/edit-equipment';
 import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/fetch-all-equipments';
 import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/find-equipment-by-id';
-import { UpdateEquipmentsStatusUseCase } from '@/domain/inventory/use-cases/update-equipment-status';
+import { UpdateEquipmentStatusUseCase } from '@/domain/inventory/use-cases/update-equipment-status';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
@@ -19,7 +19,7 @@ export class EquipmentsService {
     private findAllUseCase: FetchAllEquipmentsUseCase,
     private findByIdUseCase: FindEquipmentByIdUseCase,
     private updateDetailsUseCase: EditEquipmentUseCase,
-    private updateStatusUseCase: UpdateEquipmentsStatusUseCase,
+    private updateStatusUseCase: UpdateEquipmentStatusUseCase,
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto) {
@@ -57,10 +57,12 @@ export class EquipmentsService {
 
   async update(id: string, updateEquipmentDto: UpdateEquipmentDto) {
     try {
-      return this.updateDetailsUseCase.execute({
+      const { equipment } = await this.updateDetailsUseCase.execute({
         id,
         ...updateEquipmentDto,
       });
+
+      return equipment.props;
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -68,10 +70,12 @@ export class EquipmentsService {
 
   async updateStatus(id: string, status: string) {
     try {
-      return this.updateStatusUseCase.execute({
+      const { equipment } = await this.updateStatusUseCase.execute({
         equipment_id: id,
         status,
       });
+
+      return equipment.props;
     } catch (err) {
       throw new ConflictException(err.message);
     }
