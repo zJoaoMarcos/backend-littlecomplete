@@ -1,7 +1,7 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
 import { Item } from '@/domain/stock/entity/item';
 import { IItemRepository } from '@/domain/stock/repository/item.respository';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { ItemSchema } from './entities/item.schema';
 
 export class TypeOrmItemRepository implements IItemRepository {
@@ -40,7 +40,11 @@ export class TypeOrmItemRepository implements IItemRepository {
   async findMany(
     params: PaginationParams,
   ): Promise<{ items: Item[]; totalCount: number } | null> {
-    const [result, totalCount] = await this.ormRepo.findAndCount({});
+    const [result, totalCount] = await this.ormRepo.findAndCount({
+      where: {
+        type: ILike(`${params.type}`),
+      },
+    });
 
     if (!result) {
       return null;

@@ -101,7 +101,7 @@ export class StockService {
       const { items, totalCount } = await this.fetchStockListUseCase.execute();
 
       return {
-        items: items.map((item) => {
+        stockList: items.map((item) => {
           return item.props;
         }),
         totalCount,
