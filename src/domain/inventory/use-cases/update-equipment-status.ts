@@ -1,6 +1,5 @@
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { Equipment } from '../entity/equipment';
-import { IUserAssignmentsRepository } from '../repository/user-assignments.repository';
 import { EquipmentNotFoundError } from './errors/equipment-not-found-error';
 import { InvalidStatusRequestError } from './errors/invalid-status-request-error';
 
@@ -14,10 +13,7 @@ interface UpdateStatusOutput {
 }
 
 export class UpdateEquipmentStatusUseCase {
-  constructor(
-    private equipmentRepository: IEquipmentRepository,
-    private userAssignmentsRepository: IUserAssignmentsRepository,
-  ) {}
+  constructor(private equipmentRepository: IEquipmentRepository) {}
 
   async execute({
     equipment_id,

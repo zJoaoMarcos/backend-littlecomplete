@@ -1,19 +1,14 @@
 import { InMemoryEquipmentRepository } from '@/infra/repository/in-memory/in-memory-equipment-repository';
-import { InMemoryUserAssignmentsRepository } from '@/infra/repository/in-memory/in-memory-user-assigments-repository';
 import { makeCreateEquipment } from './factories/make-create-equipment';
 import { UpdateEquipmentStatusUseCase } from './update-equipment-status';
 
 let equipmentsRepository: InMemoryEquipmentRepository;
-let userAssignmentsRepository: InMemoryUserAssignmentsRepository;
 let sut: UpdateEquipmentStatusUseCase;
 
 describe('Update Equipment Status Use Case', () => {
   beforeAll(() => {
     equipmentsRepository = new InMemoryEquipmentRepository();
-    sut = new UpdateEquipmentStatusUseCase(
-      equipmentsRepository,
-      userAssignmentsRepository,
-    );
+    sut = new UpdateEquipmentStatusUseCase(equipmentsRepository);
   });
 
   it('should be able Update equipment status', async () => {
@@ -23,7 +18,7 @@ describe('Update Equipment Status Use Case', () => {
 
     const { equipment } = await sut.execute({
       equipment_id: 'generic-id',
-      status: 'availble',
+      status: 'available',
     });
 
     expect(equipment.status).toEqual('available');
