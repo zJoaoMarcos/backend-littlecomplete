@@ -1,4 +1,5 @@
 import { InMemoryItemRepository } from '@/infra/repository/in-memory/in-memory-item-repository';
+import { InMemoryStockRepository } from '@/infra/repository/in-memory/in-memory-stock-repository';
 import { InMemoryTransactionRepository } from '@/infra/repository/in-memory/in-memory-transaction-repository';
 import { RequestedQuantityUnavailableError } from './errors/requested-quantity-unavailable.error';
 import { MakeItem } from './factories/make-register-item';
@@ -6,15 +7,18 @@ import { RegisterItemRetirementTransactionUseCase } from './register-item-retire
 
 let transactionsRepository: InMemoryTransactionRepository;
 let itemsRepository: InMemoryItemRepository;
+let stockRepository: InMemoryStockRepository;
 let sut: RegisterItemRetirementTransactionUseCase;
 
 describe('Register Item Retirement Transaction Use Case ', () => {
   beforeEach(() => {
     transactionsRepository = new InMemoryTransactionRepository();
     itemsRepository = new InMemoryItemRepository();
+    stockRepository = new InMemoryStockRepository();
     sut = new RegisterItemRetirementTransactionUseCase(
       transactionsRepository,
       itemsRepository,
+      stockRepository,
     );
   });
 
