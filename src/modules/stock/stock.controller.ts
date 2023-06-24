@@ -39,7 +39,7 @@ export class StockController {
   }
 
   @Get('/items/:id')
-  findItemById(@Param() id: string) {
+  findItemById(@Param('id') id: string) {
     return this.stockService.findItemById(id);
   }
 
@@ -49,7 +49,7 @@ export class StockController {
   }
 
   @Patch('/items/:id')
-  editItem(@Param() id: string, @Body() dto: EditItemDto) {
+  editItem(@Param('id') id: string, @Body() dto: EditItemDto) {
     return this.stockService.editItem(id, { ...dto });
   }
 
