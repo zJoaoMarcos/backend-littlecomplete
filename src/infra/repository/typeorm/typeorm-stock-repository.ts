@@ -5,6 +5,35 @@ import { StockSchema } from './entities/stock.schema';
 
 export class TypeOrmStockRepository implements IStockRepository {
   constructor(private readonly ormRepo: Repository<StockSchema>) {}
+  async create(stock: Stock): Promise<void> {
+    await this.ormRepo.save({
+      type: stock.itemType,
+      amount: stock.amount,
+      amountMin: stock.amountMin,
+    });
+  }
+
+  async save(stock: Stock): Promise<void> {
+    await this.ormRepo.update(
+      { id: stock.id },
+      {
+        type: stock.itemType,
+        amount: stock.amount,
+        amountMin: stock.amountMin,
+      },
+    );
+  }
+
+  async findByType(type: string): Promise<Stock> {
+    const item = await this.ormRepo.findOneBy({ type });
+
+    return Stock.create({
+      id: item.id,
+      itemType: item.type,
+      amount: item.amount,
+      amountMin: item.amountMin,
+    });
+  }
 
   async findMany(): Promise<{ items: Stock[]; totalCount: number } | null> {
     const [result, totalCount] = await this.ormRepo.findAndCount();

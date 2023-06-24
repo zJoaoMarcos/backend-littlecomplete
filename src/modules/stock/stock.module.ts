@@ -115,10 +115,12 @@ import { StockService } from './stock.service';
       useFactory: (
         stockTransactionRepo: ITransactionRepository,
         itemRepo: IItemRepository,
+        stockRepo: IStockRepository,
       ) => {
         return new RegisterNewItemEntryTransactionUseCase(
           stockTransactionRepo,
           itemRepo,
+          stockRepo,
         );
       },
     },
@@ -127,10 +129,12 @@ import { StockService } from './stock.service';
       useFactory: (
         stockTransactionRepo: ITransactionRepository,
         itemRepo: IItemRepository,
+        stockRepo: IStockRepository,
       ) => {
         return new RegisterItemRetirementTransactionUseCase(
           stockTransactionRepo,
           itemRepo,
+          stockRepo,
         );
       },
     },

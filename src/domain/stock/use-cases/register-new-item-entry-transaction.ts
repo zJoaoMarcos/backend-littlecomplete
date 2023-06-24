@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { Transaction } from '../entity/transaction';
 import { IItemRepository } from '../repository/item.respository';
+import { IStockRepository } from '../repository/stock.repository';
 import { ITransactionRepository } from '../repository/transaction.repository';
 import { ItemNotFoundError } from './errors/item-not-found.error';
 
@@ -21,6 +22,7 @@ export class RegisterNewItemEntryTransactionUseCase {
   constructor(
     private transactionRepository: ITransactionRepository,
     private ItemRepository: IItemRepository,
+    private StockRepository: IStockRepository,
   ) {}
 
   async execute({
@@ -37,11 +39,10 @@ export class RegisterNewItemEntryTransactionUseCase {
       throw new ItemNotFoundError();
     }
 
-    const updatedAmount = item.amount + amount;
+    const stock = await this.StockRepository.findByType(item.type);
+    stock.amount += amount;
 
-    item.amount = updatedAmount;
-
-    await this.ItemRepository.save(item);
+    item.amount += amount;
 
     const transaction = new Transaction({
       id: randomUUID(),
@@ -57,6 +58,8 @@ export class RegisterNewItemEntryTransactionUseCase {
     });
 
     await this.transactionRepository.create(transaction);
+    await this.ItemRepository.save(item);
+    await this.StockRepository.save(stock);
 
     return {
       transaction,

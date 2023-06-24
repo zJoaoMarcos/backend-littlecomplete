@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 import { Transaction } from '../entity/transaction';
 import { IItemRepository } from '../repository/item.respository';
+import { IStockRepository } from '../repository/stock.repository';
 import { ITransactionRepository } from '../repository/transaction.repository';
 import { ItemNotFoundError } from './errors/item-not-found.error';
 import { RequestedQuantityUnavailableError } from './errors/requested-quantity-unavailable.error';
@@ -20,6 +21,7 @@ export class RegisterItemRetirementTransactionUseCase {
   constructor(
     private transactionRepository: ITransactionRepository,
     private itemRepository: IItemRepository,
+    private stockRepository: IStockRepository,
   ) {}
 
   async execute({
@@ -40,9 +42,13 @@ export class RegisterItemRetirementTransactionUseCase {
       throw new RequestedQuantityUnavailableError();
     }
 
+    const stock = await this.stockRepository.findByType(item.type);
+    stock.amount -= amount;
+
     item.amount = currentAmount - amount;
 
     await this.itemRepository.save(item);
+    await this.stockRepository.save(stock);
 
     const transaction = new Transaction({
       id: randomUUID(),
