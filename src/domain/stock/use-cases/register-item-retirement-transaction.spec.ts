@@ -1,6 +1,8 @@
 import { InMemoryItemRepository } from '@/infra/repository/in-memory/in-memory-item-repository';
 import { InMemoryStockRepository } from '@/infra/repository/in-memory/in-memory-stock-repository';
 import { InMemoryTransactionRepository } from '@/infra/repository/in-memory/in-memory-transaction-repository';
+import { randomUUID } from 'crypto';
+import { Stock } from '../entity/stock';
 import { RequestedQuantityUnavailableError } from './errors/requested-quantity-unavailable.error';
 import { MakeItem } from './factories/make-register-item';
 import { RegisterItemRetirementTransactionUseCase } from './register-item-retirement-transaction';
@@ -23,7 +25,15 @@ describe('Register Item Retirement Transaction Use Case ', () => {
   });
 
   it('Should be able register item retirement transaction', async () => {
-    const item = MakeItem({ amount: 10 });
+    stockRepository.items.push(
+      Stock.create({
+        amount: 20,
+        amountMin: 10,
+        id: randomUUID(),
+        itemType: 'keyboard',
+      }),
+    );
+    const item = MakeItem({ amount: 10, type: 'keyboard' });
     itemsRepository.items.push(item);
 
     const { transaction } = await sut.execute({

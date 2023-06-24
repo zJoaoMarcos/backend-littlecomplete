@@ -131,17 +131,13 @@ export class StockService {
 
   async registerItemEntryTransaction(
     itemId: string,
-    { price, amount, supplier, nf, createdBy }: RegisterItemEntryTransactionDto,
+    dto: RegisterItemEntryTransactionDto,
   ) {
     try {
       const { transaction } =
         await this.registerNewItemEntryTransactionUseCase.execute({
           itemId,
-          price,
-          amount,
-          supplier,
-          nf,
-          createdBy,
+          ...dto,
         });
 
       return transaction.props;
@@ -152,15 +148,13 @@ export class StockService {
 
   async registerItemRetirementTransaction(
     itemId: string,
-    { amount, requester, createdBy }: RegisterItemRetirementTransactionDto,
+    dto: RegisterItemRetirementTransactionDto,
   ) {
     try {
       const { transaction } =
         await this.registerItemRetirementTransactionUseCase.execute({
           itemId,
-          amount,
-          requester,
-          createdBy,
+          ...dto,
         });
 
       return transaction.props;

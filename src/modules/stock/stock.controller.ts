@@ -56,7 +56,7 @@ export class StockController {
   // Stock Transactions
   @Post('items/:id/transaction/entry')
   registerItemEntryTransaction(
-    @Param() id: string,
+    @Param('id') id: string,
     @Body() dto: RegisterItemEntryTransactionDto,
   ) {
     return this.stockService.registerItemEntryTransaction(id, { ...dto });
@@ -64,7 +64,7 @@ export class StockController {
 
   @Post('items/:id/transaction/output')
   registerItemRetirementTransaction(
-    @Param() id: string,
+    @Param('id') id: string,
     @Body() dto: RegisterItemRetirementTransactionDto,
   ) {
     return this.stockService.registerItemRetirementTransaction(id, { ...dto });

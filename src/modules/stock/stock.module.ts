@@ -123,6 +123,11 @@ import { StockService } from './stock.service';
           stockRepo,
         );
       },
+      inject: [
+        TypeOrmStockTransctionRepository,
+        TypeOrmItemRepository,
+        TypeOrmStockRepository,
+      ],
     },
     {
       provide: RegisterItemRetirementTransactionUseCase,
@@ -137,6 +142,11 @@ import { StockService } from './stock.service';
           stockRepo,
         );
       },
+      inject: [
+        TypeOrmStockTransctionRepository,
+        TypeOrmItemRepository,
+        TypeOrmStockRepository,
+      ],
     },
   ],
 })
