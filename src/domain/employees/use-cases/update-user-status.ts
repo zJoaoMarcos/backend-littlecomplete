@@ -87,6 +87,8 @@ export class UpdateUserStatusUseCase {
 
       user.status = status;
 
+      await this.userRepository.save(user);
+
       return { user };
     }
 
