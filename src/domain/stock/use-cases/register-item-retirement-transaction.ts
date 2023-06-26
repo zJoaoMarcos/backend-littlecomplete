@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
 import { Transaction } from '../entity/transaction';
 import { IItemRepository } from '../repository/item.respository';
 import { IStockRepository } from '../repository/stock.repository';
@@ -47,9 +47,6 @@ export class RegisterItemRetirementTransactionUseCase {
 
     item.amount = currentAmount - amount;
 
-    await this.itemRepository.save(item);
-    await this.stockRepository.save(stock);
-
     const transaction = new Transaction({
       id: randomUUID(),
       itemId,
@@ -64,6 +61,8 @@ export class RegisterItemRetirementTransactionUseCase {
     });
 
     await this.transactionRepository.create(transaction);
+    await this.itemRepository.save(item);
+    await this.stockRepository.save(stock);
 
     return {
       transaction,
