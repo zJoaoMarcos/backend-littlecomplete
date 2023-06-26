@@ -22,9 +22,9 @@ export class DepartmentsService {
 
   async create(createDepartmentDto: CreateDepartmentDto) {
     try {
-      const { department } = await this.createUseCase.execute(
-        createDepartmentDto,
-      );
+      const { department } = await this.createUseCase.execute({
+        ...createDepartmentDto,
+      });
       return department.props;
     } catch (err) {
       throw new ConflictException(err.message);

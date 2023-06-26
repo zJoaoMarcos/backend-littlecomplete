@@ -6,9 +6,10 @@ import { EditDepartmentUseCase } from '@/domain/employees/use-cases/edit-departm
 import { FetchAllDepartmentsUseCase } from '@/domain/employees/use-cases/fetch-all-departments';
 import { FindDepartmentByIdUseCase } from '@/domain/employees/use-cases/find-department-by-id';
 import { FindDepartmentByNameUseCase } from '@/domain/employees/use-cases/find-department-by-name';
-import { InMemoryDepartmentRepository } from '@/infra/repository/in-memory/in-memory-department-repository';
 import { DepartmentsSchema } from '@/infra/repository/typeorm/entities/departments.schema';
+import { UsersSchema } from '@/infra/repository/typeorm/entities/users.schema';
 import { TypeOrmDepartmentRepository } from '@/infra/repository/typeorm/typeorm-department-repository';
+import { TypeOrmUserRepository } from '@/infra/repository/typeorm/typeorm-user-repository';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
@@ -20,6 +21,8 @@ import { DepartmentsService } from './departments.service';
   controllers: [DepartmentsController],
   providers: [
     DepartmentsService,
+
+    // Repositories
     {
       provide: TypeOrmDepartmentRepository,
       useFactory: (dataSource: DataSource) => {
@@ -30,9 +33,14 @@ import { DepartmentsService } from './departments.service';
       inject: [getDataSourceToken()],
     },
     {
-      provide: InMemoryDepartmentRepository,
-      useClass: InMemoryDepartmentRepository,
+      provide: TypeOrmUserRepository,
+      useFactory: (dataSource: DataSource) => {
+        return new TypeOrmUserRepository(dataSource.getRepository(UsersSchema));
+      },
+      inject: [getDataSourceToken()],
     },
+
+    // Use Cases
     {
       provide: CreateDepartmentUseCase,
       useFactory: (
@@ -41,7 +49,7 @@ import { DepartmentsService } from './departments.service';
       ) => {
         return new CreateDepartmentUseCase(departmentRepo, userRepo);
       },
-      inject: [TypeOrmDepartmentRepository],
+      inject: [TypeOrmDepartmentRepository, TypeOrmUserRepository],
     },
     {
       provide: FetchAllDepartmentsUseCase,
