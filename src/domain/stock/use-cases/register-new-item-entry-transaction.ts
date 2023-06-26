@@ -10,7 +10,7 @@ interface RegisterNewItemEntryTransactionRequest {
   price: number;
   amount: number;
   supplier: string;
-  nf: string;
+  invoice: string;
   createdBy: string;
 }
 
@@ -30,7 +30,7 @@ export class RegisterNewItemEntryTransactionUseCase {
     price,
     amount,
     supplier,
-    nf,
+    invoice,
     createdBy,
   }: RegisterNewItemEntryTransactionRequest): Promise<RegisterNewItemEntryTransactionResponse> {
     const item = await this.ItemRepository.findById(itemId);
@@ -52,7 +52,7 @@ export class RegisterNewItemEntryTransactionUseCase {
       amount,
       supplier,
       requester: null,
-      nf,
+      invoice,
       createdAt: new Date(),
       createdBy,
     });

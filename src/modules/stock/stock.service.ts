@@ -35,6 +35,9 @@ export class StockService {
     type,
     category,
     createdBy,
+    isNewTypeGroup,
+    newTypeAmountMin,
+    newTypeName,
   }: RegisterItemDto) {
     try {
       const { item } = await this.registerItemUseCase.execute({
@@ -43,6 +46,9 @@ export class StockService {
         type,
         category,
         createdBy,
+        isNewTypeGroup,
+        newTypeAmountMin,
+        newTypeName,
       });
 
       return item.props;

@@ -55,7 +55,7 @@ export class RegisterItemRetirementTransactionUseCase {
       amount,
       supplier: null,
       requester,
-      nf: null,
+      invoice: null,
       createdAt: new Date(),
       createdBy,
     });

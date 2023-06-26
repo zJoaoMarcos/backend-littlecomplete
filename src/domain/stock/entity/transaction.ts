@@ -8,7 +8,7 @@ export interface TransactionProps {
   price: number;
   requester: string | null;
   supplier: string | null;
-  nf: string | null;
+  invoice: string | null;
   createdBy: string;
   createdAt: Date;
 }
@@ -56,6 +56,14 @@ export class Transaction extends Entity<TransactionProps> {
 
   set price(price: number) {
     this.props.price = price;
+  }
+
+  get invoice() {
+    return this.props.invoice;
+  }
+
+  set invoice(invoice: string) {
+    this.props.invoice = invoice;
   }
 
   get requester() {

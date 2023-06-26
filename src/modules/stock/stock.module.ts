@@ -81,10 +81,10 @@ import { StockService } from './stock.service';
 
     {
       provide: RegisterItemUseCase,
-      useFactory: (itemRepo: IItemRepository) => {
-        return new RegisterItemUseCase(itemRepo);
+      useFactory: (itemRepo: IItemRepository, stockRepo: IStockRepository) => {
+        return new RegisterItemUseCase(itemRepo, stockRepo);
       },
-      inject: [TypeOrmItemRepository],
+      inject: [TypeOrmItemRepository, TypeOrmStockRepository],
     },
     {
       provide: FetchAllItemsUseCase,

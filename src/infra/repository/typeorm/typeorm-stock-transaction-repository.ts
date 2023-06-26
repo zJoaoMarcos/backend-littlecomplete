@@ -17,7 +17,7 @@ export class TypeOrmStockTransctionRepository
       price: String(transaction.price),
       requester: transaction.requester,
       supplier: transaction.supplier,
-      invoice: transaction.supplier,
+      invoice: transaction.invoice,
       createdAt: transaction.createdAt,
       createdBy: transaction.createdBy,
     });
