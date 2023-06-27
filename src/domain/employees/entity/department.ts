@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/adjacent-overload-signatures */
 import { Entity } from '@/core/entities/entity';
 
-interface DepartmentProps {
+export interface DepartmentProps {
   id: number;
   name: string;
   cost_center: number;
@@ -26,36 +25,36 @@ export class Department extends Entity<DepartmentProps> {
     return this.props.name;
   }
 
-  get cost_center() {
-    return this.props.cost_center;
-  }
-
-  get is_board() {
-    return this.props.is_board;
-  }
-
-  get board() {
-    return this.props.board;
-  }
-
-  get responsible_id() {
-    return this.props.responsible_id;
-  }
-
   set name(name: string) {
     this.props.name = name;
+  }
+
+  get cost_center() {
+    return this.props.cost_center;
   }
 
   set cost_center(cost_center: number) {
     this.props.cost_center = cost_center;
   }
 
+  get is_board() {
+    return this.props.is_board;
+  }
+
   set is_board(is_board: boolean) {
     this.props.is_board = is_board;
   }
 
+  get board() {
+    return this.props.board;
+  }
+
   set board(board: string) {
     this.props.board = board;
+  }
+
+  get responsible_id() {
+    return this.props.responsible_id;
   }
 
   set responsible_id(responsible_id: string) {

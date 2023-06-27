@@ -1,14 +1,14 @@
-import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/create-equipment';
-import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/edit-equipment';
-import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/equipment/fetch-all-equipments';
-import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/equipment/find-equipment-by-id';
-import { UpdateEquipmentsStatusUseCase } from '@/domain/inventory/use-cases/equipment/update-equipment-status';
+import { PaginationParams } from '@/core/repositories/pagination-params';
+import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/create-equipment';
+import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/edit-equipment';
+import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/fetch-all-equipments';
+import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/find-equipment-by-id';
+import { UpdateEquipmentStatusUseCase } from '@/domain/inventory/use-cases/update-equipment-status';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 
@@ -19,7 +19,7 @@ export class EquipmentsService {
     private findAllUseCase: FetchAllEquipmentsUseCase,
     private findByIdUseCase: FindEquipmentByIdUseCase,
     private updateDetailsUseCase: EditEquipmentUseCase,
-    private updateStatusUseCase: UpdateEquipmentsStatusUseCase,
+    private updateStatusUseCase: UpdateEquipmentStatusUseCase,
   ) {}
 
   async create(createEquipmentDto: CreateEquipmentDto) {
@@ -30,7 +30,7 @@ export class EquipmentsService {
     }
   }
 
-  async findAll(params: FindManyParamsDto) {
+  async findAll(params: PaginationParams) {
     try {
       const { equipments, totalCount } = await this.findAllUseCase.execute({
         params,
@@ -48,7 +48,7 @@ export class EquipmentsService {
 
   async findById(id: string) {
     try {
-      const { equipment } = await this.findByIdUseCase.execute(id);
+      const { equipment } = await this.findByIdUseCase.execute({ id });
       return equipment.props;
     } catch (err) {
       throw new NotFoundException(err.message);
@@ -57,10 +57,12 @@ export class EquipmentsService {
 
   async update(id: string, updateEquipmentDto: UpdateEquipmentDto) {
     try {
-      return this.updateDetailsUseCase.execute({
+      const { equipment } = await this.updateDetailsUseCase.execute({
         id,
         ...updateEquipmentDto,
       });
+
+      return equipment.props;
     } catch (err) {
       throw new ConflictException(err.message);
     }
@@ -68,10 +70,12 @@ export class EquipmentsService {
 
   async updateStatus(id: string, status: string) {
     try {
-      return this.updateStatusUseCase.execute({
+      const { equipment } = await this.updateStatusUseCase.execute({
         equipment_id: id,
         status,
       });
+
+      return equipment.props;
     } catch (err) {
       throw new ConflictException(err.message);
     }

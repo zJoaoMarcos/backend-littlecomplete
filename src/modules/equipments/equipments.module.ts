@@ -1,17 +1,28 @@
-import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
-import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
-import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/create-equipment';
-import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/equipment/edit-equipment';
-import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/equipment/fetch-all-equipments';
-import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/equipment/find-equipment-by-id';
-import { UpdateEquipmentsStatusUseCase } from '@/domain/inventory/use-cases/equipment/update-equipment-status';
-import { DepartmentsSchema } from '@/infra/repository/typeorm/entities/departments.schema';
-import { EquipmentsSchema } from '@/infra/repository/typeorm/entities/equipments.schema';
-import { TypeOrmDepartmentRepository } from '@/infra/repository/typeorm/typeorm-department-repository';
-import { TypeOrmEquipmentRepository } from '@/infra/repository/typeorm/typeorm-equipment-repository';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
+
+import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
+import { IUserRepository } from '@/domain/employees/repository/user.repository';
+import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
+import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
+import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/create-equipment';
+import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/edit-equipment';
+import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/fetch-all-equipments';
+import { FindEquipmentByIdUseCase } from '@/domain/inventory/use-cases/find-equipment-by-id';
+import { RemoveAllUserAssignmentsUseCase } from '@/domain/inventory/use-cases/remove-all-user-assignments';
+import { RemoveEquipmentAssignmentUseCase } from '@/domain/inventory/use-cases/remove-equipment-assignment';
+import { SaveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/save-user-assignments';
+import { UpdateEquipmentStatusUseCase } from '@/domain/inventory/use-cases/update-equipment-status';
+import { DepartmentsSchema } from '@/infra/repository/typeorm/entities/departments.schema';
+import { EquipmentsUserSchema } from '@/infra/repository/typeorm/entities/equipments-user.schema';
+import { EquipmentsSchema } from '@/infra/repository/typeorm/entities/equipments.schema';
+import { UsersSchema } from '@/infra/repository/typeorm/entities/users.schema';
+import { TypeOrmDepartmentRepository } from '@/infra/repository/typeorm/typeorm-department-repository';
+import { TypeOrmEquipmentRepository } from '@/infra/repository/typeorm/typeorm-equipment-repository';
+import { TypeOrmUserAssignmentsRepository } from '@/infra/repository/typeorm/typeorm-user-assignments-repository';
+import { TypeOrmUserRepository } from '@/infra/repository/typeorm/typeorm-user-repository';
+import { EquipmentsAssignmentsService } from './equipments-assignments.service';
 import { EquipmentsController } from './equipments.controller';
 import { EquipmentsService } from './equipments.service';
 
@@ -20,6 +31,9 @@ import { EquipmentsService } from './equipments.service';
   controllers: [EquipmentsController],
   providers: [
     EquipmentsService,
+    EquipmentsAssignmentsService,
+
+    // Repositories
     {
       provide: TypeOrmEquipmentRepository,
       useFactory: (dataSource: DataSource) => {
@@ -39,6 +53,24 @@ import { EquipmentsService } from './equipments.service';
       inject: [getDataSourceToken()],
     },
     {
+      provide: TypeOrmUserAssignmentsRepository, // Equipment Assignments
+      useFactory: (dataSource: DataSource) => {
+        return new TypeOrmUserAssignmentsRepository(
+          dataSource.getRepository(EquipmentsUserSchema),
+        );
+      },
+      inject: [getDataSourceToken()],
+    },
+    {
+      provide: TypeOrmUserRepository,
+      useFactory: (dataSource: DataSource) => {
+        return new TypeOrmUserRepository(dataSource.getRepository(UsersSchema));
+      },
+      inject: [getDataSourceToken()],
+    },
+
+    // Equipments
+    {
       provide: CreateEquipmentUseCase,
       useFactory: (
         equipmentRepo: IEquipmentRepository,
@@ -48,6 +80,7 @@ import { EquipmentsService } from './equipments.service';
       },
       inject: [TypeOrmEquipmentRepository, TypeOrmDepartmentRepository],
     },
+
     {
       provide: FetchAllEquipmentsUseCase,
       useFactory: (equipmentRepo: IEquipmentRepository) => {
@@ -55,6 +88,7 @@ import { EquipmentsService } from './equipments.service';
       },
       inject: [TypeOrmEquipmentRepository],
     },
+
     {
       provide: FindEquipmentByIdUseCase,
       useFactory: (equipmentRepo: IEquipmentRepository) => {
@@ -62,6 +96,7 @@ import { EquipmentsService } from './equipments.service';
       },
       inject: [TypeOrmEquipmentRepository],
     },
+
     {
       provide: EditEquipmentUseCase,
       useFactory: (
@@ -72,12 +107,68 @@ import { EquipmentsService } from './equipments.service';
       },
       inject: [TypeOrmEquipmentRepository, TypeOrmDepartmentRepository],
     },
+
     {
-      provide: UpdateEquipmentsStatusUseCase,
+      provide: UpdateEquipmentStatusUseCase,
       useFactory: (equipmentRepo: IEquipmentRepository) => {
-        return new UpdateEquipmentsStatusUseCase(equipmentRepo);
+        return new UpdateEquipmentStatusUseCase(equipmentRepo);
       },
       inject: [TypeOrmEquipmentRepository],
+    },
+
+    // Equipments Assignments
+    {
+      provide: SaveUserAssignmentsUseCase,
+      useFactory: (
+        userAssignmentsRepo: IUserAssignmentsRepository,
+        userRepo: IUserRepository,
+        equipmentRepo: IEquipmentRepository,
+      ) => {
+        return new SaveUserAssignmentsUseCase(
+          userAssignmentsRepo,
+          userRepo,
+          equipmentRepo,
+        );
+      },
+      inject: [
+        TypeOrmUserAssignmentsRepository,
+        TypeOrmUserRepository,
+        TypeOrmEquipmentRepository,
+      ],
+    },
+
+    {
+      provide: RemoveEquipmentAssignmentUseCase,
+      useFactory: (
+        userAssignmentsRepo: IUserAssignmentsRepository,
+        equipmentRepo: IEquipmentRepository,
+      ) => {
+        return new RemoveEquipmentAssignmentUseCase(
+          userAssignmentsRepo,
+          equipmentRepo,
+        );
+      },
+      inject: [TypeOrmUserAssignmentsRepository, TypeOrmEquipmentRepository],
+    },
+
+    {
+      provide: RemoveAllUserAssignmentsUseCase,
+      useFactory: (
+        userAssignmentsRepo: IUserAssignmentsRepository,
+        userRepo: IUserRepository,
+        equipmentRepo: IEquipmentRepository,
+      ) => {
+        return new RemoveAllUserAssignmentsUseCase(
+          userAssignmentsRepo,
+          userRepo,
+          equipmentRepo,
+        );
+      },
+      inject: [
+        TypeOrmUserAssignmentsRepository,
+        TypeOrmUserRepository,
+        TypeOrmEquipmentRepository,
+      ],
     },
   ],
 })

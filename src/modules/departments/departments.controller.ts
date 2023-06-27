@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/pagination-params';
 import {
   Body,
   Controller,
@@ -8,7 +9,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { DepartmentsService } from './departments.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
@@ -24,7 +24,7 @@ export class DepartmentsController {
   }
 
   @Get()
-  findAll(@Query() params: FindManyParamsDto) {
+  findAll(@Query() params: PaginationParams) {
     return this.departmentsService.findAll(params);
   }
 

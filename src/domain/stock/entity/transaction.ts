@@ -1,13 +1,14 @@
 import { Entity } from '@/core/entities/entity';
 
-interface TransactionProps {
+export interface TransactionProps {
   id: string;
-  type: string;
   itemId: string;
+  type: string;
   amount: number;
   price: number;
-  requester: string;
-  supplier: string;
+  requester: string | null;
+  supplier: string | null;
+  invoice: string | null;
   createdBy: string;
   createdAt: Date;
 }
@@ -23,10 +24,6 @@ export class Transaction extends Entity<TransactionProps> {
 
   get id() {
     return this.props.id;
-  }
-
-  set id(id: string) {
-    this.props.id = id;
   }
 
   get type() {
@@ -59,6 +56,14 @@ export class Transaction extends Entity<TransactionProps> {
 
   set price(price: number) {
     this.props.price = price;
+  }
+
+  get invoice() {
+    return this.props.invoice;
+  }
+
+  set invoice(invoice: string) {
+    this.props.invoice = invoice;
   }
 
   get requester() {

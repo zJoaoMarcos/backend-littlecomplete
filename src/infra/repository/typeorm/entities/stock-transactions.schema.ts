@@ -1,5 +1,5 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
-import { StockSchema } from './stock.schema';
+import { ItemSchema } from './item.schema';
 
 @Index('stock_transactions_pkey', ['id'], { unique: true })
 @Entity('stock_transactions', { schema: 'public' })
@@ -14,18 +14,24 @@ export class StockTransactionsSchema {
   @Column('character varying', { name: 'type', length: 50 })
   type: string;
 
-  @Column('character varying', { name: 'partner', length: 100 })
-  partner: string;
-
-  @Column('character varying', {
-    name: 'department',
-    nullable: true,
-    length: 100,
-  })
-  department: string | null;
-
   @Column('integer', { name: 'amount' })
   amount: number;
+
+  @Column('character varying', { name: 'price', nullable: true, length: 30 })
+  price: string | null;
+
+  @Column('character varying', {
+    name: 'requester',
+    nullable: true,
+    length: 50,
+  })
+  requester: string | null;
+
+  @Column('character varying', { name: 'supplier', nullable: true, length: 50 })
+  supplier: string | null;
+
+  @Column('character varying', { name: 'invoice', nullable: true, length: 50 })
+  invoice: string | null;
 
   @Column('timestamp without time zone', {
     name: 'created_at',
@@ -37,10 +43,7 @@ export class StockTransactionsSchema {
   @Column('text', { name: 'created_by' })
   createdBy: string;
 
-  @Column('character varying', { name: 'value', nullable: true, length: 30 })
-  value: string | null;
-
-  @ManyToOne(() => StockSchema, (stock) => stock.stockTransactions)
-  @JoinColumn([{ name: 'stock_id', referencedColumnName: 'id' }])
-  stock: StockSchema;
+  @ManyToOne(() => ItemSchema, (item) => item.stockTransactions)
+  @JoinColumn([{ name: 'item_id', referencedColumnName: 'id' }])
+  item: ItemSchema;
 }
