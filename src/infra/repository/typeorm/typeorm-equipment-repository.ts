@@ -213,7 +213,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         invoice: equipment.invoice,
         warranty: equipment.warranty,
         purchaseDate: equipment.purchaseDate,
-        status: equipment.status.trim(),
+        status: equipment.status,
         cpu: equipment.cpu,
         ram: equipment.ram,
         slots: equipment.slots,
