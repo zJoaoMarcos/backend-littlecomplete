@@ -44,12 +44,12 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
     const departments = result.map((department) => {
       return Department.create({
         id: department.id,
-        name: department.name,
+        name: department.name.trim(),
         cost_center: department.costCenter,
         is_board: department.isBoard,
-        board: department.board,
+        board: department.board.trim(),
         responsible_id: department.responsibleId
-          ? department.responsibleId.username
+          ? department.responsibleId.username.trim()
           : null,
       });
     });
@@ -74,12 +74,12 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
 
     return Department.create({
       id: department.id,
-      name: department.name,
+      name: department.name.trim(),
       cost_center: department.costCenter,
       is_board: department.isBoard,
-      board: department.board,
+      board: department.board.trim(),
       responsible_id: department.responsibleId
-        ? department.responsibleId.username
+        ? department.responsibleId.username.trim()
         : null,
     });
   }
@@ -98,12 +98,12 @@ export class TypeOrmDepartmentRepository implements IDepartmentRepository {
 
     return Department.create({
       id: department.id,
-      name: department.name,
+      name: department.name.trim(),
       cost_center: department.costCenter,
       is_board: department.isBoard,
-      board: department.board,
+      board: department.board.trim(),
       responsible_id: department.responsibleId
-        ? department.responsibleId.username
+        ? department.responsibleId.username.trim()
         : null,
     });
   }

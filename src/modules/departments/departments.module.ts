@@ -80,7 +80,7 @@ import { DepartmentsService } from './departments.service';
       ) => {
         return new EditDepartmentUseCase(departmentRepo, userRepo);
       },
-      inject: [TypeOrmDepartmentRepository],
+      inject: [TypeOrmDepartmentRepository, TypeOrmUserRepository],
     },
   ],
 })
