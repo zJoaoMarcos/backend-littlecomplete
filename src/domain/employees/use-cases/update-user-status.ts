@@ -3,7 +3,6 @@ import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.re
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
 import { User } from '../entity/user';
 import { InvalidStatusRequestError } from './errors/invalid-status-request-error';
-import { StatusChangeNotAllowedError } from './errors/status-change-not-allowed-error';
 import { UserNotFoundError } from './errors/user-not-found';
 
 interface UpdateStatusRequest {
@@ -37,31 +36,22 @@ export class UpdateUserStatusUseCase {
       const { equipments } =
         await this.userAssignmentsRepository.findByUserName(user.user_name);
 
-      if (equipments.length > 0) {
-        throw new StatusChangeNotAllowedError();
-      }
-      user.demission_date = new Date();
-      user.status = status;
-
-      await this.userRepository.save(user);
-    }
-
-    // pendency
-    if (status === 'pendency') {
-      user.status = status;
-
-      const { equipments } =
-        await this.userAssignmentsRepository.findByUserName(user.user_name);
-
       if (equipments.length >= 1) {
-        status = 'pendency';
+        user.status = 'pendency';
 
         const updateEquipmentsStatus = equipments.map(async (equipment) => {
           equipment.status = 'pendency';
           await this.equipmentsRepository.save(equipment);
         });
         await Promise.all(updateEquipmentsStatus);
+
+        await this.userRepository.save(user);
+
+        return { user };
       }
+
+      user.demission_date = new Date();
+      user.status = status;
 
       await this.userRepository.save(user);
 
