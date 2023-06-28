@@ -4,7 +4,7 @@ import {
   IEquipmentRepository,
 } from '@/domain/inventory/repository/equipment.repository';
 import { PaginationParams } from 'src/core/repositories/pagination-params';
-import { ILike, Like, Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { EquipmentsSchema } from './entities/equipments.schema';
 
 export class TypeOrmEquipmentRepository implements IEquipmentRepository {
@@ -19,7 +19,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       invoice: equipment.invoice,
       warranty: equipment.warranty,
       purchaseDate: equipment.purchaseDate,
-      status: equipment.status,
+      status: equipment.status.trim(),
       cpu: equipment.cpu,
       ram: equipment.ram,
       slots: equipment.slots,
@@ -36,9 +36,9 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
   }
 
   async findMany(params: PaginationParams): Promise<FindManyOutput> {
-    const equipmentId = params.id ?? '';
-    const status = params.status ?? '';
+    const id = params.id ?? '';
     const type = params.type ?? '';
+    const status = params.status ?? '';
 
     const [result, totalCount] = await this.ormRepo.findAndCount({
       skip: params.skip,
@@ -47,12 +47,12 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
         department: true,
       },
       where: {
-        id: ILike(`%${equipmentId}%`),
-        status: Like(`%${status}%`),
+        id: ILike(`%${id}%`),
+        type: ILike(`%${type}%`),
+        status: ILike(`%${status}%`),
         department: {
           id: params.department_id && params.department_id,
         },
-        type: ILike(`%${type}%`),
       },
     });
 
@@ -64,7 +64,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       return Equipment.create({
         id: equipment.id,
         type: equipment.type,
-        status: equipment.status,
+        status: equipment.status.trim(),
         serviceTag: equipment.serviceTag,
         patrimony: equipment.patrimony,
         brand: equipment.brand,
@@ -116,7 +116,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
     return Equipment.create({
       id: equipment.id,
       type: equipment.type,
-      status: equipment.status,
+      status: equipment.status.trim(),
       serviceTag: equipment.serviceTag,
       patrimony: equipment.patrimony,
       brand: equipment.brand,
@@ -166,7 +166,7 @@ export class TypeOrmEquipmentRepository implements IEquipmentRepository {
       return Equipment.create({
         id: equipment.id,
         type: equipment.type,
-        status: equipment.status,
+        status: equipment.status.trim(),
         serviceTag: equipment.serviceTag,
         patrimony: equipment.patrimony,
         brand: equipment.brand,

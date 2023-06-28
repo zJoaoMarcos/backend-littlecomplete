@@ -1,15 +1,15 @@
-import { CreateUserUseCase } from '@/domain/employees/use-cases/user/create-user';
-import { EditUserUseCase } from '@/domain/employees/use-cases/user/edit-user';
-import { FetchAllUsersUseCase } from '@/domain/employees/use-cases/user/fetch-all-users';
-import { FetchByDepartmentIdUseCase } from '@/domain/employees/use-cases/user/fetch-by-department-id';
-import { FindUserByUserNameUseCase } from '@/domain/employees/use-cases/user/find-user-by-user-name';
-import { UpdateUserStatusUseCase } from '@/domain/employees/use-cases/user/update-user-status';
+import { PaginationParams } from '@/core/repositories/pagination-params';
+import { CreateUserUseCase } from '@/domain/employees/use-cases/create-user';
+import { EditUserUseCase } from '@/domain/employees/use-cases/edit-user';
+import { FetchAllUsersUseCase } from '@/domain/employees/use-cases/fetch-all-users';
+import { FetchByDepartmentIdUseCase } from '@/domain/employees/use-cases/fetch-by-department-id';
+import { FindUserByUserNameUseCase } from '@/domain/employees/use-cases/find-user-by-user-name';
+import { UpdateUserStatusUseCase } from '@/domain/employees/use-cases/update-user-status';
 import { Injectable } from '@nestjs/common';
 import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common/exceptions';
-import { FindManyParamsDto } from '../shared/find-many-params.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -32,7 +32,6 @@ export class UsersService {
     smtp,
     direct_boss,
     telephone,
-    admission_date,
   }: CreateUserDto) {
     try {
       return this.createUseCase.execute({
@@ -43,14 +42,13 @@ export class UsersService {
         smtp,
         direct_boss,
         telephone,
-        admission_date,
       });
     } catch (err) {
       throw new ConflictException(err.message);
     }
   }
 
-  async findAll(params: FindManyParamsDto) {
+  async findAll(params: PaginationParams) {
     try {
       const { users, totalCount } = await this.findAllUseCase.execute({
         params,
@@ -68,7 +66,9 @@ export class UsersService {
 
   async findByUserName(userName: string) {
     try {
-      const { user, equipments } = await this.findByIdUseCase.execute(userName);
+      const { user, equipments } = await this.findByIdUseCase.execute({
+        userName,
+      });
 
       return {
         user: user.props,

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/adjacent-overload-signatures */
 import { Entity } from '@/core/entities/entity';
 
-interface EquipmentProps {
+export interface EquipmentProps {
   id: string;
   status: string;
   currentUser: string | null;

@@ -1,5 +1,4 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { StockTransactionsSchema } from './stock-transactions.schema';
+import { Column, Entity, Index } from 'typeorm';
 
 @Index('stock_pkey', ['id'], { unique: true })
 @Entity('stock', { schema: 'public' })
@@ -11,12 +10,6 @@ export class StockSchema {
   })
   id: string;
 
-  @Column('character varying', { name: 'name', length: 255 })
-  name: string;
-
-  @Column('text', { name: 'description', nullable: true })
-  description: string | null;
-
   @Column('character varying', { name: 'type', length: 50 })
   type: string;
 
@@ -25,26 +18,4 @@ export class StockSchema {
 
   @Column('integer', { name: 'amount_min' })
   amountMin: number;
-
-  @Column('character varying', { name: 'local', length: 100 })
-  local: string;
-
-  @Column('timestamp without time zone', {
-    name: 'created_at',
-    nullable: true,
-    default: () => 'now()',
-  })
-  createdAt: Date | null;
-
-  @Column('character varying', { name: 'created_by', length: 200 })
-  createdBy: string;
-
-  @Column('timestamp without time zone', { name: 'updated_at', nullable: true })
-  updatedAt: Date | null;
-
-  @OneToMany(
-    () => StockTransactionsSchema,
-    (stockTransactions) => stockTransactions.stock,
-  )
-  stockTransactions: StockTransactionsSchema[];
 }

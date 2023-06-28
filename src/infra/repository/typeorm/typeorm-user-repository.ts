@@ -71,18 +71,18 @@ export class TypeOrmUserRepository implements IUserRepository {
 
     const users = result.map((user) => {
       return User.create({
-        user_name: user.username,
-        complete_name: user.completeName,
-        title: user.title,
+        user_name: user.username.trim(),
+        complete_name: user.completeName.trim(),
+        title: user.title.trim(),
         telephone: user.telephone,
         department: {
           id: user.department.id,
-          name: user.department.name,
+          name: user.department.name.trim(),
         },
         direct_boss: user.directBoss ? user.directBoss.username : null,
-        smtp: user.smtp,
+        smtp: user.smtp.trim(),
         admission_date: user.admissionDate,
-        status: user.status,
+        status: user.status.trim(),
         demission_date: user.demissionDate,
       });
     });
@@ -107,18 +107,18 @@ export class TypeOrmUserRepository implements IUserRepository {
     }
 
     return User.create({
-      user_name: user.username,
-      complete_name: user.completeName,
-      title: user.title,
+      user_name: user.username.trim(),
+      complete_name: user.completeName.trim(),
+      title: user.title.trim(),
       telephone: user.telephone,
       department: {
         id: user.department.id,
-        name: user.department.name,
+        name: user.department.name.trim(),
       },
-      direct_boss: user.directBoss.username,
-      smtp: user.smtp,
+      direct_boss: user.directBoss ? user.directBoss.username : null,
+      smtp: user.smtp.trim(),
       admission_date: user.admissionDate,
-      status: user.status,
+      status: user.status.trim(),
       demission_date: user.demissionDate,
     });
   }
@@ -136,18 +136,18 @@ export class TypeOrmUserRepository implements IUserRepository {
     }
 
     return User.create({
-      user_name: user.username,
-      complete_name: user.completeName,
-      title: user.title,
+      user_name: user.username.trim(),
+      complete_name: user.completeName.trim(),
+      title: user.title.trim(),
       telephone: user.telephone,
       department: {
         id: user.department.id,
-        name: user.department.name,
+        name: user.department.name.trim(),
       },
       direct_boss: user.directBoss ? user.directBoss.username : null,
-      smtp: user.smtp,
+      smtp: user.smtp.trim(),
       admission_date: user.admissionDate,
-      status: user.status,
+      status: user.status.trim(),
       demission_date: user.demissionDate,
     });
   }
@@ -171,18 +171,18 @@ export class TypeOrmUserRepository implements IUserRepository {
 
     const users = result.map((user) => {
       return User.create({
-        user_name: user.username,
-        complete_name: user.completeName,
-        title: user.title,
+        user_name: user.username.trim(),
+        complete_name: user.completeName.trim(),
+        title: user.title.trim(),
         telephone: user.telephone,
         department: {
           id: user.department.id,
-          name: user.department.name,
+          name: user.department.name.trim(),
         },
         direct_boss: user.directBoss ? user.directBoss.username : null,
-        smtp: user.smtp,
+        smtp: user.smtp.trim(),
         admission_date: user.admissionDate,
-        status: user.status,
+        status: user.status.trim(),
         demission_date: user.demissionDate,
       });
     });

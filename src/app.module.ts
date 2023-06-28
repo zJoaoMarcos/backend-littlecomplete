@@ -4,12 +4,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DepartmentsSchema } from './infra/repository/typeorm/entities/departments.schema';
 import { EquipmentsUserSchema } from './infra/repository/typeorm/entities/equipments-user.schema';
 import { EquipmentsSchema } from './infra/repository/typeorm/entities/equipments.schema';
+import { ItemSchema } from './infra/repository/typeorm/entities/item.schema';
+import { StockTransactionsSchema } from './infra/repository/typeorm/entities/stock-transactions.schema';
+import { StockSchema } from './infra/repository/typeorm/entities/stock.schema';
 import { UsersSchema } from './infra/repository/typeorm/entities/users.schema';
 import { DepartmentsModule } from './modules/departments/departments.module';
 import { EquipmentsModule } from './modules/equipments/equipments.module';
-import { UserAssignmentsModule } from './modules/user-assignments/user-assignments.module';
+import { StockModule } from './modules/stock/stock.module';
 import { UsersModule } from './modules/users/users.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,13 +28,15 @@ import { AuthModule } from './auth/auth.module';
         EquipmentsSchema,
         EquipmentsUserSchema,
         UsersSchema,
+        StockTransactionsSchema,
+        StockSchema,
+        ItemSchema,
       ],
     }),
+    StockModule,
     DepartmentsModule,
     EquipmentsModule,
     UsersModule,
-    UserAssignmentsModule,
-    AuthModule,
   ],
   controllers: [],
   providers: [],
