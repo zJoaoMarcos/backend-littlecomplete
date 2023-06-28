@@ -67,10 +67,21 @@ export class UpdateUserStatusUseCase {
 
     // active
     if (status === 'active') {
-      if (user.status === 'disable') {
+      if (user.status === 'disabled' || 'pendency') {
         user.admission_date = new Date();
         user.demission_date = null;
         user.status = status;
+
+        const { equipments } =
+          await this.userAssignmentsRepository.findByUserName(user.user_name);
+
+        if (equipments) {
+          const updateEquipmentsStatus = equipments.map(async (equipment) => {
+            equipment.status = 'in use';
+            await this.equipmentsRepository.save(equipment);
+          });
+          await Promise.all(updateEquipmentsStatus);
+        }
 
         await this.userRepository.save(user);
 
