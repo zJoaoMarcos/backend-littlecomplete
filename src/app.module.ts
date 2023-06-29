@@ -14,6 +14,7 @@ import { DepartmentsModule } from './modules/departments/departments.module';
 import { EquipmentsModule } from './modules/equipments/equipments.module';
 import { StockModule } from './modules/stock/stock.module';
 import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UsersModule } from './modules/users/users.module';
     EquipmentsModule,
     UsersModule,
     AdministratorModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

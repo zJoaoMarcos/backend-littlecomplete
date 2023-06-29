@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { AdministratorService } from './administrator.service';
 import { CreateAdministratorDto } from './dto/create-administrator.dto';
 
@@ -11,8 +11,8 @@ export class AdministratorController {
     return this.administratorService.create(createAdministratorDto);
   }
 
-  @Get(':id')
+  /* @Get(':id')
   findByEmail(@Param('id') id: string) {
     return this.administratorService.findByEmail(id);
-  }
+  } */
 }

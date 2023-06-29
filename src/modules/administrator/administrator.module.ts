@@ -11,6 +11,7 @@ import { AdministratorService } from './administrator.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([AdministratorSchema])],
+  exports: [AdministratorService],
   controllers: [AdministratorController],
   providers: [
     AdministratorService,

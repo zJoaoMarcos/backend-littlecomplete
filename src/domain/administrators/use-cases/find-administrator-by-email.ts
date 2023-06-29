@@ -22,8 +22,6 @@ export class FindAdministratorByEmailUseCase {
       throw new AdministratorNotFoundError();
     }
 
-    administrator.password = undefined;
-
     return { administrator };
   }
 }

@@ -1,25 +1,45 @@
-import { msalConfig } from '@/infra/auth/authConfig';
-import * as msal from '@azure/msal-node';
-import { SignOutRequest } from '@azure/msal-node/dist/request/SignOutRequest';
+import { Administrator } from '@/domain/administrators/entity/administrator';
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { AdministratorService } from '../administrator/administrator.service';
+import { AuthToken } from './models/AuthToken';
+import { UserPayload } from './models/UserPayload';
 
 @Injectable()
 export class AuthService {
-  private msal: msal.PublicClientApplication;
+  constructor(
+    private administratorService: AdministratorService,
+    private jwtService: JwtService,
+  ) {}
 
-  constructor() {
-    this.msal = new msal.PublicClientApplication(msalConfig);
+  signIn(administrator: Administrator): AuthToken {
+    const payload: UserPayload = {
+      sub: administrator.username,
+      email: administrator.email,
+      displayName: administrator.displayName,
+    };
+
+    const jwtToken = this.jwtService.sign(payload);
+    return {
+      access_token: jwtToken,
+    };
   }
 
-  async getAccessToken(request: msal.UsernamePasswordRequest): Promise<string> {
-    const authResult = await this.msal.acquireTokenByUsernamePassword(request);
+  async validateUser(email: string, password: string) {
+    const admin = await this.administratorService.findByEmail(email);
 
-    return authResult.accessToken;
-  }
+    if (admin) {
+      const isPasswordValid = await bcrypt.compare(password, admin.password);
 
-  async signOut(request: SignOutRequest): Promise<void> {
-    const signOutResult = await this.msal.signOut(request);
+      if (isPasswordValid) {
+        return {
+          ...admin,
+          password: undefined,
+        };
+      }
+    }
 
-    return signOutResult;
+    throw new Error('Email address or password provided is incorrcet.');
   }
 }
