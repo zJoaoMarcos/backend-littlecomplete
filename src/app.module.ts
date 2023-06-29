@@ -12,6 +12,7 @@ import { DepartmentsModule } from './modules/departments/departments.module';
 import { EquipmentsModule } from './modules/equipments/equipments.module';
 import { StockModule } from './modules/stock/stock.module';
 import { UsersModule } from './modules/users/users.module';
+import { AdministratorModule } from './modules/administrator/administrator.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { UsersModule } from './modules/users/users.module';
     DepartmentsModule,
     EquipmentsModule,
     UsersModule,
+    AdministratorModule,
   ],
   controllers: [],
   providers: [],
