@@ -36,7 +36,7 @@ import { AdministratorService } from './administrator.service';
     {
       provide: FindAdministratorByEmailUseCase,
       useFactory: (administratorRepo: IAdministratorRepository) => {
-        return new RegisterAdministratorUseCase(administratorRepo);
+        return new FindAdministratorByEmailUseCase(administratorRepo);
       },
       inject: [TypeOrmAdministratorRepository],
     },

@@ -7,7 +7,7 @@ interface FindAdministratorByEmailRequest {
 }
 
 interface FindAdministratorByEmailResponse {
-  administrator: Omit<Administrator, 'password'>;
+  administrator: Administrator;
 }
 
 export class FindAdministratorByEmailUseCase {
@@ -21,6 +21,8 @@ export class FindAdministratorByEmailUseCase {
     if (!administrator) {
       throw new AdministratorNotFoundError();
     }
+
+    administrator.password = undefined;
 
     return { administrator };
   }

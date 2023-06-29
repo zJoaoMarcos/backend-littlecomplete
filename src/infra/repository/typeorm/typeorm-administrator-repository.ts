@@ -7,6 +7,7 @@ export class TypeOrmAdministratorRepository
   implements IAdministratorRepository
 {
   constructor(private ormRepo: Repository<AdministratorSchema>) {}
+
   async create(administrator: Administrator): Promise<void> {
     await this.ormRepo.save({
       username: administrator.username,
@@ -17,7 +18,7 @@ export class TypeOrmAdministratorRepository
   }
 
   async findByEmail(email: string): Promise<Administrator> {
-    const administrator = await this.ormRepo.findOne({ where: { email } });
+    const administrator = await this.ormRepo.findOneBy({ email });
 
     if (!administrator) {
       return null;

@@ -20,6 +20,7 @@ export class AdministratorService {
 
       return administrator.props;
     } catch (error) {
+      console.log(error);
       throw new Error(error.message);
     }
   }
@@ -33,6 +34,7 @@ export class AdministratorService {
 
       return administrator.props;
     } catch (error) {
+      console.log(error);
       throw new Error(error.message);
     }
   }

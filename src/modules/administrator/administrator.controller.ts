@@ -11,8 +11,8 @@ export class AdministratorController {
     return this.administratorService.create(createAdministratorDto);
   }
 
-  @Get(':email')
-  findByEmail(@Param('email') email: string) {
-    return this.administratorService.findByEmail(email);
+  @Get(':id')
+  findByEmail(@Param('id') id: string) {
+    return this.administratorService.findByEmail(id);
   }
 }
