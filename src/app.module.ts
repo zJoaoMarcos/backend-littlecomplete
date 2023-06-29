@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AdministratorSchema } from './infra/repository/typeorm/entities/administrator.schema';
 import { DepartmentsSchema } from './infra/repository/typeorm/entities/departments.schema';
@@ -10,11 +11,12 @@ import { StockTransactionsSchema } from './infra/repository/typeorm/entities/sto
 import { StockSchema } from './infra/repository/typeorm/entities/stock.schema';
 import { UsersSchema } from './infra/repository/typeorm/entities/users.schema';
 import { AdministratorModule } from './modules/administrator/administrator.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { DepartmentsModule } from './modules/departments/departments.module';
 import { EquipmentsModule } from './modules/equipments/equipments.module';
 import { StockModule } from './modules/stock/stock.module';
 import { UsersModule } from './modules/users/users.module';
-import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -45,6 +47,6 @@ import { AuthModule } from './modules/auth/auth.module';
     AuthModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [{ provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AppModule {}
