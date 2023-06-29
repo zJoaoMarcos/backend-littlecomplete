@@ -24,7 +24,6 @@ export class TypeOrmAdministratorRepository
     }
 
     return Administrator.create({
-      id: administrator.id,
       email: administrator.email,
       displayName: administrator.displayName,
       username: administrator.username,

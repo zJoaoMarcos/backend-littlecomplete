@@ -1,4 +1,4 @@
-import { randomUUID } from 'crypto';
+import * as bcrypt from 'bcrypt';
 import { Administrator } from '../entity/administrator';
 import { IAdministratorRepository } from '../repository/administrator.repository';
 import { AdministratorWithSameEmailAlreadyExistsError } from './errors/administrator-with-same-email-already-exists-error';
@@ -10,7 +10,7 @@ interface RegisterAdministratorRequest {
 }
 
 interface RegisterAdministratorResponse {
-  administrator: Omit<Administrator, 'password'>;
+  administrator: Administrator;
 }
 
 export class RegisterAdministratorUseCase {
@@ -29,13 +29,18 @@ export class RegisterAdministratorUseCase {
       throw new AdministratorWithSameEmailAlreadyExistsError();
     }
 
+    const passwordHashed = await bcrypt.hash(password, 10);
+
     const administrator = Administrator.create({
-      id: randomUUID(),
       username: email.split('@')[0],
       email,
       displayName,
-      password,
+      password: passwordHashed,
     });
+
+    await this.administratorRepository.create(administrator);
+
+    administrator.password = undefined;
 
     return { administrator };
   }

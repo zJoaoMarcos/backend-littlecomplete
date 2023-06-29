@@ -1,7 +1,6 @@
 import { Entity } from '@/core/entities/entity';
 
 export interface AdministratorProps {
-  id: string;
   email: string;
   username: string;
   displayName: string;
@@ -14,14 +13,6 @@ export class Administrator extends Entity<AdministratorProps> {
       ...props,
     });
     return administrator;
-  }
-
-  get id() {
-    return this.props.id;
-  }
-
-  set id(id: string) {
-    this.props.id = id;
   }
 
   get email() {
