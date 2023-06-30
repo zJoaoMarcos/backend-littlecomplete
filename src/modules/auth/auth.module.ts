@@ -6,11 +6,14 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 @Module({
   imports: [
     AdministratorModule,
     JwtModule.register({
-      secret: `${process.env.JWT_SECRET_KEY}`,
+      secret: process.env.JWT_SECRET_KEY,
       signOptions: {
         expiresIn: '30d',
       },

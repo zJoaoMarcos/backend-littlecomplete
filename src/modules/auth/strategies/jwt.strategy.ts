@@ -4,13 +4,16 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserFromJwt } from '../models/UserFormJwt';
 import { UserPayload } from '../models/UserPayload';
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: `${process.env.JWT_SECRET_KEY}`,
+      secretOrKey: process.env.JWT_SECRET_KEY,
     });
   }
 
