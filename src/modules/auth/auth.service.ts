@@ -1,10 +1,10 @@
 import { Administrator } from '@/domain/administrators/entity/administrator';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AdministratorService } from '../administrator/administrator.service';
-import { AuthToken } from './models/AuthToken';
-import { UserPayload } from './models/UserPayload';
+import { AdminPayload } from './models/AdminPayload';
+import { AuthTokens } from './models/AuthTokens';
 
 @Injectable()
 export class AuthService {
@@ -13,16 +13,20 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  signIn(administrator: Administrator): AuthToken {
-    const payload: UserPayload = {
+  async signIn(administrator: Administrator): Promise<AuthTokens> {
+    const payload: AdminPayload = {
       sub: administrator.username,
-      email: administrator.email,
-      displayName: administrator.displayName,
+      username: administrator.email,
     };
 
-    const jwtToken = this.jwtService.sign(payload);
+    const tokens = await this.getTokens(
+      administrator.email,
+      administrator.username,
+    );
+
     return {
-      access_token: jwtToken,
+      access_token: tokens.accessToken,
+      refresh_token: tokens.refreshToken,
     };
   }
 
@@ -41,5 +45,47 @@ export class AuthService {
     }
 
     throw new Error('Email address or password provided is incorrcet.');
+  }
+
+  async getTokens(email: string, username: string) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(
+        {
+          sub: email,
+          username,
+        },
+        {
+          secret: process.env.JWT_SECRET_KEY,
+          expiresIn: '15m',
+        },
+      ),
+      this.jwtService.signAsync(
+        {
+          sub: email,
+          username,
+        },
+        {
+          secret: process.env.JWT_REFRESH_KEY,
+          expiresIn: '7d',
+        },
+      ),
+    ]);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  async refreshToken(adminEmail: string) {
+    const admin = await this.administratorService.findByEmail(adminEmail);
+
+    if (!admin) {
+      throw new ForbiddenException('Access Denied');
+    }
+
+    const tokens = await this.getTokens(admin.email, admin.username);
+
+    return tokens;
   }
 }

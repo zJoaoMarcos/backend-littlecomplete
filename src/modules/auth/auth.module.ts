@@ -7,19 +7,12 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 
 import * as dotenv from 'dotenv';
+import { RefreshJwtStrategy } from './strategies/refresh-jwt.strategy';
 dotenv.config();
 
 @Module({
-  imports: [
-    AdministratorModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET_KEY,
-      signOptions: {
-        expiresIn: '30d',
-      },
-    }),
-  ],
+  imports: [AdministratorModule, JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy, RefreshJwtStrategy],
 })
 export class AuthModule {}
