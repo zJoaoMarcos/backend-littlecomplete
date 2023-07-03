@@ -10,6 +10,7 @@ export class TypeOrmAdministratorRepository
 
   async create(administrator: Administrator): Promise<void> {
     await this.ormRepo.save({
+      id: administrator.id,
       username: administrator.username,
       email: administrator.email,
       displayName: administrator.displayName,
@@ -25,6 +26,7 @@ export class TypeOrmAdministratorRepository
     }
 
     return Administrator.create({
+      id: administrator.id,
       email: administrator.email,
       displayName: administrator.displayName,
       username: administrator.username,

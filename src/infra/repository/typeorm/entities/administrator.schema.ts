@@ -4,7 +4,10 @@ import { Column, Entity, Index } from 'typeorm';
 @Index('administrator_username_key', ['username'], { unique: true })
 @Entity('administrator', { schema: 'public' })
 export class AdministratorSchema {
-  @Column('character varying', { primary: true, name: 'email', length: 100 })
+  @Column('uuid', { primary: true, name: 'id' })
+  id: string;
+
+  @Column('character varying', { name: 'email', length: 100 })
   email: string;
 
   @Column('character varying', { name: 'username', unique: true, length: 100 })
