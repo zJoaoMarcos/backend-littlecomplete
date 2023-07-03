@@ -3,7 +3,6 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AdministratorService } from '../administrator/administrator.service';
-import { AdminPayload } from './models/AdminPayload';
 import { AuthTokens } from './models/AuthTokens';
 
 @Injectable()
@@ -14,13 +13,8 @@ export class AuthService {
   ) {}
 
   async signIn(administrator: Administrator): Promise<AuthTokens> {
-    const payload: AdminPayload = {
-      sub: administrator.username,
-      username: administrator.email,
-    };
-
     const tokens = await this.getTokens(
-      administrator.email,
+      administrator.id,
       administrator.username,
     );
 
@@ -47,11 +41,11 @@ export class AuthService {
     throw new Error('Email address or password provided is incorrcet.');
   }
 
-  async getTokens(email: string, username: string) {
+  async getTokens(adminEmail: string, username: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
-          sub: email,
+          sub: adminEmail,
           username,
         },
         {
@@ -61,7 +55,7 @@ export class AuthService {
       ),
       this.jwtService.signAsync(
         {
-          sub: email,
+          sub: adminEmail,
           username,
         },
         {
@@ -84,7 +78,7 @@ export class AuthService {
       throw new ForbiddenException('Access Denied');
     }
 
-    const tokens = await this.getTokens(admin.email, admin.username);
+    const tokens = await this.getTokens(admin.id, admin.username);
 
     return tokens;
   }
