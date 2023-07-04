@@ -18,7 +18,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @IsPublic()
-  @Post()
+  @Post('signin')
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   async login(@Request() req: AuthRequest) {

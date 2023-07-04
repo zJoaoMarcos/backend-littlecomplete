@@ -19,8 +19,8 @@ export class AuthService {
     );
 
     return {
-      access_token: tokens.accessToken,
-      refresh_token: tokens.refreshToken,
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
     };
   }
 
