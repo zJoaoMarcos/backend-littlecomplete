@@ -1,4 +1,4 @@
 export interface AdminFromJwt {
-  id: string;
+  email: string;
   username: string;
 }
