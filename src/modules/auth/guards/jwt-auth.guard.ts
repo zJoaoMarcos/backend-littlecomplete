@@ -22,6 +22,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   ) {
     console.log(info);
 
+    if (info?.message === 'jwt malformed') {
+      throw new UnauthorizedException('token.invalid');
+    }
     if (info?.message === 'invalid signature') {
       throw new UnauthorizedException('token.invalid');
     }
