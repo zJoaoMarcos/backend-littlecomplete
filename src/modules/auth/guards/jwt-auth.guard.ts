@@ -20,6 +20,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     context: ExecutionContext,
     status?: any,
   ) {
+    console.log(info);
+
+    if (info?.message === 'invalid signature') {
+      throw new UnauthorizedException('token.invalid');
+    }
     if (info?.message === 'No auth token') {
       throw new UnauthorizedException('token.invalid');
     }
