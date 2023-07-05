@@ -3,7 +3,6 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AdministratorService } from '../administrator/administrator.service';
-import { AuthTokens } from './models/AuthTokens';
 
 @Injectable()
 export class AuthService {
@@ -12,13 +11,16 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(administrator: Administrator): Promise<AuthTokens> {
+  async signIn(administrator: Administrator) {
     const tokens = await this.getTokens(
       administrator.email,
       administrator.username,
     );
 
     return {
+      id: administrator.id,
+      username: administrator.username,
+      displayName: administrator.displayName,
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     };
@@ -50,7 +52,7 @@ export class AuthService {
         },
         {
           secret: process.env.JWT_SECRET_KEY,
-          expiresIn: '15m',
+          expiresIn: '10s',
         },
       ),
       this.jwtService.signAsync(
