@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -31,5 +32,12 @@ export class AuthController {
   @UseGuards(RefreshJwtGuard)
   async refresh(@Request() req: RefreshRequest) {
     return this.authService.refreshToken(req.user.email);
+  }
+
+  @Get('me')
+  findByEmail(@Request() req: AuthRequest) {
+    const email = req.user.email;
+
+    return this.authService.getCurrentAdmin(email);
   }
 }

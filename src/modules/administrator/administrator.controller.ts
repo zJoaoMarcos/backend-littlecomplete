@@ -10,9 +10,4 @@ export class AdministratorController {
   create(@Body() createAdministratorDto: CreateAdministratorDto) {
     return this.administratorService.create(createAdministratorDto);
   }
-
-  /* @Get(':id')
-  findByEmail(@Param('id') id: string) {
-    return this.administratorService.findByEmail(id);
-  } */
 }

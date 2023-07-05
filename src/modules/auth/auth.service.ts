@@ -14,7 +14,7 @@ export class AuthService {
 
   async signIn(administrator: Administrator): Promise<AuthTokens> {
     const tokens = await this.getTokens(
-      administrator.id,
+      administrator.email,
       administrator.username,
     );
 
@@ -78,8 +78,20 @@ export class AuthService {
       throw new ForbiddenException('Access Denied');
     }
 
-    const tokens = await this.getTokens(admin.id, admin.username);
+    const tokens = await this.getTokens(admin.email, admin.username);
 
     return tokens;
+  }
+
+  async getCurrentAdmin(email: string) {
+    const admin = await this.administratorService.findByEmail(email);
+
+    if (!admin) {
+      throw new ForbiddenException('Access Denied');
+    }
+
+    admin.password = undefined;
+
+    return admin;
   }
 }
