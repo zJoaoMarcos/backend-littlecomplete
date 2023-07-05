@@ -1,21 +1,36 @@
-// NestJS
 import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-// Password
 import { AuthGuard } from '@nestjs/passport';
-// Decorators
 import { IS_PUBLIC_KEY } from '../decorators/is-public.decorator';
-// Error Handling
-import { UnauthorizedError } from '../errors/unauthorized.error';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
     super();
+  }
+
+  handleRequest(
+    err: any,
+    user: any,
+    info: any,
+    context: ExecutionContext,
+    status?: any,
+  ) {
+    if (info?.message === 'No auth token') {
+      throw new UnauthorizedException('token.invalid');
+    }
+    if (info?.message === 'invalid token') {
+      throw new UnauthorizedException('token.invalid');
+    }
+    if (info?.message === 'jwt expired') {
+      throw new UnauthorizedException('token.expired');
+    }
+
+    return super.handleRequest(err, user, info, context, status);
   }
 
   canActivate(context: ExecutionContext): Promise<boolean> | boolean {
@@ -37,8 +52,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const canActivatePromise = canActivate as Promise<boolean>;
 
     return canActivatePromise.catch((error) => {
-      if (error instanceof UnauthorizedError) {
-        throw new UnauthorizedException(error.message);
+      if (error?.message) {
+        throw new UnauthorizedException(error?.message);
       }
 
       throw new UnauthorizedException();
