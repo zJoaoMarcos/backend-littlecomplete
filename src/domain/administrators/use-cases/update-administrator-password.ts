@@ -29,13 +29,14 @@ export class UpdateAdministratorPasswordUseCase {
       administrator.password,
     );
 
-    const updatedPassword = await bcrypt.hash(newPassword, 10);
-
     if (!doesPasswordMatch) {
       throw new PasswordNotMatchError();
     }
 
+    const updatedPassword = await bcrypt.hash(newPassword, 10);
+
     administrator.password = updatedPassword;
+
     await this.administratorService.save(administrator);
 
     return;
