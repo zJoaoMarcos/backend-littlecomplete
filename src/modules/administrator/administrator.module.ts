@@ -1,6 +1,7 @@
 import { IAdministratorRepository } from '@/domain/administrators/repository/administrator.repository';
 import { FindAdministratorByEmailUseCase } from '@/domain/administrators/use-cases/find-administrator-by-email';
 import { RegisterAdministratorUseCase } from '@/domain/administrators/use-cases/register-administrator';
+import { UpdateAdministratorPasswordUseCase } from '@/domain/administrators/use-cases/update-administrator-password';
 import { AdministratorSchema } from '@/infra/repository/typeorm/entities/administrator.schema';
 import { TypeOrmAdministratorRepository } from '@/infra/repository/typeorm/typeorm-administrator-repository';
 import { Module } from '@nestjs/common';
@@ -38,6 +39,14 @@ import { AdministratorService } from './administrator.service';
       provide: FindAdministratorByEmailUseCase,
       useFactory: (administratorRepo: IAdministratorRepository) => {
         return new FindAdministratorByEmailUseCase(administratorRepo);
+      },
+      inject: [TypeOrmAdministratorRepository],
+    },
+
+    {
+      provide: UpdateAdministratorPasswordUseCase,
+      useFactory: (administratorRepo: IAdministratorRepository) => {
+        return new UpdateAdministratorPasswordUseCase(administratorRepo);
       },
       inject: [TypeOrmAdministratorRepository],
     },

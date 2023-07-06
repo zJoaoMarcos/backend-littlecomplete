@@ -21,4 +21,12 @@ export class InMemoryAdministratorRepository
 
     return administrator;
   }
+
+  async save(administrator: Administrator): Promise<void> {
+    const itemIndex = this.items.findIndex(
+      (item) => item.email === administrator.email,
+    );
+
+    this.items[itemIndex] = administrator;
+  }
 }

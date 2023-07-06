@@ -33,4 +33,15 @@ export class TypeOrmAdministratorRepository
       password: administrator.password,
     });
   }
+
+  async save(administrator: Administrator): Promise<void> {
+    await this.ormRepo.update(
+      { email: administrator.email },
+      {
+        username: administrator.username,
+        password: administrator.password,
+        displayName: administrator.displayName,
+      },
+    );
+  }
 }
