@@ -1,4 +1,5 @@
-import { randomUUID } from 'crypto';
+import { randomUUID } from 'node:crypto';
+
 import { Transaction } from '../entity/transaction';
 import { IItemRepository } from '../repository/item.respository';
 import { IStockRepository } from '../repository/stock.repository';
@@ -41,8 +42,10 @@ export class RegisterNewItemEntryTransactionUseCase {
 
     const stock = await this.StockRepository.findByType(item.type);
     stock.amount += amount;
+    await this.StockRepository.save(stock);
 
     item.amount += amount;
+    await this.ItemRepository.save(item);
 
     const transaction = new Transaction({
       id: randomUUID(),
@@ -58,8 +61,6 @@ export class RegisterNewItemEntryTransactionUseCase {
     });
 
     await this.transactionRepository.create(transaction);
-    await this.ItemRepository.save(item);
-    await this.StockRepository.save(stock);
 
     return {
       transaction,

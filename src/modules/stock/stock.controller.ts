@@ -6,10 +6,12 @@ import {
   Patch,
   Post,
   Query,
+  Request,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import { AuthRequest } from '../auth/models/AuthRequest';
 import { EditItemDto } from './dto/edit-item.dto';
 import { RegisterItemEntryTransactionDto } from './dto/register-item-entry-transaction.dto';
 import { RegisterItemRetirementTransactionDto } from './dto/register-item-retirement-transaction.dto';
@@ -44,8 +46,10 @@ export class StockController {
   }
 
   @Post('/items')
-  register(@Body() dto: RegisterItemDto) {
-    return this.stockService.registerItem({ ...dto });
+  register(@Request() req: AuthRequest, @Body() dto: RegisterItemDto) {
+    const email = req.user.email;
+
+    return this.stockService.registerItem({ createdBy: email, ...dto });
   }
 
   @Patch('/items/:id')
@@ -56,17 +60,27 @@ export class StockController {
   // Stock Transactions
   @Post('items/:id/transaction/entry')
   registerItemEntryTransaction(
+    @Request() req: AuthRequest,
     @Param('id') id: string,
     @Body() dto: RegisterItemEntryTransactionDto,
   ) {
-    return this.stockService.registerItemEntryTransaction(id, { ...dto });
+    const email = req.user.email;
+    return this.stockService.registerItemEntryTransaction(id, {
+      createdBy: email,
+      ...dto,
+    });
   }
 
   @Post('items/:id/transaction/output')
   registerItemRetirementTransaction(
+    @Request() req: AuthRequest,
     @Param('id') id: string,
     @Body() dto: RegisterItemRetirementTransactionDto,
   ) {
-    return this.stockService.registerItemRetirementTransaction(id, { ...dto });
+    const email = req.user.email;
+    return this.stockService.registerItemRetirementTransaction(id, {
+      createdBy: email,
+      ...dto,
+    });
   }
 }

@@ -1,6 +1,8 @@
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { AuditorySchema } from './auditory.schema';
 
-@Index('administrator_pkey', ['email'], { unique: true })
+@Index('administrator_email_key', ['email'], { unique: true })
+@Index('administrator_pkey', ['id'], { unique: true })
 @Index('administrator_username_key', ['username'], { unique: true })
 @Entity('administrator', { schema: 'public' })
 export class AdministratorSchema {
@@ -18,4 +20,7 @@ export class AdministratorSchema {
 
   @Column('character varying', { name: 'password', length: 255 })
   password: string;
+
+  @OneToMany(() => AuditorySchema, (auditory) => auditory.createdBy)
+  auditories: AuditorySchema[];
 }

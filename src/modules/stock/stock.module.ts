@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
+import { IAuditoryRepository } from '@/domain/auditory/repository/auditory.repository';
 import { IItemRepository } from '@/domain/stock/repository/item.respository';
 import { IStockRepository } from '@/domain/stock/repository/stock.repository';
 import { ITransactionRepository } from '@/domain/stock/repository/transaction.repository';
@@ -13,9 +14,11 @@ import { FindItemByIdUseCase } from '@/domain/stock/use-cases/find-item-by-id';
 import { RegisterItemUseCase } from '@/domain/stock/use-cases/register-item';
 import { RegisterItemRetirementTransactionUseCase } from '@/domain/stock/use-cases/register-item-retirement-transaction';
 import { RegisterNewItemEntryTransactionUseCase } from '@/domain/stock/use-cases/register-new-item-entry-transaction';
+import { AuditorySchema } from '@/infra/repository/typeorm/entities/auditory.schema';
 import { ItemSchema } from '@/infra/repository/typeorm/entities/item.schema';
 import { StockTransactionsSchema } from '@/infra/repository/typeorm/entities/stock-transactions.schema';
 import { StockSchema } from '@/infra/repository/typeorm/entities/stock.schema';
+import { TypeOrmAuditoryRepository } from '@/infra/repository/typeorm/typeorm-auditory-repository';
 import { TypeOrmItemRepository } from '@/infra/repository/typeorm/typeorm-item-repository';
 import { TypeOrmStockRepository } from '@/infra/repository/typeorm/typeorm-stock-repository';
 import { TypeOrmStockTransctionRepository } from '@/infra/repository/typeorm/typeorm-stock-transaction-repository';
@@ -59,6 +62,15 @@ import { StockService } from './stock.service';
       },
       inject: [getDataSourceToken()],
     },
+    {
+      provide: TypeOrmAuditoryRepository,
+      useFactory: (dataSource: DataSource) => {
+        return new TypeOrmAuditoryRepository(
+          dataSource.getRepository(AuditorySchema),
+        );
+      },
+      inject: [getDataSourceToken()],
+    },
 
     // Stock
 
@@ -81,10 +93,18 @@ import { StockService } from './stock.service';
 
     {
       provide: RegisterItemUseCase,
-      useFactory: (itemRepo: IItemRepository, stockRepo: IStockRepository) => {
-        return new RegisterItemUseCase(itemRepo, stockRepo);
+      useFactory: (
+        itemRepo: IItemRepository,
+        stockRepo: IStockRepository,
+        auditRepo: IAuditoryRepository,
+      ) => {
+        return new RegisterItemUseCase(itemRepo, stockRepo, auditRepo);
       },
-      inject: [TypeOrmItemRepository, TypeOrmStockRepository],
+      inject: [
+        TypeOrmItemRepository,
+        TypeOrmStockRepository,
+        TypeOrmAuditoryRepository,
+      ],
     },
     {
       provide: FetchAllItemsUseCase,

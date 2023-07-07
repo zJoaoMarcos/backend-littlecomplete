@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AdministratorSchema } from './infra/repository/typeorm/entities/administrator.schema';
+import { AuditorySchema } from './infra/repository/typeorm/entities/auditory.schema';
 import { DepartmentsSchema } from './infra/repository/typeorm/entities/departments.schema';
 import { EquipmentsUserSchema } from './infra/repository/typeorm/entities/equipments-user.schema';
 import { EquipmentsSchema } from './infra/repository/typeorm/entities/equipments.schema';
@@ -37,6 +38,7 @@ import { UsersModule } from './modules/users/users.module';
         StockTransactionsSchema,
         StockSchema,
         ItemSchema,
+        AuditorySchema,
       ],
     }),
     StockModule,

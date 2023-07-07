@@ -1,3 +1,5 @@
+import { Auditory } from '@/domain/auditory/entity/auditory';
+import { IAuditoryRepository } from '@/domain/auditory/repository/auditory.repository';
 import { randomUUID } from 'node:crypto';
 import { Item } from '../entity/item';
 import { Stock } from '../entity/stock';
@@ -23,6 +25,7 @@ export class RegisterItemUseCase {
   constructor(
     private itemRepository: IItemRepository,
     private stockRepository: IStockRepository,
+    private auditoryRepository: IAuditoryRepository,
   ) {}
 
   async execute({
@@ -72,6 +75,18 @@ export class RegisterItemUseCase {
     });
 
     await this.itemRepository.create(item);
+
+    const action = Auditory.create({
+      id: randomUUID(),
+      type: 'POST',
+      form: 'register-new-item',
+      module: 'Stock',
+      description: `register new item: ${JSON.stringify(item.props, null, 2)}`,
+      createdAt: new Date(),
+      createdBy,
+    });
+
+    await this.auditoryRepository.save(action);
 
     return { item };
   }
