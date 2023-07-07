@@ -33,13 +33,30 @@ export class UpdateUserStatusUseCase {
 
     // disabled
     if (status === 'disabled') {
-      const { equipments } =
+      const employeesBellowHim = await this.userRepository.findByDirectBoss(
+        user.user_name,
+      );
+
+      if (employeesBellowHim) {
+        const nextDirectBoss = user.direct_boss;
+
+        const updateDirectBossOfEmployees = employeesBellowHim.map(
+          async (user) => {
+            user.direct_boss = nextDirectBoss;
+            await this.userRepository.save(user);
+          },
+        );
+
+        await Promise.all(updateDirectBossOfEmployees);
+      }
+
+      const { equipments: userEquipments } =
         await this.userAssignmentsRepository.findByUserName(user.user_name);
 
-      if (equipments.length >= 1) {
+      if (userEquipments.length >= 1) {
         user.status = 'pendency';
 
-        const updateEquipmentsStatus = equipments.map(async (equipment) => {
+        const updateEquipmentsStatus = userEquipments.map(async (equipment) => {
           equipment.status = 'pendency';
           await this.equipmentsRepository.save(equipment);
         });
@@ -72,14 +89,16 @@ export class UpdateUserStatusUseCase {
         user.demission_date = null;
         user.status = status;
 
-        const { equipments } =
+        const { equipments: userEquipments } =
           await this.userAssignmentsRepository.findByUserName(user.user_name);
 
-        if (equipments) {
-          const updateEquipmentsStatus = equipments.map(async (equipment) => {
-            equipment.status = 'in use';
-            await this.equipmentsRepository.save(equipment);
-          });
+        if (userEquipments) {
+          const updateEquipmentsStatus = userEquipments.map(
+            async (equipment) => {
+              equipment.status = 'in use';
+              await this.equipmentsRepository.save(equipment);
+            },
+          );
           await Promise.all(updateEquipmentsStatus);
         }
 

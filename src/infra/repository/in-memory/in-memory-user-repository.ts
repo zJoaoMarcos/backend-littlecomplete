@@ -1,9 +1,6 @@
 import { PaginationParams } from '@/core/repositories/pagination-params';
 import { User } from '@/domain/employees/entity/user';
-import {
-  FindManyOutput,
-  IUserRepository,
-} from '@/domain/employees/repository/user.repository';
+import { IUserRepository } from '@/domain/employees/repository/user.repository';
 
 export class InMemoryUserRepository implements IUserRepository {
   users: User[] = [];
@@ -12,7 +9,7 @@ export class InMemoryUserRepository implements IUserRepository {
     this.users.push(user);
   }
 
-  async findMany(): Promise<FindManyOutput> {
+  async findMany(): Promise<{ users: User[]; totalCount: number }> {
     const users = this.users;
     const totalCount = this.users.length;
 
@@ -42,10 +39,16 @@ export class InMemoryUserRepository implements IUserRepository {
     return Promise.resolve(user);
   }
 
+  async findByDirectBoss(directBoss: string): Promise<User[]> {
+    const users = this.users.filter((user) => user.direct_boss === directBoss);
+
+    return users;
+  }
+
   async findByDepartmentId(
     departmentId: number,
     params: PaginationParams,
-  ): Promise<FindManyOutput> {
+  ): Promise<{ users: User[]; totalCount: number }> {
     const users = await this.users.filter(
       (user) => user.department_id === departmentId,
     );

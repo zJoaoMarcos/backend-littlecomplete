@@ -1,8 +1,5 @@
 import { User } from '@/domain/employees/entity/user';
-import {
-  FindManyOutput,
-  IUserRepository,
-} from '@/domain/employees/repository/user.repository';
+import { IUserRepository } from '@/domain/employees/repository/user.repository';
 import { PaginationParams } from 'src/core/repositories/pagination-params';
 import { ILike, Repository } from 'typeorm';
 import { UsersSchema } from './entities/users.schema';
@@ -32,7 +29,9 @@ export class TypeOrmUserRepository implements IUserRepository {
     return;
   }
 
-  async findMany(params: PaginationParams): Promise<FindManyOutput> {
+  async findMany(
+    params: PaginationParams,
+  ): Promise<{ users: User[]; totalCount: number }> {
     const username = params.id ?? '';
     const status = params.status ?? '';
     const department_id = params.department_id;
@@ -152,10 +151,48 @@ export class TypeOrmUserRepository implements IUserRepository {
     });
   }
 
+  async findByDirectBoss(directBoss: string): Promise<User[]> {
+    const result = await this.ormRepo.find({
+      where: {
+        directBoss: {
+          username: directBoss,
+        },
+      },
+      relations: {
+        directBoss: true,
+        department: true,
+      },
+    });
+
+    if (!result) {
+      return null;
+    }
+
+    const users = result.map((user) => {
+      return User.create({
+        user_name: user.username.trim(),
+        complete_name: user.completeName.trim(),
+        title: user.title.trim(),
+        telephone: user.telephone,
+        department: {
+          id: user.department.id,
+          name: user.department.name.trim(),
+        },
+        direct_boss: user.directBoss ? user.directBoss.username : null,
+        smtp: user.smtp.trim(),
+        admission_date: user.admissionDate,
+        status: user.status.trim(),
+        demission_date: user.demissionDate,
+      });
+    });
+
+    return users;
+  }
+
   async findByDepartmentId(
     departmentId: number,
     params: PaginationParams,
-  ): Promise<FindManyOutput> {
+  ): Promise<{ users: User[]; totalCount: number }> {
     const [result, totalCount] = await this.ormRepo.findAndCount({
       where: {
         department: { id: departmentId },
