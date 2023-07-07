@@ -81,7 +81,7 @@ export class RegisterItemUseCase {
       type: 'POST',
       form: 'register-new-item',
       module: 'Stock',
-      description: `register new item: ${JSON.stringify(item.props, null, 2)}`,
+      description: `register new item: ${JSON.stringify(item.props)}`,
       createdAt: new Date(),
       createdBy,
     });
