@@ -2,11 +2,11 @@ import { Entity } from '@/core/entities/entity';
 
 export interface ItemProps {
   id: string;
-  brand: string;
-  model: string;
-  type: string;
   category: string;
+  type: string;
+  model: string;
   amount: number;
+  amountMin: number;
   updatedAt: Date;
   createdAt: Date;
   createdBy: string;
@@ -27,14 +27,6 @@ export class Item extends Entity<ItemProps> {
 
   set id(id: string) {
     this.props.id = id;
-  }
-
-  get brand() {
-    return this.props.brand;
-  }
-
-  set brand(brand: string) {
-    this.props.brand = brand;
   }
 
   get model() {
@@ -67,6 +59,14 @@ export class Item extends Entity<ItemProps> {
 
   set amount(amount: number) {
     this.props.amount = amount;
+  }
+
+  get amountMin() {
+    return this.props.amountMin;
+  }
+
+  set amountMin(amountMin: number) {
+    this.props.amountMin = amountMin;
   }
 
   get updatedAt() {

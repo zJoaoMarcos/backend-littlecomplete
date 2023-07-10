@@ -1,19 +1,14 @@
 import { Auditory } from '@/domain/auditory/entity/auditory';
 import { IAuditoryRepository } from '@/domain/auditory/repository/auditory.repository';
-import { randomUUID } from 'node:crypto';
+import { randomUUID } from 'crypto';
 import { Item } from '../entity/item';
-import { Stock } from '../entity/stock';
 import { IItemRepository } from '../repository/item.respository';
-import { IStockRepository } from '../repository/stock.repository';
 
 interface RegisterItemRequest {
-  brand: string;
-  model: string;
-  type: string;
-  isNewTypeGroup: boolean;
-  newTypeName: string;
-  newTypeAmountMin: number;
   category: string;
+  type: string;
+  model: string;
+  amountMin: number;
   createdBy: string;
 }
 
@@ -24,54 +19,26 @@ interface RegisterItemResponse {
 export class RegisterItemUseCase {
   constructor(
     private itemRepository: IItemRepository,
-    private stockRepository: IStockRepository,
     private auditoryRepository: IAuditoryRepository,
   ) {}
 
   async execute({
-    brand,
     model,
     type,
     category,
     createdBy,
-    isNewTypeGroup,
-    newTypeName,
-    newTypeAmountMin,
+    amountMin,
   }: RegisterItemRequest): Promise<RegisterItemResponse> {
-    if (isNewTypeGroup) {
-      const stockGroup = Stock.create({
-        id: randomUUID(),
-        itemType: newTypeName,
-        amount: 0,
-        amountMin: newTypeAmountMin,
-      });
-
-      const item = new Item({
-        id: randomUUID(),
-        brand,
-        model,
-        type: newTypeName,
-        category,
-        amount: 0,
-        updatedAt: new Date(),
-        createdAt: new Date(),
-        createdBy,
-      });
-
-      await this.itemRepository.create(item);
-      await this.stockRepository.create(stockGroup);
-    }
-
-    const item = new Item({
+    const item = Item.create({
       id: randomUUID(),
-      brand,
       model,
       type,
       category,
       amount: 0,
-      updatedAt: new Date(),
+      amountMin,
       createdAt: new Date(),
       createdBy,
+      updatedAt: null,
     });
 
     await this.itemRepository.create(item);
@@ -79,9 +46,9 @@ export class RegisterItemUseCase {
     const action = Auditory.create({
       id: randomUUID(),
       type: 'POST',
-      form: 'register-new-item',
+      description: `register new item ${JSON.stringify(item.props)}`,
       module: 'Stock',
-      description: `register new item: ${JSON.stringify(item.props)}`,
+      form: 'register-new-item',
       createdAt: new Date(),
       createdBy,
     });
