@@ -1,14 +1,11 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { AdministratorSchema } from './administrator.schema';
 import { ItemSchema } from './item.schema';
+import { UsersSchema } from './users.schema';
 
-@Index('stock_transactions_pkey', ['id'], { unique: true })
 @Entity('stock_transactions', { schema: 'public' })
 export class StockTransactionsSchema {
-  @Column('uuid', {
-    primary: true,
-    name: 'id',
-    default: () => 'uuid_generate_v4()',
-  })
+  @Column('uuid', { name: 'id', default: () => 'uuid_generate_v4()' })
   id: string;
 
   @Column('character varying', { name: 'type', length: 50 })
@@ -19,13 +16,6 @@ export class StockTransactionsSchema {
 
   @Column('character varying', { name: 'price', nullable: true, length: 30 })
   price: string | null;
-
-  @Column('character varying', {
-    name: 'requester',
-    nullable: true,
-    length: 50,
-  })
-  requester: string | null;
 
   @Column('character varying', { name: 'supplier', nullable: true, length: 50 })
   supplier: string | null;
@@ -40,10 +30,18 @@ export class StockTransactionsSchema {
   })
   createdAt: Date | null;
 
-  @Column('text', { name: 'created_by' })
-  createdBy: string;
-
   @ManyToOne(() => ItemSchema, (item) => item.stockTransactions)
   @JoinColumn([{ name: 'item_id', referencedColumnName: 'id' }])
   item: ItemSchema;
+
+  @ManyToOne(() => UsersSchema, (users) => users.stockTransactions)
+  @JoinColumn([{ name: 'requester', referencedColumnName: 'username' }])
+  requester: UsersSchema;
+
+  @ManyToOne(
+    () => AdministratorSchema,
+    (administrator) => administrator.stockTransactions,
+  )
+  @JoinColumn([{ name: 'created_by', referencedColumnName: 'email' }])
+  createdBy: AdministratorSchema;
 }
