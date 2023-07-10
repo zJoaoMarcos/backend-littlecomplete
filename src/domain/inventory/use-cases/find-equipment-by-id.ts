@@ -26,11 +26,12 @@ export class FindEquipmentByIdUseCase {
       throw new EquipmentNotFoundError();
     }
 
-    const { user_name } =
-      await this.userAssignmentsRepository.findByEquipmentId(equipment.id);
+    const employee = await this.userAssignmentsRepository.findByEquipmentId(
+      equipment.id,
+    );
 
-    if (user_name) {
-      equipment.currentUser = user_name;
+    if (employee) {
+      equipment.currentUser = employee.user_name;
     }
 
     return {
