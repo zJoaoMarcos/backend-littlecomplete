@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { AdministratorSchema } from './administrator.schema';
 import { ItemSchema } from './item.schema';
 import { UsersSchema } from './users.schema';
 
+@Index('stock_transactions_pkey', ['id'], { unique: true })
 @Entity('stock_transactions', { schema: 'public' })
 export class StockTransactionsSchema {
   @Column('uuid', { name: 'id', default: () => 'uuid_generate_v4()' })

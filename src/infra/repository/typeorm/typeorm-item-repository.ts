@@ -10,13 +10,11 @@ export class TypeOrmItemRepository implements IItemRepository {
     await this.ormRepo.update(
       { id: item.id },
       {
-        brand: item.brand,
         type: item.type,
         model: item.model,
         category: item.category,
         amount: item.amount,
-        createdBy: item.createdBy,
-        createdAt: item.createdAt,
+        amountMin: item.amountMin,
         updatedAt: item.updatedAt,
       },
     );
@@ -24,12 +22,13 @@ export class TypeOrmItemRepository implements IItemRepository {
 
   async create(item: Item): Promise<void> {
     await this.ormRepo.save({
-      brand: item.brand,
       type: item.type,
       model: item.model,
       category: item.category,
       amount: item.amount,
-      createdBy: item.createdBy,
+      createdBy: {
+        username: item.createdBy,
+      },
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     });
@@ -40,7 +39,11 @@ export class TypeOrmItemRepository implements IItemRepository {
   async findMany(
     params: PaginationParams,
   ): Promise<{ items: Item[]; totalCount: number } | null> {
-    const [result, totalCount] = await this.ormRepo.findAndCount();
+    const [result, totalCount] = await this.ormRepo.findAndCount({
+      relations: {
+        createdBy: true,
+      },
+    });
 
     if (!result) {
       return null;
@@ -49,12 +52,12 @@ export class TypeOrmItemRepository implements IItemRepository {
     const items = result.map((item) => {
       return Item.create({
         id: item.id,
-        brand: item.brand,
         type: item.type,
         model: item.model,
         category: item.category,
         amount: item.amount,
-        createdBy: item.createdBy,
+        createdBy: item.createdBy.username,
+        amountMin: item.amountMin,
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
       });
@@ -77,12 +80,12 @@ export class TypeOrmItemRepository implements IItemRepository {
 
     return Item.create({
       id: item.id,
-      brand: item.brand,
       type: item.type,
       model: item.model,
       category: item.category,
       amount: item.amount,
-      createdBy: item.createdBy,
+      createdBy: item.createdBy.username,
+      amountMin: item.amountMin,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     });
@@ -102,12 +105,12 @@ export class TypeOrmItemRepository implements IItemRepository {
     const items = result.map((item) => {
       return Item.create({
         id: item.id,
-        brand: item.brand,
         type: item.type,
         model: item.model,
         category: item.category,
         amount: item.amount,
-        createdBy: item.createdBy,
+        createdBy: item.createdBy.username,
+        amountMin: item.amountMin,
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
       });

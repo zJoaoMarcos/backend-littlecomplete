@@ -10,16 +10,18 @@ export class TypeOrmStockTransctionRepository
   async create(transaction: Transaction): Promise<void> {
     await this.ormRepo.save({
       item: {
-        id: transaction.itemId,
+        id: transaction.id,
       },
       type: transaction.type,
       amount: transaction.amount,
       price: String(transaction.price),
-      requester: transaction.requester,
-      supplier: transaction.supplier,
+      requester: { username: transaction.requester },
       invoice: transaction.invoice,
+      supplier: transaction.supplier,
       createdAt: transaction.createdAt,
-      createdBy: transaction.createdBy,
+      createdBy: {
+        username: transaction.createdBy,
+      },
     });
   }
 }
