@@ -14,10 +14,9 @@ Lil Complete app.
 - [ ] Should be able list Systems;
 - [x] Should be able update title of User;
 - [x] Should be able update Department of User;
-- [ ] Should be able change Equipment of User;
-- [ ] Should be able remove Equipment of User;
-- [ ] Should be able remove assignment of Equipment;
-- [ ] Should be able remove all assignments of User;
+- [x] Should be able remove Equipment of User;
+- [x] Should be able remove assignment of Equipment;
+- [x] Should be able remove all assignments of User;
 
 ## BRs (Business Rules)
 
@@ -29,9 +28,7 @@ Lil Complete app.
 - [ ] Should not possible create a User with a demission date before admission date;
 - [x] Should not be able delete User;
 - [x] Should not be able delete Equipment;
-- [ ] Should not be able create Equipment with id prefix wrong;
 - [x] Should not be able create Equipment with name twice;
-- [ ] When change User Department change DirectBoss
 
 ## NFRs (Non-Functional Requirements)
 
