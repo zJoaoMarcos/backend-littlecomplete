@@ -6,7 +6,7 @@ import { AuditorySchema } from './entities/auditory.schema';
 export class TypeOrmAuditoryRepository implements IAuditoryRepository {
   constructor(private ormRepo: Repository<AuditorySchema>) {}
 
-  async save(auditory: Auditory): Promise<void> {
+  async create(auditory: Auditory): Promise<void> {
     await this.ormRepo.save({
       id: auditory.id,
       form: auditory.form,

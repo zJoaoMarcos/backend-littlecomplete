@@ -4,7 +4,7 @@ import { IAuditoryRepository } from '@/domain/auditory/repository/auditory.repos
 export class InMemoryAuditoryRepository implements IAuditoryRepository {
   items = [];
 
-  async save(auditory: Auditory): Promise<void> {
+  async create(auditory: Auditory): Promise<void> {
     this.items.push(auditory);
   }
 }
