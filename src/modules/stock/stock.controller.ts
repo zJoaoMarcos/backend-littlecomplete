@@ -53,8 +53,13 @@ export class StockController {
   }
 
   @Patch('/items/:id')
-  editItem(@Param('id') id: string, @Body() dto: EditItemDto) {
-    return this.stockService.editItem(id, { ...dto });
+  editItem(
+    @Request() req: AuthRequest,
+    @Param('id') id: string,
+    @Body() dto: EditItemDto,
+  ) {
+    const email = req.user.email;
+    return this.stockService.editItem(id, { updatedBy: email, ...dto });
   }
 
   // Stock Transactions

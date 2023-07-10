@@ -3,4 +3,5 @@ export class EditItemDto {
   category: string;
   model: string;
   type: string;
+  updatedBy: string;
 }

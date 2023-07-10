@@ -86,7 +86,7 @@ export class RegisterItemUseCase {
       createdBy,
     });
 
-    await this.auditoryRepository.save(action);
+    await this.auditoryRepository.create(action);
 
     return { item };
   }

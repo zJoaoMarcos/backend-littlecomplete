@@ -122,10 +122,13 @@ import { StockService } from './stock.service';
     },
     {
       provide: EditItemUseCase,
-      useFactory: (itemRepo: IItemRepository) => {
-        return new EditItemUseCase(itemRepo);
+      useFactory: (
+        itemRepo: IItemRepository,
+        auditoryRepo: IAuditoryRepository,
+      ) => {
+        return new EditItemUseCase(itemRepo, auditoryRepo);
       },
-      inject: [TypeOrmItemRepository],
+      inject: [TypeOrmItemRepository, TypeOrmAuditoryRepository],
     },
 
     // Stock Transactions

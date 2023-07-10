@@ -57,7 +57,10 @@ export class StockService {
     }
   }
 
-  async editItem(id: string, { brand, category, model, type }: EditItemDto) {
+  async editItem(
+    id: string,
+    { brand, category, model, type, updatedBy }: EditItemDto,
+  ) {
     try {
       const { item } = await this.editItemUseCase.execute({
         id,
@@ -65,6 +68,7 @@ export class StockService {
         category,
         model,
         type,
+        updatedBy,
       });
 
       return item.props;
