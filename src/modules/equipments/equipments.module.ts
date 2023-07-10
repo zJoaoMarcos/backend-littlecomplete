@@ -91,10 +91,13 @@ import { EquipmentsService } from './equipments.service';
 
     {
       provide: FindEquipmentByIdUseCase,
-      useFactory: (equipmentRepo: IEquipmentRepository) => {
-        return new FindEquipmentByIdUseCase(equipmentRepo);
+      useFactory: (
+        equipmentRepo: IEquipmentRepository,
+        userAssignmentsRepo: IUserAssignmentsRepository,
+      ) => {
+        return new FindEquipmentByIdUseCase(equipmentRepo, userAssignmentsRepo);
       },
-      inject: [TypeOrmEquipmentRepository],
+      inject: [TypeOrmEquipmentRepository, TypeOrmUserAssignmentsRepository],
     },
 
     {

@@ -51,8 +51,16 @@ export class Equipment extends Entity<EquipmentProps> {
     return this.props.type;
   }
 
+  set type(type: string) {
+    this.props.type = type;
+  }
+
   get currentUser() {
     return this.props.currentUser;
+  }
+
+  set currentUser(currentUser: string) {
+    this.props.currentUser = currentUser;
   }
 
   get patrimony() {
@@ -133,10 +141,6 @@ export class Equipment extends Entity<EquipmentProps> {
 
   set id(id: string) {
     this.props.id = id;
-  }
-
-  set type(type: string) {
-    this.props.type = type;
   }
 
   set patrimony(patrimony: string) {
