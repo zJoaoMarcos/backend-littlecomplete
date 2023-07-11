@@ -28,11 +28,12 @@ export class EquipmentsAssignmentsService {
     }
   }
 
-  async removeEquipmentAssignment(equipmentId: string) {
+  async removeEquipmentAssignment(equipmentId: string, createdBy: string) {
     try {
       const { equipment } = await this.removeEquipmentAssignmentUseCase.execute(
         {
           equipmentId,
+          createdBy,
         },
       );
       return equipment.props;

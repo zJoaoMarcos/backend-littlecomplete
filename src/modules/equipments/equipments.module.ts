@@ -187,13 +187,19 @@ import { EquipmentsService } from './equipments.service';
       useFactory: (
         userAssignmentsRepo: IUserAssignmentsRepository,
         equipmentRepo: IEquipmentRepository,
+        auditoryRepo: IAuditoryRepository,
       ) => {
         return new RemoveEquipmentAssignmentUseCase(
           userAssignmentsRepo,
           equipmentRepo,
+          auditoryRepo,
         );
       },
-      inject: [TypeOrmUserAssignmentsRepository, TypeOrmEquipmentRepository],
+      inject: [
+        TypeOrmUserAssignmentsRepository,
+        TypeOrmEquipmentRepository,
+        TypeOrmAuditoryRepository,
+      ],
     },
 
     {

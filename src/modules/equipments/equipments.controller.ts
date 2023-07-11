@@ -84,8 +84,15 @@ export class EquipmentsController {
   }
 
   @Delete('assign/:id')
-  removeEquipmentAssignment(@Param('id') id: string) {
-    return this.equipmentAssignmentsService.removeEquipmentAssignment(id);
+  removeEquipmentAssignment(
+    @Request() req: AuthRequest,
+    @Param('id') id: string,
+  ) {
+    const email = req.user.email;
+    return this.equipmentAssignmentsService.removeEquipmentAssignment(
+      id,
+      email,
+    );
   }
 
   @Delete('all-assignments/:id')
