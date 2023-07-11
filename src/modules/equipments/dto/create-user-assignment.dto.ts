@@ -1,5 +1,5 @@
 export class CreateUserAssignmentDto {
-  equipment_id: string;
-  user_id: string;
+  equipmentId: string;
+  userId: string;
   createdBy: string;
 }

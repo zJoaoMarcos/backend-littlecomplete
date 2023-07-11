@@ -72,8 +72,15 @@ export class EquipmentsController {
   // assign equipments
 
   @Post('/assign')
-  saveAssignment(@Body() createUserAssignmentDto: CreateUserAssignmentDto) {
-    return this.equipmentAssignmentsService.create(createUserAssignmentDto);
+  saveAssignment(
+    @Request() req: AuthRequest,
+    @Body() createUserAssignmentDto: CreateUserAssignmentDto,
+  ) {
+    const email = req.user.email;
+    return this.equipmentAssignmentsService.create({
+      createdBy: email,
+      ...createUserAssignmentDto,
+    });
   }
 
   @Delete('assign/:id')

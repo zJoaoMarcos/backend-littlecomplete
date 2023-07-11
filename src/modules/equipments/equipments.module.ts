@@ -165,17 +165,20 @@ import { EquipmentsService } from './equipments.service';
         userAssignmentsRepo: IUserAssignmentsRepository,
         userRepo: IUserRepository,
         equipmentRepo: IEquipmentRepository,
+        auditoryRepo: IAuditoryRepository,
       ) => {
         return new SaveUserAssignmentsUseCase(
           userAssignmentsRepo,
           userRepo,
           equipmentRepo,
+          auditoryRepo,
         );
       },
       inject: [
         TypeOrmUserAssignmentsRepository,
         TypeOrmUserRepository,
         TypeOrmEquipmentRepository,
+        TypeOrmAuditoryRepository,
       ],
     },
 
