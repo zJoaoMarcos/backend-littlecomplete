@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { Auditory } from '@/domain/auditory/entity/auditory';
 import { IAuditoryRepository } from '@/domain/auditory/repository/auditory.repository';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
@@ -35,9 +36,31 @@ export class UpdateEquipmentStatusUseCase {
 
     const isEquipmentInUse = equipment.status === 'in use';
 
-    const updatedEquipment = equipment;
+    let updatedEquipment = equipment;
 
     if (status === 'maintenance') {
+      updatedEquipment.status = status;
+
+      await this.equipmentRepository.save(updatedEquipment);
+
+      console.log(equipment.props.status, updatedEquipment.props.status);
+
+      const action = Auditory.create({
+        id: randomUUID(),
+        type: 'PATCH',
+        module: 'Inventory',
+        form: 'update-equipment-status',
+        description: `the equipment ${equipment.props.id} with status: ${equipment.props.status} has been updated to: ${updatedEquipment.props.status}`,
+        createdBy,
+        createdAt: new Date(),
+      });
+
+      await this.auditoryRepository.create(action);
+
+      return { equipment: updatedEquipment };
+    }
+
+    if (status === 'available' && !isEquipmentInUse) {
       updatedEquipment.status = status;
 
       await this.equipmentRepository.save(updatedEquipment);
@@ -57,30 +80,10 @@ export class UpdateEquipmentStatusUseCase {
       return { equipment: updatedEquipment };
     }
 
-    if (status === 'available' && !isEquipmentInUse) {
-      equipment.status = status;
-
-      await this.equipmentRepository.save(equipment);
-
-      const action = Auditory.create({
-        id: randomUUID(),
-        type: 'PATCH',
-        module: 'Inventory',
-        form: 'update-equipment-status',
-        description: `the equipment ${equipment.props.id} with status: ${equipment.props.status} has been updated to: ${updatedEquipment.props.status}`,
-        createdBy,
-        createdAt: new Date(),
-      });
-
-      await this.auditoryRepository.create(action);
-
-      return { equipment: updatedEquipment };
-    }
-
     if (status === 'disabled' && !isEquipmentInUse) {
-      equipment.status = status;
+      updatedEquipment.status = status;
 
-      await this.equipmentRepository.save(equipment);
+      await this.equipmentRepository.save(updatedEquipment);
 
       const action = Auditory.create({
         id: randomUUID(),

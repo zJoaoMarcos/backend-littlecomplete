@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { randomUUID } from 'node:crypto';
 
 import { Auditory } from '@/domain/auditory/entity/auditory';
@@ -72,7 +73,7 @@ export class EditEquipmentUseCase {
       throw new EquipmentNotFoundError();
     }
 
-    const updatedEquipment = equipment;
+    let updatedEquipment = equipment;
 
     if (departmentId !== equipment.departmentId) {
       const departmentExists = await this.departmentRepository.findById(
