@@ -2,10 +2,19 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
+// Repositories
+import { IAuditoryRepository } from '@/domain/auditory/repository/auditory.repository';
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { IUserRepository } from '@/domain/employees/repository/user.repository';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
 import { IUserAssignmentsRepository } from '@/domain/inventory/repository/user-assignments.repository';
+import { TypeOrmAuditoryRepository } from '@/infra/repository/typeorm/typeorm-auditory-repository';
+import { TypeOrmDepartmentRepository } from '@/infra/repository/typeorm/typeorm-department-repository';
+import { TypeOrmEquipmentRepository } from '@/infra/repository/typeorm/typeorm-equipment-repository';
+import { TypeOrmUserAssignmentsRepository } from '@/infra/repository/typeorm/typeorm-user-assignments-repository';
+import { TypeOrmUserRepository } from '@/infra/repository/typeorm/typeorm-user-repository';
+
+// UseCases
 import { CreateEquipmentUseCase } from '@/domain/inventory/use-cases/create-equipment';
 import { EditEquipmentUseCase } from '@/domain/inventory/use-cases/edit-equipment';
 import { FetchAllEquipmentsUseCase } from '@/domain/inventory/use-cases/fetch-all-equipments';
@@ -14,14 +23,14 @@ import { RemoveAllUserAssignmentsUseCase } from '@/domain/inventory/use-cases/re
 import { RemoveEquipmentAssignmentUseCase } from '@/domain/inventory/use-cases/remove-equipment-assignment';
 import { SaveUserAssignmentsUseCase } from '@/domain/inventory/use-cases/save-user-assignments';
 import { UpdateEquipmentStatusUseCase } from '@/domain/inventory/use-cases/update-equipment-status';
+
+// Schemas
+import { AuditorySchema } from '@/infra/repository/typeorm/entities/auditory.schema';
 import { DepartmentsSchema } from '@/infra/repository/typeorm/entities/departments.schema';
 import { EquipmentsUserSchema } from '@/infra/repository/typeorm/entities/equipments-user.schema';
 import { EquipmentsSchema } from '@/infra/repository/typeorm/entities/equipments.schema';
 import { UsersSchema } from '@/infra/repository/typeorm/entities/users.schema';
-import { TypeOrmDepartmentRepository } from '@/infra/repository/typeorm/typeorm-department-repository';
-import { TypeOrmEquipmentRepository } from '@/infra/repository/typeorm/typeorm-equipment-repository';
-import { TypeOrmUserAssignmentsRepository } from '@/infra/repository/typeorm/typeorm-user-assignments-repository';
-import { TypeOrmUserRepository } from '@/infra/repository/typeorm/typeorm-user-repository';
+
 import { EquipmentsAssignmentsService } from './equipments-assignments.service';
 import { EquipmentsController } from './equipments.controller';
 import { EquipmentsService } from './equipments.service';
@@ -68,6 +77,15 @@ import { EquipmentsService } from './equipments.service';
       },
       inject: [getDataSourceToken()],
     },
+    {
+      provide: TypeOrmAuditoryRepository,
+      useFactory: (dataSource: DataSource) => {
+        return new TypeOrmAuditoryRepository(
+          dataSource.getRepository(AuditorySchema),
+        );
+      },
+      inject: [getDataSourceToken()],
+    },
 
     // Equipments
     {
@@ -75,10 +93,19 @@ import { EquipmentsService } from './equipments.service';
       useFactory: (
         equipmentRepo: IEquipmentRepository,
         departmentRepo: IDepartmentRepository,
+        auditoryRepo: IAuditoryRepository,
       ) => {
-        return new CreateEquipmentUseCase(equipmentRepo, departmentRepo);
+        return new CreateEquipmentUseCase(
+          equipmentRepo,
+          departmentRepo,
+          auditoryRepo,
+        );
       },
-      inject: [TypeOrmEquipmentRepository, TypeOrmDepartmentRepository],
+      inject: [
+        TypeOrmEquipmentRepository,
+        TypeOrmDepartmentRepository,
+        TypeOrmAuditoryRepository,
+      ],
     },
 
     {
@@ -105,10 +132,19 @@ import { EquipmentsService } from './equipments.service';
       useFactory: (
         equipmentRepo: IEquipmentRepository,
         departmentRepo: IDepartmentRepository,
+        auditoryRepo: IAuditoryRepository,
       ) => {
-        return new EditEquipmentUseCase(equipmentRepo, departmentRepo);
+        return new EditEquipmentUseCase(
+          equipmentRepo,
+          departmentRepo,
+          auditoryRepo,
+        );
       },
-      inject: [TypeOrmEquipmentRepository, TypeOrmDepartmentRepository],
+      inject: [
+        TypeOrmEquipmentRepository,
+        TypeOrmDepartmentRepository,
+        TypeOrmAuditoryRepository,
+      ],
     },
 
     {

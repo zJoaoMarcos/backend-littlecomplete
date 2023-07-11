@@ -1,3 +1,7 @@
+import { randomUUID } from 'node:crypto';
+
+import { Auditory } from '@/domain/auditory/entity/auditory';
+import { IAuditoryRepository } from '@/domain/auditory/repository/auditory.repository';
 import { IDepartmentRepository } from '@/domain/employees/repository/department.repository';
 import { DepartmentNotFoundError } from '@/domain/employees/use-cases/errors/department-not-found-error';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
@@ -25,6 +29,7 @@ interface UpdateEquipmentRequest {
   storage1Syze: number | null;
   video: string | null;
   serviceTag: string | null;
+  createdBy: string;
 }
 
 interface UpdateUserStatusResponse {
@@ -35,6 +40,7 @@ export class EditEquipmentUseCase {
   constructor(
     private equipmentRepository: IEquipmentRepository,
     private departmentRepository: IDepartmentRepository,
+    private auditoryRepository: IAuditoryRepository,
   ) {}
 
   async execute({
@@ -58,12 +64,15 @@ export class EditEquipmentUseCase {
     storage1Syze,
     video,
     serviceTag,
+    createdBy,
   }: UpdateEquipmentRequest): Promise<UpdateUserStatusResponse> {
     const equipment = await this.equipmentRepository.findById(id);
 
     if (!equipment) {
       throw new EquipmentNotFoundError();
     }
+
+    const updatedEquipment = equipment;
 
     if (departmentId !== equipment.departmentId) {
       const departmentExists = await this.departmentRepository.findById(
@@ -74,29 +83,43 @@ export class EditEquipmentUseCase {
         throw new DepartmentNotFoundError();
       }
 
-      equipment.departmentId = departmentId;
+      updatedEquipment.departmentId = departmentId;
     }
 
-    equipment.brand = brand;
-    equipment.type = type;
-    equipment.patrimony = patrimony;
-    equipment.model = model;
-    equipment.supplier = supplier;
-    equipment.invoice = invoice;
-    equipment.warranty = warranty;
-    equipment.purchaseDate = purchaseDate;
-    equipment.status = status;
-    equipment.cpu = cpu;
-    equipment.ram = ram;
-    equipment.slots = slots;
-    equipment.serviceTag = serviceTag;
-    equipment.storage0Syze = storage0Syze;
-    equipment.storage0Type = storage0Type;
-    equipment.storage1Syze = storage1Syze;
-    equipment.storage1Type = storage1Type;
-    equipment.video = video;
+    updatedEquipment.brand = brand;
+    updatedEquipment.type = type;
+    updatedEquipment.patrimony = patrimony;
+    updatedEquipment.model = model;
+    updatedEquipment.supplier = supplier;
+    updatedEquipment.invoice = invoice;
+    updatedEquipment.warranty = warranty;
+    updatedEquipment.purchaseDate = purchaseDate;
+    updatedEquipment.status = status;
+    updatedEquipment.cpu = cpu;
+    updatedEquipment.ram = ram;
+    updatedEquipment.slots = slots;
+    updatedEquipment.serviceTag = serviceTag;
+    updatedEquipment.storage0Syze = storage0Syze;
+    updatedEquipment.storage0Type = storage0Type;
+    updatedEquipment.storage1Syze = storage1Syze;
+    updatedEquipment.storage1Type = storage1Type;
+    updatedEquipment.video = video;
 
-    await this.equipmentRepository.save(equipment);
+    await this.equipmentRepository.save(updatedEquipment);
+
+    const action = Auditory.create({
+      id: randomUUID(),
+      type: 'PATCH',
+      module: 'Inventory',
+      form: 'update-equipment',
+      description: `the equipment: ${JSON.stringify(
+        equipment.props,
+      )}, has been updated to ${JSON.stringify(updatedEquipment.props)}`,
+      createdBy,
+      createdAt: new Date(),
+    });
+
+    await this.auditoryRepository.create(action);
 
     return {
       equipment,

@@ -19,4 +19,5 @@ export class UpdateEquipmentDto {
   storage1Syze: number | null;
   video: string | null;
   serviceTag: string | null;
+  createdBy: string;
 }

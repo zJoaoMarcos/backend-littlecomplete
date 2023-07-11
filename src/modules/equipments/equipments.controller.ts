@@ -7,10 +7,12 @@ import {
   Patch,
   Post,
   Query,
+  Request,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { PaginationParams } from '@/core/repositories/pagination-params';
+import { AuthRequest } from '../auth/models/AuthRequest';
 import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { CreateUserAssignmentDto } from './dto/create-user-assignment.dto';
 import { UpdateEquipmentStatusDto } from './dto/update-equipment-status.dto';
@@ -27,8 +29,15 @@ export class EquipmentsController {
   ) {}
 
   @Post()
-  create(@Body() createEquipmentDto: CreateEquipmentDto) {
-    return this.equipmentsService.create(createEquipmentDto);
+  create(
+    @Request() req: AuthRequest,
+    @Body() createEquipmentDto: CreateEquipmentDto,
+  ) {
+    const email = req.user.email;
+    return this.equipmentsService.create({
+      createdBy: email,
+      ...createEquipmentDto,
+    });
   }
 
   @Get()

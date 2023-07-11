@@ -19,4 +19,5 @@ export class CreateEquipmentDto {
   storage1Syze: number | null;
   video: string | null;
   serviceTag: string | null;
+  createdBy: string;
 }
