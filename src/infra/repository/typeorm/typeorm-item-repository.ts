@@ -22,12 +22,14 @@ export class TypeOrmItemRepository implements IItemRepository {
 
   async create(item: Item): Promise<void> {
     await this.ormRepo.save({
+      id: item.id,
       type: item.type,
       model: item.model,
       category: item.category,
       amount: item.amount,
+      amountMin: item.amountMin,
       createdBy: {
-        username: item.createdBy,
+        email: item.createdBy,
       },
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,

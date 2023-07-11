@@ -19,7 +19,7 @@ export class ItemSchema {
   category: string;
 
   @Column('character varying', { name: 'model', length: 50 })
-  model: string;
+  model: string | null;
 
   @Column('character varying', { name: 'type', length: 50 })
   type: string;
