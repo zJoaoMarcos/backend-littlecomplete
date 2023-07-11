@@ -2,37 +2,33 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
+// Repositories
 import { IAuditoryRepository } from '@/domain/auditory/repository/auditory.repository';
 import { IItemRepository } from '@/domain/stock/repository/item.respository';
-import { IStockRepository } from '@/domain/stock/repository/stock.repository';
 import { ITransactionRepository } from '@/domain/stock/repository/transaction.repository';
+import { TypeOrmAuditoryRepository } from '@/infra/repository/typeorm/typeorm-auditory-repository';
+import { TypeOrmItemRepository } from '@/infra/repository/typeorm/typeorm-item-repository';
+import { TypeOrmStockTransctionRepository } from '@/infra/repository/typeorm/typeorm-stock-transaction-repository';
+
+// Schemas
+import { AuditorySchema } from '@/infra/repository/typeorm/entities/auditory.schema';
+import { ItemSchema } from '@/infra/repository/typeorm/entities/item.schema';
+import { StockTransactionsSchema } from '@/infra/repository/typeorm/entities/stock-transactions.schema';
+
+// Use Cases
 import { EditItemUseCase } from '@/domain/stock/use-cases/edit-item';
 import { FetchAllItemsUseCase } from '@/domain/stock/use-cases/fetch-all-items';
-import { FetchStockListUseCase } from '@/domain/stock/use-cases/fetch-stock-list';
-import { FetchStockListBellowMinAmountUseCase } from '@/domain/stock/use-cases/fetch-stock-list-bellow-min-amount';
 import { FindItemByIdUseCase } from '@/domain/stock/use-cases/find-item-by-id';
 import { RegisterItemUseCase } from '@/domain/stock/use-cases/register-item';
 import { RegisterItemRetirementTransactionUseCase } from '@/domain/stock/use-cases/register-item-retirement-transaction';
 import { RegisterNewItemEntryTransactionUseCase } from '@/domain/stock/use-cases/register-new-item-entry-transaction';
-import { AuditorySchema } from '@/infra/repository/typeorm/entities/auditory.schema';
-import { ItemSchema } from '@/infra/repository/typeorm/entities/item.schema';
-import { StockTransactionsSchema } from '@/infra/repository/typeorm/entities/stock-transactions.schema';
-import { StockSchema } from '@/infra/repository/typeorm/entities/stock.schema';
-import { TypeOrmAuditoryRepository } from '@/infra/repository/typeorm/typeorm-auditory-repository';
-import { TypeOrmItemRepository } from '@/infra/repository/typeorm/typeorm-item-repository';
-import { TypeOrmStockRepository } from '@/infra/repository/typeorm/typeorm-stock-repository';
-import { TypeOrmStockTransctionRepository } from '@/infra/repository/typeorm/typeorm-stock-transaction-repository';
+
+// Services & Controllers
 import { StockController } from './stock.controller';
 import { StockService } from './stock.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      ItemSchema,
-      StockSchema,
-      StockTransactionsSchema,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([ItemSchema, StockTransactionsSchema])],
   controllers: [StockController],
   providers: [
     StockService,
@@ -44,15 +40,7 @@ import { StockService } from './stock.service';
       },
       inject: [getDataSourceToken()],
     },
-    {
-      provide: TypeOrmStockRepository,
-      useFactory: (dataSource: DataSource) => {
-        return new TypeOrmStockRepository(
-          dataSource.getRepository(StockSchema),
-        );
-      },
-      inject: [getDataSourceToken()],
-    },
+
     {
       provide: TypeOrmStockTransctionRepository,
       useFactory: (dataSource: DataSource) => {
@@ -72,39 +60,17 @@ import { StockService } from './stock.service';
       inject: [getDataSourceToken()],
     },
 
-    // Stock
-
-    {
-      provide: FetchStockListUseCase,
-      useFactory: (stockRepo: IStockRepository) => {
-        return new FetchStockListUseCase(stockRepo);
-      },
-      inject: [TypeOrmStockRepository],
-    },
-    {
-      provide: FetchStockListBellowMinAmountUseCase,
-      useFactory: (stockRepo: IStockRepository) => {
-        return new FetchStockListBellowMinAmountUseCase(stockRepo);
-      },
-      inject: [TypeOrmStockRepository],
-    },
-
     // Item
 
     {
       provide: RegisterItemUseCase,
       useFactory: (
         itemRepo: IItemRepository,
-        stockRepo: IStockRepository,
         auditRepo: IAuditoryRepository,
       ) => {
-        return new RegisterItemUseCase(itemRepo, stockRepo, auditRepo);
+        return new RegisterItemUseCase(itemRepo, auditRepo);
       },
-      inject: [
-        TypeOrmItemRepository,
-        TypeOrmStockRepository,
-        TypeOrmAuditoryRepository,
-      ],
+      inject: [TypeOrmItemRepository, TypeOrmAuditoryRepository],
     },
     {
       provide: FetchAllItemsUseCase,
@@ -138,38 +104,26 @@ import { StockService } from './stock.service';
       useFactory: (
         stockTransactionRepo: ITransactionRepository,
         itemRepo: IItemRepository,
-        stockRepo: IStockRepository,
       ) => {
         return new RegisterNewItemEntryTransactionUseCase(
           stockTransactionRepo,
           itemRepo,
-          stockRepo,
         );
       },
-      inject: [
-        TypeOrmStockTransctionRepository,
-        TypeOrmItemRepository,
-        TypeOrmStockRepository,
-      ],
+      inject: [TypeOrmStockTransctionRepository, TypeOrmItemRepository],
     },
     {
       provide: RegisterItemRetirementTransactionUseCase,
       useFactory: (
         stockTransactionRepo: ITransactionRepository,
         itemRepo: IItemRepository,
-        stockRepo: IStockRepository,
       ) => {
         return new RegisterItemRetirementTransactionUseCase(
           stockTransactionRepo,
           itemRepo,
-          stockRepo,
         );
       },
-      inject: [
-        TypeOrmStockTransctionRepository,
-        TypeOrmItemRepository,
-        TypeOrmStockRepository,
-      ],
+      inject: [TypeOrmStockTransctionRepository, TypeOrmItemRepository],
     },
   ],
 })

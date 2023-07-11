@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+// Schemas
 import { AdministratorSchema } from './infra/repository/typeorm/entities/administrator.schema';
 import { AuditorySchema } from './infra/repository/typeorm/entities/auditory.schema';
 import { DepartmentsSchema } from './infra/repository/typeorm/entities/departments.schema';
@@ -9,8 +11,9 @@ import { EquipmentsUserSchema } from './infra/repository/typeorm/entities/equipm
 import { EquipmentsSchema } from './infra/repository/typeorm/entities/equipments.schema';
 import { ItemSchema } from './infra/repository/typeorm/entities/item.schema';
 import { StockTransactionsSchema } from './infra/repository/typeorm/entities/stock-transactions.schema';
-import { StockSchema } from './infra/repository/typeorm/entities/stock.schema';
 import { UsersSchema } from './infra/repository/typeorm/entities/users.schema';
+
+// Modules
 import { AdministratorModule } from './modules/administrator/administrator.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
@@ -36,7 +39,6 @@ import { UsersModule } from './modules/users/users.module';
         EquipmentsUserSchema,
         UsersSchema,
         StockTransactionsSchema,
-        StockSchema,
         ItemSchema,
         AuditorySchema,
       ],

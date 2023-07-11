@@ -23,17 +23,6 @@ import { StockService } from './stock.service';
 export class StockController {
   constructor(private readonly stockService: StockService) {}
 
-  // Stock
-  @Get()
-  fetchStockList(@Query() params: PaginationParams) {
-    return this.stockService.fetchStockList(params);
-  }
-
-  @Get('/shopping')
-  fetchStockShoppingList(@Query() params: PaginationParams) {
-    return this.stockService.fetchStockShoppingList(params);
-  }
-
   // Item
   @Get('/items')
   fetchAllItems(@Query() params: PaginationParams) {
