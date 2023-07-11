@@ -1,10 +1,7 @@
 export class RegisterItemDto {
-  brand: string;
+  category: string;
   model: string;
   type: string;
-  isNewTypeGroup: boolean;
-  newTypeName: string;
-  newTypeAmountMin: number;
-  category: string;
+  amountMin: number;
   createdBy: string;
 }

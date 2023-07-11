@@ -36,13 +36,19 @@ export class UsersSchema {
   smtp: string | null;
 
   @Column('date', { name: 'admission_date', nullable: true })
-  admissionDate: string | null;
+  admissionDate: Date | null;
 
   @Column('date', { name: 'demission_date', nullable: true })
-  demissionDate: string | null;
+  demissionDate: Date | null;
 
   @Column('character', { name: 'status', nullable: true, length: 50 })
   status: string | null;
+
+  @OneToMany(
+    () => DepartmentsSchema,
+    (departments) => departments.responsibleId,
+  )
+  departments: DepartmentsSchema[];
 
   @OneToMany(
     () => EquipmentsUserSchema,

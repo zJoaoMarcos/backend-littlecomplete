@@ -6,7 +6,11 @@ import { UsersSchema } from './users.schema';
 @Index('stock_transactions_pkey', ['id'], { unique: true })
 @Entity('stock_transactions', { schema: 'public' })
 export class StockTransactionsSchema {
-  @Column('uuid', { name: 'id', default: () => 'uuid_generate_v4()' })
+  @Column('uuid', {
+    primary: true,
+    name: 'id',
+    default: () => 'uuid_generate_v4()',
+  })
   id: string;
 
   @Column('character varying', { name: 'type', length: 50 })

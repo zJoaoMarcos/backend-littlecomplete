@@ -56,7 +56,7 @@ export class TypeOrmItemRepository implements IItemRepository {
         model: item.model,
         category: item.category,
         amount: item.amount,
-        createdBy: item.createdBy.username,
+        createdBy: item.createdBy.email,
         amountMin: item.amountMin,
         createdAt: item.createdAt,
         updatedAt: item.updatedAt,
@@ -72,6 +72,9 @@ export class TypeOrmItemRepository implements IItemRepository {
   async findById(id: string): Promise<Item> {
     const item = await this.ormRepo.findOne({
       where: { id },
+      relations: {
+        createdBy: true,
+      },
     });
 
     if (!item) {
@@ -84,7 +87,7 @@ export class TypeOrmItemRepository implements IItemRepository {
       model: item.model,
       category: item.category,
       amount: item.amount,
-      createdBy: item.createdBy.username,
+      createdBy: item.createdBy.email,
       amountMin: item.amountMin,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,

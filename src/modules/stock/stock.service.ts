@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
+import { PaginationParams } from '@/core/repositories/pagination-params';
 import { EditItemUseCase } from '@/domain/stock/use-cases/edit-item';
 import { FetchAllItemsUseCase } from '@/domain/stock/use-cases/fetch-all-items';
 import { FindItemByIdUseCase } from '@/domain/stock/use-cases/find-item-by-id';
@@ -25,14 +26,11 @@ export class StockService {
   // Item
 
   async registerItem({
-    brand,
-    model,
     type,
+    model,
     category,
     createdBy,
-    isNewTypeGroup,
-    newTypeAmountMin,
-    newTypeName,
+    amountMin,
   }: RegisterItemDto) {
     try {
       const { item } = await this.registerItemUseCase.execute({
@@ -40,9 +38,7 @@ export class StockService {
         type,
         category,
         createdBy,
-        isNewTypeGroup,
-        newTypeAmountMin,
-        newTypeName,
+        amountMin,
       });
 
       return item.props;
@@ -58,7 +54,6 @@ export class StockService {
     try {
       const { item } = await this.editItemUseCase.execute({
         id,
-        brand,
         category,
         model,
         type,
