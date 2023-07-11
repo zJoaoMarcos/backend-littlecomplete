@@ -37,7 +37,7 @@ export class UpdateEquipmentStatusUseCase {
 
     const updatedEquipment = equipment;
 
-    if (status === 'maintenance' && isEquipmentInUse) {
+    if (status === 'maintenance') {
       updatedEquipment.status = status;
 
       await this.equipmentRepository.save(updatedEquipment);
