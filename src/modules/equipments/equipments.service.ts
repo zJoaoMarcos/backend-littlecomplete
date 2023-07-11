@@ -68,11 +68,12 @@ export class EquipmentsService {
     }
   }
 
-  async updateStatus(id: string, status: string) {
+  async updateStatus(id: string, status: string, createdBy: string) {
     try {
       const { equipment } = await this.updateStatusUseCase.execute({
         equipment_id: id,
         status,
+        createdBy,
       });
 
       return equipment.props;

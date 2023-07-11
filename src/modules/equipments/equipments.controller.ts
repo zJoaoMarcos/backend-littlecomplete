@@ -59,9 +59,14 @@ export class EquipmentsController {
   }
 
   @Patch('status/:id')
-  updateStatus(@Param('id') id: string, @Body() dto: UpdateEquipmentStatusDto) {
+  updateStatus(
+    @Request() req: AuthRequest,
+    @Param('id') id: string,
+    @Body() dto: UpdateEquipmentStatusDto,
+  ) {
+    const email = req.user.email;
     const { status } = dto;
-    return this.equipmentsService.updateStatus(id, status);
+    return this.equipmentsService.updateStatus(id, status, email);
   }
 
   // assign equipments

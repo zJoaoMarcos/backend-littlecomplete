@@ -1,4 +1,7 @@
+import { Auditory } from '@/domain/auditory/entity/auditory';
+import { IAuditoryRepository } from '@/domain/auditory/repository/auditory.repository';
 import { IEquipmentRepository } from '@/domain/inventory/repository/equipment.repository';
+import { randomUUID } from 'crypto';
 import { Equipment } from '../entity/equipment';
 import { EquipmentNotFoundError } from './errors/equipment-not-found-error';
 import { InvalidStatusRequestError } from './errors/invalid-status-request-error';
@@ -6,6 +9,7 @@ import { InvalidStatusRequestError } from './errors/invalid-status-request-error
 interface UpdateStatusRequest {
   equipment_id: string;
   status: string;
+  createdBy: string;
 }
 
 interface UpdateStatusOutput {
@@ -13,11 +17,15 @@ interface UpdateStatusOutput {
 }
 
 export class UpdateEquipmentStatusUseCase {
-  constructor(private equipmentRepository: IEquipmentRepository) {}
+  constructor(
+    private equipmentRepository: IEquipmentRepository,
+    private auditoryRepository: IAuditoryRepository,
+  ) {}
 
   async execute({
     equipment_id,
     status,
+    createdBy,
   }: UpdateStatusRequest): Promise<UpdateStatusOutput> {
     const equipment = await this.equipmentRepository.findById(equipment_id);
 
@@ -25,27 +33,68 @@ export class UpdateEquipmentStatusUseCase {
       throw new EquipmentNotFoundError();
     }
 
-    const equipmentIsInUse = equipment.status === 'in use';
+    const isEquipmentInUse = equipment.status === 'in use';
 
-    if (status === 'maintenance' && equipmentIsInUse) {
-      equipment.status = status;
+    const updatedEquipment = equipment;
 
-      await this.equipmentRepository.save(equipment);
-      return { equipment };
+    if (status === 'maintenance' && isEquipmentInUse) {
+      updatedEquipment.status = status;
+
+      await this.equipmentRepository.save(updatedEquipment);
+
+      const action = Auditory.create({
+        id: randomUUID(),
+        type: 'PATCH',
+        module: 'Inventory',
+        form: 'update-equipment-status',
+        description: `the equipment ${equipment.props.id} with status: ${equipment.props.status} has been updated to: ${updatedEquipment.props.status}`,
+        createdBy,
+        createdAt: new Date(),
+      });
+
+      await this.auditoryRepository.create(action);
+
+      return { equipment: updatedEquipment };
     }
 
-    if (status === 'available' && !equipmentIsInUse) {
+    if (status === 'available' && !isEquipmentInUse) {
       equipment.status = status;
 
       await this.equipmentRepository.save(equipment);
-      return { equipment };
+
+      const action = Auditory.create({
+        id: randomUUID(),
+        type: 'PATCH',
+        module: 'Inventory',
+        form: 'update-equipment-status',
+        description: `the equipment ${equipment.props.id} with status: ${equipment.props.status} has been updated to: ${updatedEquipment.props.status}`,
+        createdBy,
+        createdAt: new Date(),
+      });
+
+      await this.auditoryRepository.create(action);
+
+      return { equipment: updatedEquipment };
     }
 
-    if (status === 'disabled' && !equipmentIsInUse) {
+    if (status === 'disabled' && !isEquipmentInUse) {
       equipment.status = status;
 
       await this.equipmentRepository.save(equipment);
-      return { equipment };
+
+      const action = Auditory.create({
+        id: randomUUID(),
+        type: 'PATCH',
+        module: 'Inventory',
+        form: 'update-equipment-status',
+        description: `the equipment ${equipment.props.id} with status: ${equipment.props.status} has been updated to: ${updatedEquipment.props.status}`,
+        createdBy,
+        createdAt: new Date(),
+      });
+
+      await this.auditoryRepository.create(action);
+
+      return { equipment: updatedEquipment };
     }
 
     throw new InvalidStatusRequestError();
