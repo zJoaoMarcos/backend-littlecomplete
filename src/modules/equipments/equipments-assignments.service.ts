@@ -42,9 +42,16 @@ export class EquipmentsAssignmentsService {
     }
   }
 
-  async removeAllUserAssignments(username: string) {
+  async removeAllUserAssignments(username: string, createdBy: string) {
     try {
-      return this.removeUserAssignmentsUseCase.execute({ username });
+      const { equipments } = await this.removeUserAssignmentsUseCase.execute({
+        username,
+        createdBy,
+      });
+
+      return equipments.map((equipment) => {
+        return equipment.props;
+      });
     } catch (err) {
       throw new NotFoundException(err.message);
     }

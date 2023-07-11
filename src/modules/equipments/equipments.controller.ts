@@ -96,7 +96,11 @@ export class EquipmentsController {
   }
 
   @Delete('all-assignments/:id')
-  removeAllEquipmentAssignments(@Param('id') id: string) {
-    return this.equipmentAssignmentsService.removeAllUserAssignments(id);
+  removeAllEquipmentAssignments(
+    @Request() req: AuthRequest,
+    @Param('id') id: string,
+  ) {
+    const email = req.user.email;
+    return this.equipmentAssignmentsService.removeAllUserAssignments(id, email);
   }
 }

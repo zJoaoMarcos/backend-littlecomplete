@@ -208,17 +208,20 @@ import { EquipmentsService } from './equipments.service';
         userAssignmentsRepo: IUserAssignmentsRepository,
         userRepo: IUserRepository,
         equipmentRepo: IEquipmentRepository,
+        auditoryRepo: IAuditoryRepository,
       ) => {
         return new RemoveAllUserAssignmentsUseCase(
           userAssignmentsRepo,
           userRepo,
           equipmentRepo,
+          auditoryRepo,
         );
       },
       inject: [
         TypeOrmUserAssignmentsRepository,
         TypeOrmUserRepository,
         TypeOrmEquipmentRepository,
+        TypeOrmAuditoryRepository,
       ],
     },
   ],
