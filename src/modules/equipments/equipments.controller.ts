@@ -52,10 +52,15 @@ export class EquipmentsController {
 
   @Patch(':id')
   update(
+    @Request() req: AuthRequest,
     @Param('id') id: string,
     @Body() updateEquipmentDto: UpdateEquipmentDto,
   ) {
-    return this.equipmentsService.update(id, updateEquipmentDto);
+    const email = req.user.email;
+    return this.equipmentsService.update(id, {
+      createdBy: email,
+      ...updateEquipmentDto,
+    });
   }
 
   @Patch('status/:id')
