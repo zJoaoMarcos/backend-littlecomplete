@@ -37,13 +37,13 @@ export class EditItemUseCase {
       throw new ItemNotFoundError();
     }
 
-    const updatedItem = item;
+    const oldItem = JSON.parse(JSON.stringify(item.props));
 
-    updatedItem.category = category;
-    updatedItem.model = model;
-    updatedItem.type = type;
+    item.category = category;
+    item.model = model;
+    item.type = type;
 
-    await this.itemRepository.save(updatedItem);
+    await this.itemRepository.save(item);
 
     const action = Auditory.create({
       id: randomUUID(),
@@ -51,8 +51,8 @@ export class EditItemUseCase {
       module: 'Stock',
       form: 'update-item',
       description: `the item: ${JSON.stringify(
-        item.props,
-      )}, has been updated to ${JSON.stringify(updatedItem.props)}`,
+        oldItem,
+      )}, has been updated to ${JSON.stringify(item.props)}`,
       createdAt: new Date(),
       createdBy: updatedBy,
     });
@@ -60,7 +60,7 @@ export class EditItemUseCase {
     await this.auditoryRepository.create(action);
 
     return {
-      item: updatedItem,
+      item: item,
     };
   }
 }
