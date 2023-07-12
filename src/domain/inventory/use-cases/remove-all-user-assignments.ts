@@ -60,7 +60,7 @@ export class RemoveAllUserAssignmentsUseCase {
         equipments.map((equipment) => {
           return equipment.props;
         }),
-      )} assignments from user: ${JSON.stringify(user.props)}`,
+      )} assignments from user: ${JSON.stringify(user.props.user_name)}`,
       createdBy,
       createdAt: new Date(),
     });
