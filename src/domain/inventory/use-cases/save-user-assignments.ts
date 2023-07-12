@@ -82,6 +82,8 @@ export class SaveUserAssignmentsUseCase {
       createdAt: new Date(),
     });
 
+    await this.auditoryRepository.create(action);
+
     return {
       userAssignments,
     };

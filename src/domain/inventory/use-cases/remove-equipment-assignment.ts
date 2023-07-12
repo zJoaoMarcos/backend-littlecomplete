@@ -31,6 +31,12 @@ export class RemoveEquipmentAssignmentUseCase {
       throw new EquipmentNotFoundError();
     }
 
+    const user = await this.userAssignmentRepository.findByEquipmentId(
+      equipment.id,
+    );
+
+    const oldUser = JSON.parse(JSON.stringify(user.props.user_name));
+
     await this.userAssignmentRepository.deleteByEquipmentId(equipment.id);
 
     equipment.status = 'pendency';
@@ -42,7 +48,9 @@ export class RemoveEquipmentAssignmentUseCase {
       type: 'DELETE',
       form: 'remove-equipment-assignment',
       module: 'Inventory',
-      description: `the equipment: ${equipment.props} has been unassigned from employee: ${equipment.props.currentUser}`,
+      description: `the equipment: ${JSON.stringify(
+        equipment.props,
+      )} has been unassigned from employee: ${oldUser}`,
       createdBy,
       createdAt: new Date(),
     });
