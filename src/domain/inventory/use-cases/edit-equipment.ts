@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import { randomUUID } from 'node:crypto';
 
 import { Auditory } from '@/domain/auditory/entity/auditory';
@@ -73,7 +72,7 @@ export class EditEquipmentUseCase {
       throw new EquipmentNotFoundError();
     }
 
-    let updatedEquipment = equipment;
+    const oldEquipment = JSON.parse(JSON.stringify(equipment.props));
 
     if (departmentId !== equipment.departmentId) {
       const departmentExists = await this.departmentRepository.findById(
@@ -83,30 +82,30 @@ export class EditEquipmentUseCase {
       if (!departmentExists) {
         throw new DepartmentNotFoundError();
       }
-
-      updatedEquipment.departmentId = departmentId;
+      equipment.departmentName = departmentExists.name;
+      equipment.departmentId = departmentId;
     }
 
-    updatedEquipment.brand = brand;
-    updatedEquipment.type = type;
-    updatedEquipment.patrimony = patrimony;
-    updatedEquipment.model = model;
-    updatedEquipment.supplier = supplier;
-    updatedEquipment.invoice = invoice;
-    updatedEquipment.warranty = warranty;
-    updatedEquipment.purchaseDate = purchaseDate;
-    updatedEquipment.status = status;
-    updatedEquipment.cpu = cpu;
-    updatedEquipment.ram = ram;
-    updatedEquipment.slots = slots;
-    updatedEquipment.serviceTag = serviceTag;
-    updatedEquipment.storage0Syze = storage0Syze;
-    updatedEquipment.storage0Type = storage0Type;
-    updatedEquipment.storage1Syze = storage1Syze;
-    updatedEquipment.storage1Type = storage1Type;
-    updatedEquipment.video = video;
+    equipment.brand = brand;
+    equipment.type = type;
+    equipment.patrimony = patrimony;
+    equipment.model = model;
+    equipment.supplier = supplier;
+    equipment.invoice = invoice;
+    equipment.warranty = warranty;
+    equipment.purchaseDate = purchaseDate;
+    equipment.status = status;
+    equipment.cpu = cpu;
+    equipment.ram = ram;
+    equipment.slots = slots;
+    equipment.serviceTag = serviceTag;
+    equipment.storage0Syze = storage0Syze;
+    equipment.storage0Type = storage0Type;
+    equipment.storage1Syze = storage1Syze;
+    equipment.storage1Type = storage1Type;
+    equipment.video = video;
 
-    await this.equipmentRepository.save(updatedEquipment);
+    await this.equipmentRepository.save(equipment);
 
     const action = Auditory.create({
       id: randomUUID(),
@@ -114,8 +113,8 @@ export class EditEquipmentUseCase {
       module: 'Inventory',
       form: 'update-equipment',
       description: `the equipment: ${JSON.stringify(
-        equipment.props,
-      )}, has been updated to ${JSON.stringify(updatedEquipment.props)}`,
+        oldEquipment,
+      )}, has been updated to ${JSON.stringify(equipment.props)}`,
       createdBy,
       createdAt: new Date(),
     });
