@@ -20,7 +20,7 @@ export class TypeOrmStockTransctionRepository
       supplier: transaction.supplier,
       createdAt: transaction.createdAt,
       createdBy: {
-        username: transaction.createdBy,
+        email: transaction.createdBy,
       },
     });
   }
